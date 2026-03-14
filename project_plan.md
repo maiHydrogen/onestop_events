@@ -36,7 +36,7 @@ This phase focuses on structuring the package, defining the data shapes, wiring 
 
 1. Project Setup & Architecture
 
-- [ ] Initialize Clean Architecture directory structure (src/core, src/data, src/domain, src/presentation).
+- [X] Initialize Clean Architecture directory structure (src/core, src/data, src/domain, src/presentation).
 - [ ] Add necessary dependencies to pubspec.yaml (flutter_bloc, equatable, get_it, bloc_test, mocktail).
 - [ ] Inject the onestop_ui package dependency.
 - [ ] Setup Dependency Injection container (e.g., get_it) for managing repositories and BLoCs.
