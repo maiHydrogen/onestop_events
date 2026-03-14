@@ -4,6 +4,7 @@ This library is intended for the development of events feed for main Onestop Flu
 
 ## Getting Started
 
+Read the project_plan.md file in the repo before starting anything.
 
 ## Additional Info
 - Please go through the repo first and always refer dev branch for latest updates.
