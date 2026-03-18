@@ -4,7 +4,7 @@ import 'package:get_it/get_it.dart';
 // import '../../presentation/blocs/events/events_bloc.dart';
 import '../../domain/repositories/i_events_repo.dart';
 import '../../data/repositories/mock_events_repo.dart';
-import '../../presentation/bloc/events/events_bloc.dart';
+import '../../presentation/blocs/events/events_bloc.dart';
 
 final sl = GetIt.instance; // sl stands for Service Locator
 

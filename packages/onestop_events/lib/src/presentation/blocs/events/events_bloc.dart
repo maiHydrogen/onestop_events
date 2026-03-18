@@ -59,7 +59,7 @@ class EventsBloc extends Bloc<EventsEvent, EventsState> {
 
       } catch (e) {
         // If the repository fails, we revert to the old state and show an error
-        emit(EventsState.error('Failed to update bookmark'));
+        emit(const EventsState.error('Failed to update bookmark'));
         emit(EventsState.loaded(currentState.events)); // Revert
       }
     }
