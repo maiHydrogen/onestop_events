@@ -2,8 +2,9 @@ import 'package:get_it/get_it.dart';
 
 // Import your BLoCs and Repositories here as you create them
 // import '../../presentation/blocs/events/events_bloc.dart';
-// import '../../domain/repositories/i_events_repository.dart';
-// import '../../data/repositories/mock_events_repository.dart';
+import '../../domain/repositories/i_events_repo.dart';
+import '../../data/repositories/mock_events_repo.dart';
+import '../../presentation/bloc/events/events_bloc.dart';
 
 final sl = GetIt.instance; // sl stands for Service Locator
 
@@ -14,10 +15,10 @@ Future<void> initEventsPackage() async {
   // We register BLoCs as Factories. This means every time we call sl<EventsBloc>(),
   // get_it provides a fresh instance. This is standard for BLoCs so you don't 
   // accidentally carry over old state when navigating away and coming back.
-  
-  /* sl.registerFactory(
-    () => EventsBloc(eventsRepository: sl()), 
+  sl.registerFactory(
+        () => EventsBloc(repository: sl()),
   );
+  /*
   
   sl.registerFactory(
     () => ClubsBloc(clubsRepository: sl()),
@@ -30,12 +31,10 @@ Future<void> initEventsPackage() async {
   // Repositories are registered as Lazy Singletons. It creates exactly one 
   // instance of the repository the first time it is requested, and reuses it.
   // Notice how we bind the Interface (IEventsRepository) to the Implementation (MockEventsRepository).
-  
-  /*
   sl.registerLazySingleton<IEventsRepository>(
-    () => MockEventsRepository(),
+        () => MockEventsRepository(),
   );
-
+  /*
   sl.registerLazySingleton<IClubsRepository>(
     () => MockClubsRepository(),
   );
