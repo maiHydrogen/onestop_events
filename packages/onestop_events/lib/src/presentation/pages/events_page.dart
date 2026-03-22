@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_tabler_icons/flutter_tabler_icons.dart';
 import 'package:onestop_events/src/widgets/event_buttons.dart';
 import 'package:onestop_events/src/widgets/events_header.dart';
 import 'package:onestop_ui/index.dart';
@@ -18,7 +19,7 @@ class EventsFeedPage extends StatelessWidget {
         // BlocBuilder listens to state changes and rebuilds this widget tree
         body: Column(
           children: [
-            const EventsHeader(date: "Monday, 16th January",),
+            const EventsHeader(date: "Monday, 16th January", header: 'Events',),
             const SizedBox(height: OSpacing.xs),
             OSearchBar(controller: TextEditingController()),
             const SizedBox(height: OSpacing.xs),
@@ -32,7 +33,8 @@ class EventsFeedPage extends StatelessWidget {
                 ],
               ),
             ),
-            const SizedBox(height: OSpacing.l),
+            const SizedBox(height: OSpacing.m),
+            const EventsHeaderSmall(heading: 'Happening Today', icon: TablerIcons.calendar,),
           ],
         ),
         /*BlocBuilder<EventsBloc, EventsState>(
