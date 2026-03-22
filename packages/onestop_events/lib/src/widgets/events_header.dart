@@ -81,7 +81,7 @@ class _EventsHeaderSmallState extends State<EventsHeaderSmall> {
           TertiaryButton(
             label: widget.buttonLabel!,
             onPressed: widget.onPressed!,
-            leadingIcon: widget.buttonIcon!,
+            leadingIcon: widget.buttonIcon,
             iconColor: OColor.green600,
           ),
         ],
