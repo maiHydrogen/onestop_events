@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_tabler_icons/flutter_tabler_icons.dart';
 import 'package:go_router/go_router.dart';
 import 'package:onestop_ui/index.dart';
 import '../presentation/blocs/navigation/navigation_bloc.dart';
@@ -21,8 +22,13 @@ class ONavBarWrapper extends StatelessWidget {
       // The child is automatically swapped between EventsPage and ClubsPage by GoRouter!
       body: child,
       bottomNavigationBar: ONavBar(
-        initialSelectedTab: selectedTab,
-        labels: const ["Events", "Clubs"],
+        initialSelectedTab: "Events",
+        labels: const ["Home","Events", "Clubs/Fest"],
+        icons: const [
+          TablerIcons.arrow_narrow_left,
+          TablerIcons.calendar_event,
+          TablerIcons.confetti,
+        ],
         onTabItemSelected: (int index) {
           if (index == 0) {
             // Tap "Back" -> Exit the package completely

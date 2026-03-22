@@ -11,7 +11,7 @@ class MockEventsRepository implements IEventsRepository {
       startTime: DateTime.now().add(const Duration(days: 2)),
       endTime: DateTime.now().add(const Duration(days: 2, hours: 5)),
       venue: 'Main Sports Board Ground, IITG',
-      imageUrl: 'https://via.placeholder.com/400x200?text=Alcheringa',
+      imageUrl: 'https://dummyimage.com/400x200/000/fff&text=Alcheringa',
       isBookmarked: false,
     ),
     EventModel(
@@ -21,7 +21,7 @@ class MockEventsRepository implements IEventsRepository {
       startTime: DateTime.now().add(const Duration(days: 5)),
       endTime: DateTime.now().add(const Duration(days: 7)),
       venue: 'Core 1, IITG',
-      imageUrl: 'https://via.placeholder.com/400x200?text=Techniche',
+      imageUrl: 'https://dummyimage.com/400x200/000/fff&text=Techniche',
       isBookmarked: true,
     ),
   ];

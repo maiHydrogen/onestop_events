@@ -1,6 +1,7 @@
 import 'package:go_router/go_router.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:onestop_events/src/presentation/blocs/navigation/navigation_bloc.dart';
+import 'package:onestop_events/src/presentation/pages/clubs_page.dart';
 import 'package:onestop_events/src/presentation/pages/events_page.dart';
 import 'package:flutter/material.dart';
 import '../../presentation/blocs/events/events_bloc.dart';
@@ -35,7 +36,7 @@ class AppRouter {
           ),
           GoRoute(
             path: '/clubs',
-            builder: (context, state) => const Scaffold(body: Center(child: Text('Clubs'))), // Placeholder
+            builder: (context, state) => const ClubsPage(), // Placeholder
           ),
         ],
       ),

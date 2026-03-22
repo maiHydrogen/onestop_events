@@ -5,6 +5,7 @@ import 'package:get_it/get_it.dart';
 import '../../domain/repositories/i_events_repo.dart';
 import '../../data/repositories/mock_events_repo.dart';
 import '../../presentation/blocs/events/events_bloc.dart';
+import '../../presentation/blocs/navigation/navigation_bloc.dart';
 
 final sl = GetIt.instance; // sl stands for Service Locator
 
@@ -15,6 +16,7 @@ Future<void> initEventsPackage() async {
   // We register BLoCs as Factories. This means every time we call sl<EventsBloc>(),
   // get_it provides a fresh instance. This is standard for BLoCs so you don't 
   // accidentally carry over old state when navigating away and coming back.
+  sl.registerFactory(() => NavigationBloc());
   sl.registerFactory(
         () => EventsBloc(repository: sl()),
   );
