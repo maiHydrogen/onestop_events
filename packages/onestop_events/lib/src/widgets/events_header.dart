@@ -5,7 +5,7 @@ import 'package:onestop_ui/index.dart';
 class EventsHeader extends StatefulWidget {
   final String header;
   final String date;
-  const EventsHeader({super.key,required this.header, required this.date});
+  const EventsHeader({super.key,required this.header, this.date=''});
 
   @override
   State<EventsHeader> createState() => _EventsHeaderState();

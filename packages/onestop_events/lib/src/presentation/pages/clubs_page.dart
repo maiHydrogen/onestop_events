@@ -14,20 +14,11 @@ class ClubsPage extends StatelessWidget {
         // BlocBuilder listens to state changes and rebuilds this widget tree
         body: Column(
           children: [
-            const EventsHeader(date: "Monday, 16th January", header: 'Clubs/Fests',),
+            const EventsHeader(header: 'Clubs/Fests',),
             const SizedBox(height: OSpacing.xs),
             OSearchBar(controller: TextEditingController()),
             const SizedBox(height: OSpacing.xs),
-            Padding(
-              padding: const EdgeInsets.symmetric(horizontal: OSpacing.xs),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  AllEventsButton(onPressed: () {}),
-                  SavedEventsButton(onPressed: () {}),
-                ],
-              ),
-            ),
+
           ],
         ),
       ),
