@@ -90,33 +90,30 @@ class _EventsFeedPageState extends State<EventsFeedPage> {
                           SizedBox(height: OSpacing.xs),
                           OSearchBar(controller: _searchController),
                           SizedBox(height: OSpacing.xs),
-                          Padding(
+                          SingleChildScrollView(
+                            scrollDirection: Axis.horizontal,
                             padding: EdgeInsets.symmetric(
                               horizontal: OSpacing.xs,
                             ),
                             child: Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
                               children: [
-                                Row(
-                                  children: [
-                                    AllEventsButton(
-                                      onPressed: () {
-                                        setState(() {
-                                          _showSavedOnly = false;
-                                        });
-                                      },
-                                      eventNumber: events.length.toString(),
-                                    ),
-                                    SizedBox(width: OSpacing.s),
-                                    SavedEventsButton(
-                                      onPressed: () {
-                                        setState(() {
-                                          _showSavedOnly = true;
-                                        });
-                                      },
-                                    ),
-                                  ],
+                                AllEventsButton(
+                                  onPressed: () {
+                                    setState(() {
+                                      _showSavedOnly = false;
+                                    });
+                                  },
+                                  eventNumber: events.length.toString(),
                                 ),
+                                SizedBox(width: OSpacing.s),
+                                SavedEventsButton(
+                                  onPressed: () {
+                                    setState(() {
+                                      _showSavedOnly = true;
+                                    });
+                                  },
+                                ),
+                                SizedBox(width: OSpacing.s),
                                 TertiaryButton(
                                   label: "Upload",
                                   onPressed: () => context.push('/admin-upload'),

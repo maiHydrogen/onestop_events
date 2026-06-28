@@ -5,10 +5,10 @@ import 'package:onestop_ui/index.dart';
 
 Widget buildHorizontalList(BuildContext context, List<EventModel> events) {
   return SizedBox(
-    height: 280, // CRITICAL: Horizontal lists must have a constrained height
+    height: 310, // Increased height to prevent medium event card vertical overflows
     child: ListView.separated(
       scrollDirection: Axis.horizontal,
-      padding: const EdgeInsets.symmetric(
+      padding: EdgeInsets.symmetric(
         horizontal: OSpacing.l,
         vertical: OSpacing.xs,
       ),
