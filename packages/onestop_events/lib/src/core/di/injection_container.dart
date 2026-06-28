@@ -4,6 +4,8 @@ import 'package:get_it/get_it.dart';
 // import '../../presentation/blocs/events/events_bloc.dart';
 import '../../domain/repositories/i_events_repo.dart';
 import '../../data/repositories/mock_events_repo.dart';
+import '../../domain/repositories/i_clubs_repo.dart';
+import '../../data/repositories/mock_clubs_repo.dart';
 import '../../presentation/blocs/events/events_bloc.dart';
 import '../../presentation/blocs/navigation/navigation_bloc.dart';
 
@@ -36,11 +38,10 @@ Future<void> initEventsPackage() async {
   sl.registerLazySingleton<IEventsRepository>(
         () => MockEventsRepository(),
   );
-  /*
+  
   sl.registerLazySingleton<IClubsRepository>(
     () => MockClubsRepository(),
   );
-  */
 
   // ---------------------------------------------------------------------------
   // 3. Core / External (Hive, Dio, etc.)
