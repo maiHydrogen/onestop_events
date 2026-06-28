@@ -5,6 +5,8 @@ import 'package:onestop_events/src/presentation/pages/clubs_page.dart';
 import 'package:onestop_events/src/presentation/pages/events_page.dart';
 import 'package:flutter/material.dart';
 import '../../presentation/blocs/events/events_bloc.dart';
+import '../../presentation/blocs/clubs/clubs_bloc.dart';
+import '../../presentation/blocs/admin/admin_bloc.dart';
 import '../../widgets/onavbar_wrapper.dart';
 import '../di/injection_container.dart';
 
@@ -24,7 +26,13 @@ class AppRouter {
                 // Fetch events as soon as the package is opened
                 create: (_) => sl<EventsBloc>()..add(const EventsEvent.fetchEvents()),
               ),
-              // BlocProvider(create: (_) => getIt<ClubsBloc>()..add(const ClubsEvent.fetchClubs())),
+              BlocProvider(
+                // Fetch clubs as soon as the package is opened
+                create: (_) => sl<ClubsBloc>()..add(const ClubsEvent.fetchClubs()),
+              ),
+              BlocProvider(
+                create: (_) => sl<AdminBloc>(),
+              ),
             ],
             child: ONavBarWrapper(child: child),
           );

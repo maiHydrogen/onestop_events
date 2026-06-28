@@ -8,6 +8,8 @@ import '../../domain/repositories/i_clubs_repo.dart';
 import '../../data/repositories/mock_clubs_repo.dart';
 import '../../presentation/blocs/events/events_bloc.dart';
 import '../../presentation/blocs/navigation/navigation_bloc.dart';
+import '../../presentation/blocs/clubs/clubs_bloc.dart';
+import '../../presentation/blocs/admin/admin_bloc.dart';
 
 final sl = GetIt.instance; // sl stands for Service Locator
 
@@ -22,12 +24,10 @@ Future<void> initEventsPackage() async {
   sl.registerFactory(
         () => EventsBloc(repository: sl()),
   );
-  /*
-  
   sl.registerFactory(
-    () => ClubsBloc(clubsRepository: sl()),
+        () => ClubsBloc(clubsRepository: sl()),
   );
-  */
+  sl.registerFactory(() => AdminBloc());
 
   // ---------------------------------------------------------------------------
   // 2. Domain & Data Layer (Repositories)
