@@ -14,16 +14,16 @@ class ONavBarWrapper extends StatelessWidget {
     // Listen to state to highlight the correct tab
     final navState = context.watch<NavigationBloc>().state;
 
-    // Determine which tab should be visually selected
-    // Assuming ONavBar uses string indices: '0' for Back, '1' for Events, '2' for Clubs
-    String selectedTab = navState.events ? '1' : '2';
+    // Determine which tab should be visually selected matching ONavBar labels
+    final String selectedTab = navState.events ? "Events" : "Clubs/Fest";
 
     return Scaffold(
       // The child is automatically swapped between EventsPage and ClubsPage by GoRouter!
       body: child,
       bottomNavigationBar: ONavBar(
-        initialSelectedTab: "Events",
-        labels: const ["Home","Events", "Clubs/Fest"],
+        key: ValueKey(selectedTab),
+        initialSelectedTab: selectedTab,
+        labels: const ["Home", "Events", "Clubs/Fest"],
         icons: const [
           TablerIcons.arrow_narrow_left,
           TablerIcons.calendar_event,
@@ -44,7 +44,7 @@ class ONavBarWrapper extends StatelessWidget {
             context.read<NavigationBloc>().add(const NavigationEvent.changed(NavigationTab.clubs));
             context.go('/clubs');
           }
-        },// Adjust based on ONavBar's exact API
+        },
       ),
     );
   }

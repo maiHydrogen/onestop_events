@@ -1,10 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 import 'package:onestop_events/src/domain/models/event_model.dart';
 import 'package:onestop_ui/index.dart';
-// --- HELPER METHOD FOR HORIZONTAL LISTS ---
-// This keeps your slivers clean and reusable.
 
-Widget buildHorizontalList(List<EventModel> events) {
+Widget buildHorizontalList(BuildContext context, List<EventModel> events) {
   return SizedBox(
     height: 280, // CRITICAL: Horizontal lists must have a constrained height
     child: ListView.separated(
@@ -17,16 +16,26 @@ Widget buildHorizontalList(List<EventModel> events) {
       separatorBuilder: (context, index) => const SizedBox(width: OSpacing.m),
       itemBuilder: (context, index) {
         final event = events[index];
-        // Wrap the card in a SizedBox so it doesn't stretch infinitely horizontally
+        
+        final String formattedTime = "${event.startTime.hour.toString().padLeft(2, '0')}:${event.startTime.minute.toString().padLeft(2, '0')}";
+        final String formattedDate = "${event.startTime.day.toString().padLeft(2, '0')}/${event.startTime.month.toString().padLeft(2, '0')}/${event.startTime.year}";
+        final String formattedEnd = "${event.endTime.hour.toString().padLeft(2, '0')}:${event.endTime.minute.toString().padLeft(2, '0')}";
+
         return SizedBox(
-          width: 300, // Fixed width for horizontal cards
+          width: 210, // Matches expected width for medium card
           child: OEventListingCard.medium(
             title: event.title,
-            date: event.startTime.toString(),
+            date: formattedDate,
             location: event.venue,
             type: EventCardType.user,
-            startTime: '',
-            eventImageUrl: event.imageUrl ?? '',
+            startTime: formattedTime,
+            endtime: formattedEnd,
+            eventImageUrl: event.imageUrl ?? 'https://dummyimage.com/400x200/000/fff&text=Event',
+            isSaved: event.isBookmarked,
+            attendance: 42,
+            onTap: () {
+              context.push('/event-details', extra: event);
+            },
           ),
         );
       },
