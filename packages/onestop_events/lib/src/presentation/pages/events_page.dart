@@ -11,6 +11,8 @@ import 'package:onestop_ui/index.dart';
 import '../../widgets/horizontal_lists_builder.dart';
 import '../../widgets/event_details_sheet.dart';
 import '../blocs/events/events_bloc.dart';
+import '../../core/di/injection_container.dart';
+import '../../core/models/admin_flag.dart';
 
 class EventsFeedPage extends StatefulWidget {
   const EventsFeedPage({super.key});
@@ -66,15 +68,21 @@ class _EventsFeedPageState extends State<EventsFeedPage> {
                   return matchesSearch;
                 }).toList();
 
-                final todayEvents = events.where((e) {
-                  final now = DateTime.now();
+                final now = DateTime.now();
+                final futureEvents = events.where((e) => e.endTime.isAfter(now)).toList();
+                final pastEvents = events.where((e) => e.endTime.isBefore(now)).toList();
+
+                final todayEvents = futureEvents.where((e) {
                   return e.startTime.year == now.year &&
                       e.startTime.month == now.month &&
                       e.startTime.day == now.day;
                 }).toList();
 
-                // Fallback today's events if none match exactly today
-                final todaySectionEvents = todayEvents.isNotEmpty ? todayEvents : events;
+                final todaySectionEvents = todayEvents.isNotEmpty ? todayEvents : futureEvents;
+                final trendingSectionEvents = futureEvents.where((e) => e.isBookmarked).toList().isNotEmpty
+                    ? futureEvents.where((e) => e.isBookmarked).toList()
+                    : futureEvents;
+                final attendedEvents = pastEvents;
 
                 return CustomScrollView(
                   slivers: [
@@ -94,28 +102,36 @@ class _EventsFeedPageState extends State<EventsFeedPage> {
                             padding: EdgeInsets.symmetric(
                               horizontal: OSpacing.xs,
                             ),
-                            child: Row(
-                              children: [
-                                AllEventsButton(
-                                  onPressed: () {
-                                    context.push('/all-events');
-                                  },
-                                  eventNumber: events.length.toString(),
-                                ),
-                                SizedBox(width: OSpacing.s),
-                                SavedEventsButton(
-                                  onPressed: () {
-                                    context.push('/saved-events');
-                                  },
-                                ),
-                                SizedBox(width: OSpacing.s),
-                                TertiaryButton(
-                                  label: "Upload",
-                                  onPressed: () => context.push('/admin-upload'),
-                                  leadingIcon: TablerIcons.plus,
-                                  iconColor: OColor.green600,
-                                ),
-                              ],
+                            child: ListenableBuilder(
+                              listenable: sl<AdminFlag>(),
+                              builder: (context, _) {
+                                final isAdmin = sl<AdminFlag>().isAdmin;
+                                return Row(
+                                  children: [
+                                    AllEventsButton(
+                                      onPressed: () {
+                                        context.push('/all-events');
+                                      },
+                                      eventNumber: events.length.toString(),
+                                    ),
+                                    SizedBox(width: OSpacing.s),
+                                    SavedEventsButton(
+                                      onPressed: () {
+                                        context.push('/saved-events');
+                                      },
+                                    ),
+                                    if (isAdmin) ...[
+                                      SizedBox(width: OSpacing.s),
+                                      TertiaryButton(
+                                        label: "Upload",
+                                        onPressed: () => context.push('/admin-upload'),
+                                        leadingIcon: TablerIcons.plus,
+                                        iconColor: OColor.green600,
+                                      ),
+                                    ],
+                                  ],
+                                );
+                              },
                             ),
                           ),
                           SizedBox(height: OSpacing.m),
@@ -123,6 +139,7 @@ class _EventsFeedPageState extends State<EventsFeedPage> {
                       ),
                     ),
 
+                    if (_searchQuery.isEmpty) ...[
                       // --- HAPPENING TODAY ---
                       SliverToBoxAdapter(
                         child: EventsHeaderSmall(
@@ -145,7 +162,7 @@ class _EventsFeedPageState extends State<EventsFeedPage> {
                       ),
                       SliverToBoxAdapter(
                         // Simulate trending by using a different subset, e.g. top saved
-                        child: buildHorizontalList(context, events.where((e) => e.isBookmarked).toList().isNotEmpty ? events.where((e) => e.isBookmarked).toList() : events),
+                        child: buildHorizontalList(context, trendingSectionEvents),
                       ),
 
                       // --- RECENTLY ATTENDED (Mock) ---
@@ -157,14 +174,15 @@ class _EventsFeedPageState extends State<EventsFeedPage> {
                       ),
                       SliverToBoxAdapter(
                         // In reality, this would map the static JSON. For now, reusing horizontal list for simplicity
-                        child: buildHorizontalList(context, events),
+                        child: buildHorizontalList(context, attendedEvents),
                       ),
+                    ],
 
                     // --- EXPLORE / LIST VIEW ---
                     SliverToBoxAdapter(
                       child: EventsHeaderSmall(
-                        heading: 'Explore',
-                        icon: TablerIcons.compass,
+                        heading: _searchQuery.isEmpty ? 'Explore' : 'Search Results',
+                        icon: _searchQuery.isEmpty ? TablerIcons.compass : TablerIcons.search,
                       ),
                     ),
 

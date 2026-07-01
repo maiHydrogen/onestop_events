@@ -1,9 +1,14 @@
-class AdminFlag {
-  bool _isAdmin = false;
+import 'package:flutter/foundation.dart';
+
+class AdminFlag extends ChangeNotifier {
+  bool _isAdmin = true;
 
   bool get isAdmin => _isAdmin;
 
   void setAdmin(bool value) {
-    _isAdmin = value;
+    if (_isAdmin != value) {
+      _isAdmin = value;
+      notifyListeners();
+    }
   }
 }

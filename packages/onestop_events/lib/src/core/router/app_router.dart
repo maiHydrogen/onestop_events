@@ -17,6 +17,7 @@ import '../../presentation/pages/saved_events_page.dart';
 import '../../presentation/pages/manage_page.dart';
 import '../../presentation/pages/drafts_page.dart';
 import '../../presentation/pages/past_events_page.dart';
+import '../../presentation/pages/club_info_page.dart';
 import '../models/admin_flag.dart';
 
 class AppRouter {
@@ -81,6 +82,10 @@ class AppRouter {
           GoRoute(
             path: '/manage/past-events',
             builder: (context, state) => const PastEventsPage(),
+          ),
+          GoRoute(
+            path: '/manage/club-info',
+            builder: (context, state) => const ClubInfoPage(),
           ),
           GoRoute(
             path: '/event-details',

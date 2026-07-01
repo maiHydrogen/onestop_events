@@ -83,22 +83,24 @@ class EventDetailsSheet extends StatelessWidget {
                   const SizedBox(height: 16),
                   
                   // Feedback row
-                  InkWell(
-                    onTap: () {
-                      EventFeedbackSheet.show(context, event);
-                    },
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        OText(
-                          text: "Event Feedback (56)",
-                          style: OTextStyle.bodyMedium.copyWith(fontWeight: FontWeight.bold),
-                        ),
-                        const Icon(TablerIcons.arrow_right, size: 20),
-                      ],
+                  if (event.endTime.isBefore(DateTime.now())) ...[
+                    InkWell(
+                      onTap: () {
+                        EventFeedbackSheet.show(context, event);
+                      },
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          OText(
+                            text: "Event Feedback (56)",
+                            style: OTextStyle.bodyMedium.copyWith(fontWeight: FontWeight.bold),
+                          ),
+                          const Icon(TablerIcons.arrow_right, size: 20),
+                        ],
+                      ),
                     ),
-                  ),
-                  const SizedBox(height: 16),
+                    const SizedBox(height: 16),
+                  ],
 
                   if (isAdmin) ...[
                     Row(

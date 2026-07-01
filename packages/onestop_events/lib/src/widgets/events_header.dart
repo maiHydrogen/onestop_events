@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_tabler_icons/flutter_tabler_icons.dart';
 import 'package:onestop_ui/index.dart';
+import '../core/di/injection_container.dart';
+import '../core/models/admin_flag.dart';
 
 class EventsHeader extends StatefulWidget {
   final String header;
@@ -17,19 +19,38 @@ class _EventsHeaderState extends State<EventsHeader> {
     return Padding(
       padding: const EdgeInsets.all(OSpacing.xs),
       child: Row(
-        textBaseline: TextBaseline.alphabetic,
-        crossAxisAlignment: CrossAxisAlignment.baseline,
-        mainAxisAlignment: MainAxisAlignment.start,
-        mainAxisSize: MainAxisSize.max,
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
-          OText(
-            text: widget.header,
-            style: OTextStyle.headingLarge.copyWith(color: OColor.gray800),
+          Row(
+            textBaseline: TextBaseline.alphabetic,
+            crossAxisAlignment: CrossAxisAlignment.baseline,
+            children: [
+              OText(
+                text: widget.header,
+                style: OTextStyle.headingLarge.copyWith(color: OColor.gray800),
+              ),
+              const SizedBox(width: OSpacing.s),
+              OText(
+                text: widget.date,
+                style: OTextStyle.headingSmall.copyWith(color: OColor.green600),
+              ),
+            ],
           ),
-          const SizedBox(width: OSpacing.s),
-          OText(
-            text: widget.date,
-            style: OTextStyle.headingSmall.copyWith(color: OColor.green600),
+          ListenableBuilder(
+            listenable: sl<AdminFlag>(),
+            builder: (context, _) {
+              final isAdmin = sl<AdminFlag>().isAdmin;
+              return IconButton(
+                icon: Icon(
+                  isAdmin ? TablerIcons.shield_check : TablerIcons.shield,
+                  color: isAdmin ? OColor.green600 : OColor.gray400,
+                ),
+                tooltip: isAdmin ? "Switch to User Mode" : "Switch to Admin Mode",
+                onPressed: () {
+                  sl<AdminFlag>().setAdmin(!isAdmin);
+                },
+              );
+            },
           ),
         ],
       ),
