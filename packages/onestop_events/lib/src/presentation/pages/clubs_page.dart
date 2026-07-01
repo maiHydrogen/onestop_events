@@ -4,7 +4,8 @@ import 'package:flutter_tabler_icons/flutter_tabler_icons.dart';
 import 'package:onestop_events/src/domain/models/club_model.dart';
 import 'package:onestop_events/src/widgets/events_header.dart';
 import 'package:onestop_ui/index.dart';
-
+import '../../widgets/club_chip_filter.dart';
+import '../../widgets/club_details_sheet.dart';
 import '../blocs/clubs/clubs_bloc.dart';
 
 class ClubsPage extends StatefulWidget {
@@ -17,6 +18,11 @@ class ClubsPage extends StatefulWidget {
 class _ClubsPageState extends State<ClubsPage> {
   late TextEditingController _searchController;
   String _searchQuery = "";
+  
+  final List<String> _boards = [
+    "All", "Welfare", "Technical", "Cultural", "Sports", "Hostel Affairs", "SAIL", "SWC", "Academic"
+  ];
+  String _selectedBoard = "All";
 
   @override
   void initState() {
@@ -40,65 +46,65 @@ class _ClubsPageState extends State<ClubsPage> {
 
   @override
   Widget build(BuildContext context) {
-    return DefaultTabController(
-      length: 3,
-      child: SafeArea(
-        child: Scaffold(
-          backgroundColor: OColor.gray100,
-          body: BlocBuilder<ClubsBloc, ClubsState>(
-            builder: (context, state) {
-              return state.when(
-                initial: () => const Center(child: CircularProgressIndicator()),
-                loading: () => const Center(child: CircularProgressIndicator()),
-                error: (message) => Center(
-                  child: OText(
-                    text: message,
-                    style: OTextStyle.bodyLarge.copyWith(color: OColor.blue200),
-                  ),
+    return SafeArea(
+      child: Scaffold(
+        backgroundColor: OColor.gray100,
+        body: BlocBuilder<ClubsBloc, ClubsState>(
+          builder: (context, state) {
+            return state.when(
+              initial: () => const Center(child: CircularProgressIndicator()),
+              loading: () => const Center(child: CircularProgressIndicator()),
+              error: (message) => Center(
+                child: OText(
+                  text: message,
+                  style: OTextStyle.bodyLarge.copyWith(color: OColor.blue200),
                 ),
-                loaded: (clubs) {
-                  return Column(
-                    children: [
-                      const EventsHeader(header: 'Clubs/Fests'),
-                      const SizedBox(height: OSpacing.xs),
-                      OSearchBar(controller: _searchController),
-                      const SizedBox(height: OSpacing.xs),
-                      TabBar(
-                        indicatorColor: OColor.green600,
-                        labelColor: OColor.green600,
-                        unselectedLabelColor: OColor.gray600,
-                        tabs: const [
-                          Tab(text: "Technical"),
-                          Tab(text: "Cultural"),
-                          Tab(text: "Sports"),
-                        ],
-                      ),
-                      const SizedBox(height: OSpacing.s),
-                      Expanded(
-                        child: TabBarView(
-                          children: [
-                            _buildClubsList(clubs, ClubCategory.technical),
-                            _buildClubsList(clubs, ClubCategory.cultural),
-                            _buildClubsList(clubs, ClubCategory.sports),
-                          ],
-                        ),
-                      ),
-                    ],
-                  );
-                },
-              );
-            },
-          ),
+              ),
+              loaded: (clubs) {
+                return Column(
+                  children: [
+                    const EventsHeader(header: 'Clubs/Fests'),
+                    const SizedBox(height: OSpacing.xs),
+                    OSearchBar(controller: _searchController),
+                    const SizedBox(height: OSpacing.xs),
+                    ClubChipFilter(
+                      labels: _boards,
+                      selectedLabel: _selectedBoard,
+                      onSelected: (label) {
+                        setState(() {
+                          _selectedBoard = label;
+                        });
+                      },
+                    ),
+                    const SizedBox(height: OSpacing.s),
+                    Expanded(
+                      child: _buildClubsList(clubs),
+                    ),
+                  ],
+                );
+              },
+            );
+          },
         ),
       ),
     );
   }
 
-  Widget _buildClubsList(List<ClubModel> clubs, ClubCategory category) {
+  Widget _buildClubsList(List<ClubModel> clubs) {
     final filtered = clubs.where((club) {
-      final matchesCategory = club.category == category;
       final matchesSearch = club.name.toLowerCase().contains(_searchQuery.toLowerCase()) ||
           club.description.toLowerCase().contains(_searchQuery.toLowerCase());
+          
+      // For now, ClubModel's category is Technical/Cultural/Sports.
+      // We will match string names or fallback to All.
+      bool matchesCategory = true;
+      if (_selectedBoard != "All") {
+        if (_selectedBoard == "Technical") matchesCategory = club.category == ClubCategory.technical;
+        else if (_selectedBoard == "Cultural") matchesCategory = club.category == ClubCategory.cultural;
+        else if (_selectedBoard == "Sports") matchesCategory = club.category == ClubCategory.sports;
+        else matchesCategory = false; // Add logic for other boards when API is ready
+      }
+
       return matchesCategory && matchesSearch;
     }).toList();
 
@@ -113,17 +119,19 @@ class _ClubsPageState extends State<ClubsPage> {
       padding: const EdgeInsets.symmetric(vertical: OSpacing.xs),
       itemBuilder: (context, index) {
         final club = filtered[index];
-        return Card(
-          color: OColor.white,
-          elevation: 0,
-          margin: const EdgeInsets.symmetric(
-            horizontal: OSpacing.m,
-            vertical: OSpacing.xs,
-          ),
-          shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(OCornerRadius.m),
-            side: BorderSide(color: OColor.gray200, width: 1),
-          ),
+        return GestureDetector(
+          onTap: () => ClubDetailsSheet.show(context, club),
+          child: Card(
+            color: OColor.white,
+            elevation: 0,
+            margin: const EdgeInsets.symmetric(
+              horizontal: OSpacing.m,
+              vertical: OSpacing.xs,
+            ),
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(OCornerRadius.m),
+              side: BorderSide(color: OColor.gray200, width: 1),
+            ),
           child: Padding(
             padding: const EdgeInsets.all(OSpacing.m),
             child: Row(
@@ -151,13 +159,16 @@ class _ClubsPageState extends State<ClubsPage> {
                       const SizedBox(height: OSpacing.xxs),
                       OText(
                         text: club.description,
+                        maxLines: 2,
                         style: OTextStyle.bodySmall.copyWith(color: OColor.gray600),
                       ),
                     ],
                   ),
                 ),
+                Icon(TablerIcons.chevron_right, color: OColor.gray400),
               ],
             ),
+          ),
           ),
         );
       },

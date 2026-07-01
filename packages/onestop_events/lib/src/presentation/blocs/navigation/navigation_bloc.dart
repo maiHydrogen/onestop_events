@@ -7,12 +7,13 @@ part 'navigation_bloc.freezed.dart';
 // but if they are separate, keep the part statements.
 
 class NavigationBloc extends Bloc<NavigationEvent, NavigationState> {
-  NavigationBloc() : super(const NavigationState(events: true, clubs: false)) {
+  NavigationBloc() : super(const NavigationState(events: true, clubs: false, manage: false)) {
     // Now this matches the Freezed class perfectly!
     on<NavigationChanged>((event, emit) {
       emit(NavigationState(
         events: event.tab == NavigationTab.events,
         clubs: event.tab == NavigationTab.clubs,
+        manage: event.tab == NavigationTab.manage,
       ));
     });
   }
@@ -29,7 +30,8 @@ class NavigationState with _$NavigationState {
   const factory NavigationState({
     required bool events,
     required bool clubs,
+    required bool manage,
   }) = _NavigationState;
 }
 
-enum NavigationTab { events, clubs }
+enum NavigationTab { events, clubs, manage }

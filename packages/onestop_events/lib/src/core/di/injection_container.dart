@@ -10,6 +10,7 @@ import '../../presentation/blocs/events/events_bloc.dart';
 import '../../presentation/blocs/navigation/navigation_bloc.dart';
 import '../../presentation/blocs/clubs/clubs_bloc.dart';
 import '../../presentation/blocs/admin/admin_bloc.dart';
+import '../models/admin_flag.dart';
 
 final sl = GetIt.instance; // sl stands for Service Locator
 
@@ -41,6 +42,10 @@ Future<void> initEventsPackage() async {
   
   sl.registerLazySingleton<IClubsRepository>(
     () => MockClubsRepository(),
+  );
+
+  sl.registerLazySingleton<AdminFlag>(
+    () => AdminFlag(),
   );
 
   // ---------------------------------------------------------------------------

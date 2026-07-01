@@ -9,6 +9,7 @@ import 'package:onestop_events/src/widgets/events_header.dart';
 import 'package:onestop_ui/index.dart';
 
 import '../../widgets/horizontal_lists_builder.dart';
+import '../../widgets/event_details_sheet.dart';
 import '../blocs/events/events_bloc.dart';
 
 class EventsFeedPage extends StatefulWidget {
@@ -21,7 +22,6 @@ class EventsFeedPage extends StatefulWidget {
 class _EventsFeedPageState extends State<EventsFeedPage> {
   late TextEditingController _searchController;
   String _searchQuery = "";
-  bool _showSavedOnly = false;
 
   @override
   void initState() {
@@ -63,8 +63,7 @@ class _EventsFeedPageState extends State<EventsFeedPage> {
                 final List<EventModel> filteredEvents = events.where((event) {
                   final matchesSearch = event.title.toLowerCase().contains(_searchQuery.toLowerCase()) ||
                       event.description.toLowerCase().contains(_searchQuery.toLowerCase());
-                  final matchesSaved = !_showSavedOnly || event.isBookmarked;
-                  return matchesSearch && matchesSaved;
+                  return matchesSearch;
                 }).toList();
 
                 final todayEvents = events.where((e) {
@@ -99,18 +98,14 @@ class _EventsFeedPageState extends State<EventsFeedPage> {
                               children: [
                                 AllEventsButton(
                                   onPressed: () {
-                                    setState(() {
-                                      _showSavedOnly = false;
-                                    });
+                                    context.push('/all-events');
                                   },
                                   eventNumber: events.length.toString(),
                                 ),
                                 SizedBox(width: OSpacing.s),
                                 SavedEventsButton(
                                   onPressed: () {
-                                    setState(() {
-                                      _showSavedOnly = true;
-                                    });
+                                    context.push('/saved-events');
                                   },
                                 ),
                                 SizedBox(width: OSpacing.s),
@@ -128,7 +123,6 @@ class _EventsFeedPageState extends State<EventsFeedPage> {
                       ),
                     ),
 
-                    if (!_showSavedOnly) ...[
                       // --- HAPPENING TODAY ---
                       SliverToBoxAdapter(
                         child: EventsHeaderSmall(
@@ -150,15 +144,27 @@ class _EventsFeedPageState extends State<EventsFeedPage> {
                         ),
                       ),
                       SliverToBoxAdapter(
+                        // Simulate trending by using a different subset, e.g. top saved
+                        child: buildHorizontalList(context, events.where((e) => e.isBookmarked).toList().isNotEmpty ? events.where((e) => e.isBookmarked).toList() : events),
+                      ),
+
+                      // --- RECENTLY ATTENDED (Mock) ---
+                      SliverToBoxAdapter(
+                        child: EventsHeaderSmall(
+                          heading: 'Recently Attended',
+                          icon: TablerIcons.history,
+                        ),
+                      ),
+                      SliverToBoxAdapter(
+                        // In reality, this would map the static JSON. For now, reusing horizontal list for simplicity
                         child: buildHorizontalList(context, events),
                       ),
-                    ],
 
                     // --- EXPLORE / LIST VIEW ---
                     SliverToBoxAdapter(
                       child: EventsHeaderSmall(
-                        heading: _showSavedOnly ? 'Saved Events' : 'Explore',
-                        icon: _showSavedOnly ? TablerIcons.heart : TablerIcons.compass,
+                        heading: 'Explore',
+                        icon: TablerIcons.compass,
                       ),
                     ),
 
@@ -204,7 +210,7 @@ class _EventsFeedPageState extends State<EventsFeedPage> {
                                   eventImageUrl: event.imageUrl ?? 'https://dummyimage.com/400x200/000/fff&text=Event',
                                   isSaved: event.isBookmarked,
                                   onTap: () {
-                                    context.push('/event-details', extra: event);
+                                    EventDetailsSheet.show(context, event);
                                   },
                                 ),
                               );

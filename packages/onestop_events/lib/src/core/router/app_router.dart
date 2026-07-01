@@ -12,6 +12,13 @@ import '../../presentation/blocs/admin/admin_bloc.dart';
 import '../../widgets/onavbar_wrapper.dart';
 import '../di/injection_container.dart';
 
+import '../../presentation/pages/all_events_page.dart';
+import '../../presentation/pages/saved_events_page.dart';
+import '../../presentation/pages/manage_page.dart';
+import '../../presentation/pages/drafts_page.dart';
+import '../../presentation/pages/past_events_page.dart';
+import '../models/admin_flag.dart';
+
 class AppRouter {
   static final GoRouter router = GoRouter(
     initialLocation: '/events',
@@ -45,8 +52,35 @@ class AppRouter {
             builder: (context, state) => const EventsFeedPage(),
           ),
           GoRoute(
+            path: '/all-events',
+            builder: (context, state) => const AllEventsPage(),
+          ),
+          GoRoute(
+            path: '/saved-events',
+            builder: (context, state) => const SavedEventsPage(),
+          ),
+          GoRoute(
             path: '/clubs',
             builder: (context, state) => const ClubsPage(),
+          ),
+          GoRoute(
+            path: '/manage',
+            builder: (context, state) => const ManagePage(),
+            redirect: (context, state) {
+              final isAdmin = sl<AdminFlag>().isAdmin;
+              if (!isAdmin) {
+                return '/events';
+              }
+              return null;
+            },
+          ),
+          GoRoute(
+            path: '/manage/drafts',
+            builder: (context, state) => const DraftsPage(),
+          ),
+          GoRoute(
+            path: '/manage/past-events',
+            builder: (context, state) => const PastEventsPage(),
           ),
           GoRoute(
             path: '/event-details',
