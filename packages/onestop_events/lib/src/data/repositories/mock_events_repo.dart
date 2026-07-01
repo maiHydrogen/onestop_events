@@ -24,6 +24,26 @@ class MockEventsRepository implements IEventsRepository {
       imageUrl: 'https://dummyimage.com/400x200/000/fff&text=Techniche',
       isBookmarked: true,
     ),
+    EventModel(
+      id: '3',
+      title: 'Inter-Hostel Cricket Tournament',
+      description: 'The annual inter-hostel cricket match. Exciting final between Barak and Umiam.',
+      startTime: DateTime.now().subtract(const Duration(days: 3)),
+      endTime: DateTime.now().subtract(const Duration(days: 3, hours: -4)),
+      venue: 'Subansiri Ground, IITG',
+      imageUrl: 'https://dummyimage.com/400x200/000/fff&text=Cricket',
+      isBookmarked: false,
+    ),
+    EventModel(
+      id: '4',
+      title: 'Introduction to Flutter and Web Dev',
+      description: 'A hands-on workshop to learn Flutter basics and building responsive web apps.',
+      startTime: DateTime.now().subtract(const Duration(days: 6)),
+      endTime: DateTime.now().subtract(const Duration(days: 6, hours: -3)),
+      venue: 'EPH Seminar Hall, IITG',
+      imageUrl: 'https://dummyimage.com/400x200/000/fff&text=Workshop',
+      isBookmarked: false,
+    ),
   ];
 
   @override

@@ -43,35 +43,35 @@ This phase focuses on structuring the package, defining the data shapes, wiring 
 
 2. Domain Layer (Entities & Models)
 
-- [ ] Define EventModel (id, title, description, date, location, image URL, etc.).
-- [ ] Define ClubModel (id, name, category, description, logo URL, etc.).
-- [ ] Define FeedbackModel and BookmarkModel.
+- [X] Define EventModel (id, title, description, date, location, image URL, etc.).
+- [X] Define ClubModel (id, name, category, description, logo URL, etc.).
+- [X] Define FeedbackModel and BookmarkModel.
 
 3. Data Layer (Mock Repositories)
 
-- [ ] Create IEventsRepository and IClubsRepository interfaces.
-- [ ] Implement MockEventsRepository returning dummy lists of EventModel and simulating network delays.
-- [ ] Implement MockClubsRepository returning dummy technical, cultural, and sports ClubModels.
+- [X] Create IEventsRepository and IClubsRepository interfaces.
+- [X] Implement MockEventsRepository returning dummy lists of EventModel and simulating network delays.
+- [X] Implement MockClubsRepository returning dummy technical, cultural, and sports ClubModels.
 
 4. State Management (BLoC Implementation)
 
-- [ ] Create NavigationBloc (States: EventsTab, ClubsTab; Events: GoToEvents, GoToClubs, GoBack).
-- [ ] Create EventsBloc (Events: FetchEvents, BookmarkEvent, SubmitFeedback; States: Loading, Loaded, Error).
-- [ ] Create ClubsBloc (Events: FetchClubs; States: Loading, Loaded, Error).
-- [ ] Create AdminBloc (Events: UpdateForm, SubmitEvent; States: Idle, Validating, Success, Failure).
+- [X] Create NavigationBloc (States: EventsTab, ClubsTab; Events: GoToEvents, GoToClubs, GoBack).
+- [X] Create EventsBloc (Events: FetchEvents, BookmarkEvent, SubmitFeedback; States: Loading, Loaded, Error).
+- [X] Create ClubsBloc (Events: FetchClubs; States: Loading, Loaded, Error).
+- [X] Create AdminBloc (Events: UpdateForm, SubmitEvent; States: Idle, Validating, Success, Failure).
 
 5. Presentation Layer (UI & Routing)
 
-- [ ] Build BaseScaffold incorporating the NavigationBloc and the ONavBar from onestop_ui (using IndexedStack to preserve state).
-- [ ] Build EventsFeedPage using BlocBuilder to map EventsLoaded to a list of OEventListingCards.
-- [ ] Build ClubsPage using a TabBar (Technical, Cultural, Sports) populated via ClubsBloc.
-- [ ] Build EventDetailsPage for expanded viewing.
-- [ ] Build AdminUploadPage with form fields for creating new events.
+- [X] Build BaseScaffold incorporating the NavigationBloc and the ONavBar from onestop_ui (using IndexedStack to preserve state).
+- [X] Build EventsFeedPage using BlocBuilder to map EventsLoaded to a list of OEventListingCards.
+- [X] Build ClubsPage using a TabBar (Technical, Cultural, Sports) populated via ClubsBloc.
+- [X] Build EventDetailsPage for expanded viewing.
+- [X] Build AdminUploadPage with form fields for creating new events.
 
 6. Phase 1 Testing
 
-- [ ] Write unit tests for all BLoCs (bloc_test) using mocked repositories.
-- [ ] Write widget tests ensuring EventsFeedPage and ClubsPage render correctly based on BLoC states.
+- [X] Write unit tests for all BLoCs (bloc_test) using mocked repositories.
+- [X] Write widget tests ensuring EventsFeedPage and ClubsPage render correctly based on BLoC states.
 
 ## Phase 2: Backend Development & Real Data Integration
 

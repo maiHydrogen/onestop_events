@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:onestop_events/onestop_events.dart';
 import 'package:onestop_events/src/core/di/injection_container.dart';
 import 'package:onestop_events/src/core/router/app_router.dart';
+import 'package:onestop_ui/index.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -19,7 +20,10 @@ class MyApp extends StatelessWidget {
       debugShowCheckedModeBanner: false,
       theme: ThemeData(
         useMaterial3: true,
-        // We will integrate OColors from onestop_ui here later if needed
+        colorScheme: ColorScheme.fromSeed(
+          seedColor: OColor.green600,
+          primary: OColor.green600,
+        ),
       ),
       // 5. Plug in the GoRouter instance we defined in app_router.dart
       routerConfig: AppRouter.router,

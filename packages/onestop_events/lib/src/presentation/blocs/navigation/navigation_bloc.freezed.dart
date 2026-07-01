@@ -225,6 +225,7 @@ abstract class NavigationChanged implements NavigationEvent {
 mixin _$NavigationState {
   bool get events => throw _privateConstructorUsedError;
   bool get clubs => throw _privateConstructorUsedError;
+  bool get manage => throw _privateConstructorUsedError;
 
   @JsonKey(ignore: true)
   $NavigationStateCopyWith<NavigationState> get copyWith =>
@@ -237,7 +238,7 @@ abstract class $NavigationStateCopyWith<$Res> {
           NavigationState value, $Res Function(NavigationState) then) =
       _$NavigationStateCopyWithImpl<$Res, NavigationState>;
   @useResult
-  $Res call({bool events, bool clubs});
+  $Res call({bool events, bool clubs, bool manage});
 }
 
 /// @nodoc
@@ -255,6 +256,7 @@ class _$NavigationStateCopyWithImpl<$Res, $Val extends NavigationState>
   $Res call({
     Object? events = null,
     Object? clubs = null,
+    Object? manage = null,
   }) {
     return _then(_value.copyWith(
       events: null == events
@@ -264,6 +266,10 @@ class _$NavigationStateCopyWithImpl<$Res, $Val extends NavigationState>
       clubs: null == clubs
           ? _value.clubs
           : clubs // ignore: cast_nullable_to_non_nullable
+              as bool,
+      manage: null == manage
+          ? _value.manage
+          : manage // ignore: cast_nullable_to_non_nullable
               as bool,
     ) as $Val);
   }
@@ -277,7 +283,7 @@ abstract class _$$NavigationStateImplCopyWith<$Res>
       __$$NavigationStateImplCopyWithImpl<$Res>;
   @override
   @useResult
-  $Res call({bool events, bool clubs});
+  $Res call({bool events, bool clubs, bool manage});
 }
 
 /// @nodoc
@@ -293,6 +299,7 @@ class __$$NavigationStateImplCopyWithImpl<$Res>
   $Res call({
     Object? events = null,
     Object? clubs = null,
+    Object? manage = null,
   }) {
     return _then(_$NavigationStateImpl(
       events: null == events
@@ -303,6 +310,10 @@ class __$$NavigationStateImplCopyWithImpl<$Res>
           ? _value.clubs
           : clubs // ignore: cast_nullable_to_non_nullable
               as bool,
+      manage: null == manage
+          ? _value.manage
+          : manage // ignore: cast_nullable_to_non_nullable
+              as bool,
     ));
   }
 }
@@ -310,16 +321,19 @@ class __$$NavigationStateImplCopyWithImpl<$Res>
 /// @nodoc
 
 class _$NavigationStateImpl implements _NavigationState {
-  const _$NavigationStateImpl({required this.events, required this.clubs});
+  const _$NavigationStateImpl(
+      {required this.events, required this.clubs, required this.manage});
 
   @override
   final bool events;
   @override
   final bool clubs;
+  @override
+  final bool manage;
 
   @override
   String toString() {
-    return 'NavigationState(events: $events, clubs: $clubs)';
+    return 'NavigationState(events: $events, clubs: $clubs, manage: $manage)';
   }
 
   @override
@@ -328,11 +342,12 @@ class _$NavigationStateImpl implements _NavigationState {
         (other.runtimeType == runtimeType &&
             other is _$NavigationStateImpl &&
             (identical(other.events, events) || other.events == events) &&
-            (identical(other.clubs, clubs) || other.clubs == clubs));
+            (identical(other.clubs, clubs) || other.clubs == clubs) &&
+            (identical(other.manage, manage) || other.manage == manage));
   }
 
   @override
-  int get hashCode => Object.hash(runtimeType, events, clubs);
+  int get hashCode => Object.hash(runtimeType, events, clubs, manage);
 
   @JsonKey(ignore: true)
   @override
@@ -345,12 +360,15 @@ class _$NavigationStateImpl implements _NavigationState {
 abstract class _NavigationState implements NavigationState {
   const factory _NavigationState(
       {required final bool events,
-      required final bool clubs}) = _$NavigationStateImpl;
+      required final bool clubs,
+      required final bool manage}) = _$NavigationStateImpl;
 
   @override
   bool get events;
   @override
   bool get clubs;
+  @override
+  bool get manage;
   @override
   @JsonKey(ignore: true)
   _$$NavigationStateImplCopyWith<_$NavigationStateImpl> get copyWith =>

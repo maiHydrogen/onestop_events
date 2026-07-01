@@ -1,43 +1,56 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/rendering.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_tabler_icons/flutter_tabler_icons.dart';
+import 'package:go_router/go_router.dart';
+import 'package:onestop_events/src/domain/models/event_model.dart';
+
 import 'package:onestop_events/src/widgets/event_buttons.dart';
 import 'package:onestop_events/src/widgets/events_header.dart';
 import 'package:onestop_ui/index.dart';
 
+import '../../widgets/horizontal_lists_builder.dart';
+import '../../widgets/event_details_sheet.dart';
 import '../blocs/events/events_bloc.dart';
+import '../../core/di/injection_container.dart';
+import '../../core/models/admin_flag.dart';
 
-class EventsFeedPage extends StatelessWidget {
+class EventsFeedPage extends StatefulWidget {
   const EventsFeedPage({super.key});
+
+  @override
+  State<EventsFeedPage> createState() => _EventsFeedPageState();
+}
+
+class _EventsFeedPageState extends State<EventsFeedPage> {
+  late TextEditingController _searchController;
+  String _searchQuery = "";
+
+  @override
+  void initState() {
+    super.initState();
+    _searchController = TextEditingController();
+    _searchController.addListener(_onSearchChanged);
+  }
+
+  void _onSearchChanged() {
+    setState(() {
+      _searchQuery = _searchController.text;
+    });
+  }
+
+  @override
+  void dispose() {
+    _searchController.removeListener(_onSearchChanged);
+    _searchController.dispose();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
     return SafeArea(
       child: Scaffold(
         backgroundColor: OColor.gray100,
-        // BlocBuilder listens to state changes and rebuilds this widget tree
-        body: Column(
-          children: [
-            const EventsHeader(date: "Monday, 16th January", header: 'Events',),
-            const SizedBox(height: OSpacing.xs),
-            OSearchBar(controller: TextEditingController()),
-            const SizedBox(height: OSpacing.xs),
-            Padding(
-              padding: const EdgeInsets.symmetric(horizontal: OSpacing.xs),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  AllEventsButton(onPressed: () {}),
-                  SavedEventsButton(onPressed: () {}),
-                ],
-              ),
-            ),
-            const SizedBox(height: OSpacing.m),
-            const EventsHeaderSmall(heading: 'Happening Today', icon: TablerIcons.calendar,),
-          ],
-        ),
-        /*BlocBuilder<EventsBloc, EventsState>(
+        body: BlocBuilder<EventsBloc, EventsState>(
           builder: (context, state) {
             return state.when(
               initial: () => const Center(child: CircularProgressIndicator()),
@@ -49,34 +62,187 @@ class EventsFeedPage extends StatelessWidget {
                 ),
               ),
               loaded: (events) {
-                if (events.isEmpty) {
-                  return const Center(child: Text('No upcoming events.'));
-                }
-      
-                // Render the list of events using your custom cards
-                return ListView.separated(
-                  padding: const EdgeInsets.all(OSpacing.l),
-                  itemCount: events.length,
-                  separatorBuilder: (context, index) =>
-                      const SizedBox(height: OSpacing.xs),
-                  itemBuilder: (context, index) {
-                    final event = events[index];
-      
-                    return OEventListingCard.medium(
-                      title: event.title,
-                      date: event.startTime
-                          .toString(), // Format this nicely later using intl package
-                      location: event.venue,
-                      type: EventCardType.user,
-                      startTime: '',
-                      eventImageUrl: event.imageUrl ?? '',
-                    );
-                  },
+                final List<EventModel> filteredEvents = events.where((event) {
+                  final matchesSearch = event.title.toLowerCase().contains(_searchQuery.toLowerCase()) ||
+                      event.description.toLowerCase().contains(_searchQuery.toLowerCase());
+                  return matchesSearch;
+                }).toList();
+
+                final now = DateTime.now();
+                final futureEvents = events.where((e) => e.endTime.isAfter(now)).toList();
+                final pastEvents = events.where((e) => e.endTime.isBefore(now)).toList();
+
+                final todayEvents = futureEvents.where((e) {
+                  return e.startTime.year == now.year &&
+                      e.startTime.month == now.month &&
+                      e.startTime.day == now.day;
+                }).toList();
+
+                final todaySectionEvents = todayEvents.isNotEmpty ? todayEvents : futureEvents;
+                final trendingSectionEvents = futureEvents.where((e) => e.isBookmarked).toList().isNotEmpty
+                    ? futureEvents.where((e) => e.isBookmarked).toList()
+                    : futureEvents;
+                final attendedEvents = pastEvents;
+
+                return CustomScrollView(
+                  slivers: [
+                    // --- STATIC TOP SECTION ---
+                    SliverToBoxAdapter(
+                      child: Column(
+                        children: [
+                          const EventsHeader(
+                            date: "Monday, 16th January",
+                            header: 'Events',
+                          ),
+                          SizedBox(height: OSpacing.xs),
+                          OSearchBar(controller: _searchController),
+                          SizedBox(height: OSpacing.xs),
+                          SingleChildScrollView(
+                            scrollDirection: Axis.horizontal,
+                            padding: EdgeInsets.symmetric(
+                              horizontal: OSpacing.xs,
+                            ),
+                            child: ListenableBuilder(
+                              listenable: sl<AdminFlag>(),
+                              builder: (context, _) {
+                                final isAdmin = sl<AdminFlag>().isAdmin;
+                                return Row(
+                                  children: [
+                                    AllEventsButton(
+                                      onPressed: () {
+                                        context.push('/all-events');
+                                      },
+                                      eventNumber: events.length.toString(),
+                                    ),
+                                    SizedBox(width: OSpacing.s),
+                                    SavedEventsButton(
+                                      onPressed: () {
+                                        context.push('/saved-events');
+                                      },
+                                    ),
+                                    if (isAdmin) ...[
+                                      SizedBox(width: OSpacing.s),
+                                      TertiaryButton(
+                                        label: "Upload",
+                                        onPressed: () => context.push('/admin-upload'),
+                                        leadingIcon: TablerIcons.plus,
+                                        iconColor: OColor.green600,
+                                      ),
+                                    ],
+                                  ],
+                                );
+                              },
+                            ),
+                          ),
+                          SizedBox(height: OSpacing.m),
+                        ],
+                      ),
+                    ),
+
+                    if (_searchQuery.isEmpty) ...[
+                      // --- HAPPENING TODAY ---
+                      SliverToBoxAdapter(
+                        child: EventsHeaderSmall(
+                          heading: 'Happening Today',
+                          icon: TablerIcons.calendar,
+                        ),
+                      ),
+                      SliverToBoxAdapter(
+                        child: buildHorizontalList(context, todaySectionEvents),
+                      ),
+
+                      // --- TRENDING EVENTS ---
+                      SliverToBoxAdapter(
+                        child: EventsHeaderSmall(
+                          heading: 'Trending Events',
+                          icon: TablerIcons.flame,
+                          buttonLabel: "Learn More",
+                          onPressed: () {},
+                        ),
+                      ),
+                      SliverToBoxAdapter(
+                        // Simulate trending by using a different subset, e.g. top saved
+                        child: buildHorizontalList(context, trendingSectionEvents),
+                      ),
+
+                      // --- RECENTLY ATTENDED (Mock) ---
+                      SliverToBoxAdapter(
+                        child: EventsHeaderSmall(
+                          heading: 'Recently Attended',
+                          icon: TablerIcons.history,
+                        ),
+                      ),
+                      SliverToBoxAdapter(
+                        // In reality, this would map the static JSON. For now, reusing horizontal list for simplicity
+                        child: buildHorizontalList(context, attendedEvents),
+                      ),
+                    ],
+
+                    // --- EXPLORE / LIST VIEW ---
+                    SliverToBoxAdapter(
+                      child: EventsHeaderSmall(
+                        heading: _searchQuery.isEmpty ? 'Explore' : 'Search Results',
+                        icon: _searchQuery.isEmpty ? TablerIcons.compass : TablerIcons.search,
+                      ),
+                    ),
+
+                    if (filteredEvents.isEmpty)
+                      const SliverToBoxAdapter(
+                        child: Padding(
+                          padding: EdgeInsets.all(16.0),
+                          child: Center(
+                            child: Text('No events found.'),
+                          ),
+                        ),
+                      )
+                    else
+                      SliverPadding(
+                        padding: EdgeInsets.all(OSpacing.l),
+                        sliver: SliverList(
+                          delegate: SliverChildBuilderDelegate(
+                            (context, index) {
+                              final event = filteredEvents[index];
+                              final String formattedTime = "${event.startTime.hour.toString().padLeft(2, '0')}:${event.startTime.minute.toString().padLeft(2, '0')}";
+                              final String formattedDate = "${event.startTime.day.toString().padLeft(2, '0')}/${event.startTime.month.toString().padLeft(2, '0')}/${event.startTime.year}";
+                              final String formattedEnd = "${event.endTime.hour.toString().padLeft(2, '0')}:${event.endTime.minute.toString().padLeft(2, '0')}";
+
+                              return Padding(
+                                padding: EdgeInsets.only(
+                                  bottom: OSpacing.xs,
+                                ),
+                                child: OEventListingCard.large(
+                                  hostImageUrl: "https://dummyimage.com/100x100/000/fff&text=SWC",
+                                  hostName: "Students Web Committee (SWC)",
+                                  views: 142,
+                                  attendance: 84,
+                                  tag1: "FEST",
+                                  tag2: "CULTURAL",
+                                  tagIcon1: TablerIcons.confetti,
+                                  tagIcon2: TablerIcons.music,
+                                  title: event.title,
+                                  date: formattedDate,
+                                  location: event.venue,
+                                  type: EventCardType.user,
+                                  startTime: formattedTime,
+                                  endtime: formattedEnd,
+                                  eventImageUrl: event.imageUrl ?? 'https://dummyimage.com/400x200/000/fff&text=Event',
+                                  isSaved: event.isBookmarked,
+                                  onTap: () {
+                                    EventDetailsSheet.show(context, event);
+                                  },
+                                ),
+                              );
+                            },
+                            childCount: filteredEvents.length,
+                          ),
+                        ),
+                      ),
+                  ],
                 );
               },
             );
           },
-        ),*/
+        ),
       ),
     );
   }

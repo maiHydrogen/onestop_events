@@ -4,8 +4,13 @@ import 'package:get_it/get_it.dart';
 // import '../../presentation/blocs/events/events_bloc.dart';
 import '../../domain/repositories/i_events_repo.dart';
 import '../../data/repositories/mock_events_repo.dart';
+import '../../domain/repositories/i_clubs_repo.dart';
+import '../../data/repositories/mock_clubs_repo.dart';
 import '../../presentation/blocs/events/events_bloc.dart';
 import '../../presentation/blocs/navigation/navigation_bloc.dart';
+import '../../presentation/blocs/clubs/clubs_bloc.dart';
+import '../../presentation/blocs/admin/admin_bloc.dart';
+import '../models/admin_flag.dart';
 
 final sl = GetIt.instance; // sl stands for Service Locator
 
@@ -20,12 +25,10 @@ Future<void> initEventsPackage() async {
   sl.registerFactory(
         () => EventsBloc(repository: sl()),
   );
-  /*
-  
   sl.registerFactory(
-    () => ClubsBloc(clubsRepository: sl()),
+        () => ClubsBloc(clubsRepository: sl()),
   );
-  */
+  sl.registerFactory(() => AdminBloc());
 
   // ---------------------------------------------------------------------------
   // 2. Domain & Data Layer (Repositories)
@@ -36,11 +39,14 @@ Future<void> initEventsPackage() async {
   sl.registerLazySingleton<IEventsRepository>(
         () => MockEventsRepository(),
   );
-  /*
+  
   sl.registerLazySingleton<IClubsRepository>(
     () => MockClubsRepository(),
   );
-  */
+
+  sl.registerLazySingleton<AdminFlag>(
+    () => AdminFlag(),
+  );
 
   // ---------------------------------------------------------------------------
   // 3. Core / External (Hive, Dio, etc.)
