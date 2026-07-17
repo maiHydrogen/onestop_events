@@ -181,3 +181,18 @@ sl<AdminFlag>().setAdmin(true);
 ---
 
 ## Screenshots
+
+![alt text](Screenshot_20260717_201106.png) 
+![alt text](Screenshot_20260717_201205.png) 
+![alt text](Screenshot_20260717_201218.png) 
+![alt text](Screenshot_20260717_201249.png)
+![alt text](Screenshot_20260717_201259.png) 
+![alt text](Screenshot_20260717_201306.png) 
+![alt text](Screenshot_20260717_201313.png) 
+![alt text](Screenshot_20260717_201502.png) 
+![alt text](Screenshot_20260717_201557.png) 
+![alt text](Screenshot_20260717_201618.png) 
+![alt text](Screenshot_20260717_201621.png) 
+![alt text](Screenshot_20260717_201639.png) 
+![alt text](Screenshot_20260717_201644.png) 
+![alt text](Screenshot_20260717_201654.png)
