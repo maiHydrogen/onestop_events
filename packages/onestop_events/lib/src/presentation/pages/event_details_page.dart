@@ -42,7 +42,8 @@ class _EventDetailsPageState extends State<EventDetailsPage> {
         builder: (context, state) {
           // Sync with latest block state to show toggle instantly
           final latestEvent = state.maybeWhen(
-            loaded: (events) => events.firstWhere(
+            loaded: (events, currentPage, hasReachedMax, isLoadingMore, loadMoreError) =>
+                events.firstWhere(
               (e) => e.id == widget.event.id,
               orElse: () => widget.event,
             ),
@@ -74,13 +75,13 @@ class _EventDetailsPageState extends State<EventDetailsPage> {
                 Card(
                   color: OColor.white,
                   elevation: 0,
-                  margin: EdgeInsets.all(OSpacing.m),
+                  margin: const EdgeInsets.all(OSpacing.m),
                   shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(OCornerRadius.m),
                     side: BorderSide(color: OColor.gray200, width: 1),
                   ),
                   child: Padding(
-                    padding: EdgeInsets.all(OSpacing.m),
+                    padding: const EdgeInsets.all(OSpacing.m),
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
@@ -91,31 +92,31 @@ class _EventDetailsPageState extends State<EventDetailsPage> {
                             fontWeight: FontWeight.bold,
                           ),
                         ),
-                        SizedBox(height: OSpacing.s),
+                        const SizedBox(height: OSpacing.s),
                         Row(
                           children: [
                             Icon(TablerIcons.calendar_event, color: OColor.gray600, size: 20),
-                            SizedBox(width: OSpacing.s),
+                            const SizedBox(width: OSpacing.s),
                             OText(
                               text: "$formattedDate, $formattedTime - $formattedEnd",
                               style: OTextStyle.bodyMedium.copyWith(color: OColor.gray600),
                             ),
                           ],
                         ),
-                        SizedBox(height: OSpacing.xs),
+                        const SizedBox(height: OSpacing.xs),
                         Row(
                           children: [
                             Icon(TablerIcons.map_pin, color: OColor.gray600, size: 20),
-                            SizedBox(width: OSpacing.s),
+                            const SizedBox(width: OSpacing.s),
                             OText(
                               text: latestEvent.venue,
                               style: OTextStyle.bodyMedium.copyWith(color: OColor.gray600),
                             ),
                           ],
                         ),
-                        SizedBox(height: OSpacing.m),
+                        const SizedBox(height: OSpacing.m),
                         Divider(color: OColor.gray200),
-                        SizedBox(height: OSpacing.m),
+                        const SizedBox(height: OSpacing.m),
                         OText(
                           text: "About Event",
                           style: OTextStyle.labelLarge.copyWith(
@@ -123,12 +124,12 @@ class _EventDetailsPageState extends State<EventDetailsPage> {
                             fontWeight: FontWeight.bold,
                           ),
                         ),
-                        SizedBox(height: OSpacing.s),
+                        const SizedBox(height: OSpacing.s),
                         OText(
                           text: latestEvent.description,
                           style: OTextStyle.bodyMedium.copyWith(color: OColor.gray600),
                         ),
-                        SizedBox(height: OSpacing.l),
+                        const SizedBox(height: OSpacing.l),
 
                         // Bookmark Action Button
                         GestureDetector(
@@ -138,7 +139,7 @@ class _EventDetailsPageState extends State<EventDetailsPage> {
                                 );
                           },
                           child: Container(
-                            padding: EdgeInsets.symmetric(vertical: OSpacing.s),
+                            padding: const EdgeInsets.symmetric(vertical: OSpacing.s),
                             decoration: BoxDecoration(
                               color: latestEvent.isBookmarked ? OColor.red500 : OColor.green600,
                               borderRadius: BorderRadius.circular(OCornerRadius.m),
@@ -151,7 +152,7 @@ class _EventDetailsPageState extends State<EventDetailsPage> {
                                   color: OColor.white,
                                   size: 20,
                                 ),
-                                SizedBox(width: OSpacing.s),
+                                const SizedBox(width: OSpacing.s),
                                 OText(
                                   text: latestEvent.isBookmarked ? "Saved (Remove)" : "Save Event",
                                   style: OTextStyle.labelMedium.copyWith(color: OColor.white),
@@ -169,13 +170,13 @@ class _EventDetailsPageState extends State<EventDetailsPage> {
                 Card(
                   color: OColor.white,
                   elevation: 0,
-                  margin: EdgeInsets.only(left: OSpacing.m, right: OSpacing.m, bottom: OSpacing.m),
+                  margin: const EdgeInsets.only(left: OSpacing.m, right: OSpacing.m, bottom: OSpacing.m),
                   shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(OCornerRadius.m),
                     side: BorderSide(color: OColor.gray200, width: 1),
                   ),
                   child: Padding(
-                    padding: EdgeInsets.all(OSpacing.m),
+                    padding: const EdgeInsets.all(OSpacing.m),
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
@@ -186,12 +187,12 @@ class _EventDetailsPageState extends State<EventDetailsPage> {
                             fontWeight: FontWeight.bold,
                           ),
                         ),
-                        SizedBox(height: OSpacing.xs),
+                        const SizedBox(height: OSpacing.xs),
                         OText(
                           text: "Share your experience about this event.",
                           style: OTextStyle.bodySmall.copyWith(color: OColor.gray600),
                         ),
-                        SizedBox(height: OSpacing.m),
+                        const SizedBox(height: OSpacing.m),
                         Row(
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: List.generate(5, (index) {
@@ -212,7 +213,7 @@ class _EventDetailsPageState extends State<EventDetailsPage> {
                             );
                           }),
                         ),
-                        SizedBox(height: OSpacing.s),
+                        const SizedBox(height: OSpacing.s),
                         TextField(
                           controller: _feedbackController,
                           maxLines: 3,
@@ -227,7 +228,7 @@ class _EventDetailsPageState extends State<EventDetailsPage> {
                             ),
                           ),
                         ),
-                        SizedBox(height: OSpacing.m),
+                        const SizedBox(height: OSpacing.m),
                         GestureDetector(
                           onTap: () {
                             if (_rating == 0) {
@@ -251,7 +252,7 @@ class _EventDetailsPageState extends State<EventDetailsPage> {
                             });
                           },
                           child: Container(
-                            padding: EdgeInsets.symmetric(vertical: OSpacing.s),
+                            padding: const EdgeInsets.symmetric(vertical: OSpacing.s),
                             decoration: BoxDecoration(
                               color: OColor.blue600,
                               borderRadius: BorderRadius.circular(OCornerRadius.m),

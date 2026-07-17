@@ -19,32 +19,38 @@ mixin _$ClubsEvent {
   @optionalTypeArgs
   TResult when<TResult extends Object?>({
     required TResult Function() fetchClubs,
+    required TResult Function() loadMoreClubs,
   }) =>
       throw _privateConstructorUsedError;
   @optionalTypeArgs
   TResult? whenOrNull<TResult extends Object?>({
     TResult? Function()? fetchClubs,
+    TResult? Function()? loadMoreClubs,
   }) =>
       throw _privateConstructorUsedError;
   @optionalTypeArgs
   TResult maybeWhen<TResult extends Object?>({
     TResult Function()? fetchClubs,
+    TResult Function()? loadMoreClubs,
     required TResult orElse(),
   }) =>
       throw _privateConstructorUsedError;
   @optionalTypeArgs
   TResult map<TResult extends Object?>({
     required TResult Function(_FetchClubs value) fetchClubs,
+    required TResult Function(_LoadMoreClubs value) loadMoreClubs,
   }) =>
       throw _privateConstructorUsedError;
   @optionalTypeArgs
   TResult? mapOrNull<TResult extends Object?>({
     TResult? Function(_FetchClubs value)? fetchClubs,
+    TResult? Function(_LoadMoreClubs value)? loadMoreClubs,
   }) =>
       throw _privateConstructorUsedError;
   @optionalTypeArgs
   TResult maybeMap<TResult extends Object?>({
     TResult Function(_FetchClubs value)? fetchClubs,
+    TResult Function(_LoadMoreClubs value)? loadMoreClubs,
     required TResult orElse(),
   }) =>
       throw _privateConstructorUsedError;
@@ -107,6 +113,7 @@ class _$FetchClubsImpl implements _FetchClubs {
   @optionalTypeArgs
   TResult when<TResult extends Object?>({
     required TResult Function() fetchClubs,
+    required TResult Function() loadMoreClubs,
   }) {
     return fetchClubs();
   }
@@ -115,6 +122,7 @@ class _$FetchClubsImpl implements _FetchClubs {
   @optionalTypeArgs
   TResult? whenOrNull<TResult extends Object?>({
     TResult? Function()? fetchClubs,
+    TResult? Function()? loadMoreClubs,
   }) {
     return fetchClubs?.call();
   }
@@ -123,6 +131,7 @@ class _$FetchClubsImpl implements _FetchClubs {
   @optionalTypeArgs
   TResult maybeWhen<TResult extends Object?>({
     TResult Function()? fetchClubs,
+    TResult Function()? loadMoreClubs,
     required TResult orElse(),
   }) {
     if (fetchClubs != null) {
@@ -135,6 +144,7 @@ class _$FetchClubsImpl implements _FetchClubs {
   @optionalTypeArgs
   TResult map<TResult extends Object?>({
     required TResult Function(_FetchClubs value) fetchClubs,
+    required TResult Function(_LoadMoreClubs value) loadMoreClubs,
   }) {
     return fetchClubs(this);
   }
@@ -143,6 +153,7 @@ class _$FetchClubsImpl implements _FetchClubs {
   @optionalTypeArgs
   TResult? mapOrNull<TResult extends Object?>({
     TResult? Function(_FetchClubs value)? fetchClubs,
+    TResult? Function(_LoadMoreClubs value)? loadMoreClubs,
   }) {
     return fetchClubs?.call(this);
   }
@@ -151,6 +162,7 @@ class _$FetchClubsImpl implements _FetchClubs {
   @optionalTypeArgs
   TResult maybeMap<TResult extends Object?>({
     TResult Function(_FetchClubs value)? fetchClubs,
+    TResult Function(_LoadMoreClubs value)? loadMoreClubs,
     required TResult orElse(),
   }) {
     if (fetchClubs != null) {
@@ -165,12 +177,116 @@ abstract class _FetchClubs implements ClubsEvent {
 }
 
 /// @nodoc
+abstract class _$$LoadMoreClubsImplCopyWith<$Res> {
+  factory _$$LoadMoreClubsImplCopyWith(
+          _$LoadMoreClubsImpl value, $Res Function(_$LoadMoreClubsImpl) then) =
+      __$$LoadMoreClubsImplCopyWithImpl<$Res>;
+}
+
+/// @nodoc
+class __$$LoadMoreClubsImplCopyWithImpl<$Res>
+    extends _$ClubsEventCopyWithImpl<$Res, _$LoadMoreClubsImpl>
+    implements _$$LoadMoreClubsImplCopyWith<$Res> {
+  __$$LoadMoreClubsImplCopyWithImpl(
+      _$LoadMoreClubsImpl _value, $Res Function(_$LoadMoreClubsImpl) _then)
+      : super(_value, _then);
+}
+
+/// @nodoc
+
+class _$LoadMoreClubsImpl implements _LoadMoreClubs {
+  const _$LoadMoreClubsImpl();
+
+  @override
+  String toString() {
+    return 'ClubsEvent.loadMoreClubs()';
+  }
+
+  @override
+  bool operator ==(Object other) {
+    return identical(this, other) ||
+        (other.runtimeType == runtimeType && other is _$LoadMoreClubsImpl);
+  }
+
+  @override
+  int get hashCode => runtimeType.hashCode;
+
+  @override
+  @optionalTypeArgs
+  TResult when<TResult extends Object?>({
+    required TResult Function() fetchClubs,
+    required TResult Function() loadMoreClubs,
+  }) {
+    return loadMoreClubs();
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult? whenOrNull<TResult extends Object?>({
+    TResult? Function()? fetchClubs,
+    TResult? Function()? loadMoreClubs,
+  }) {
+    return loadMoreClubs?.call();
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult maybeWhen<TResult extends Object?>({
+    TResult Function()? fetchClubs,
+    TResult Function()? loadMoreClubs,
+    required TResult orElse(),
+  }) {
+    if (loadMoreClubs != null) {
+      return loadMoreClubs();
+    }
+    return orElse();
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult map<TResult extends Object?>({
+    required TResult Function(_FetchClubs value) fetchClubs,
+    required TResult Function(_LoadMoreClubs value) loadMoreClubs,
+  }) {
+    return loadMoreClubs(this);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult? mapOrNull<TResult extends Object?>({
+    TResult? Function(_FetchClubs value)? fetchClubs,
+    TResult? Function(_LoadMoreClubs value)? loadMoreClubs,
+  }) {
+    return loadMoreClubs?.call(this);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult maybeMap<TResult extends Object?>({
+    TResult Function(_FetchClubs value)? fetchClubs,
+    TResult Function(_LoadMoreClubs value)? loadMoreClubs,
+    required TResult orElse(),
+  }) {
+    if (loadMoreClubs != null) {
+      return loadMoreClubs(this);
+    }
+    return orElse();
+  }
+}
+
+abstract class _LoadMoreClubs implements ClubsEvent {
+  const factory _LoadMoreClubs() = _$LoadMoreClubsImpl;
+}
+
+/// @nodoc
 mixin _$ClubsState {
   @optionalTypeArgs
   TResult when<TResult extends Object?>({
     required TResult Function() initial,
     required TResult Function() loading,
-    required TResult Function(List<ClubModel> clubs) loaded,
+    required TResult Function(List<ClubModel> clubs, int currentPage,
+            bool hasReachedMax, bool isLoadingMore, String? loadMoreError)
+        loaded,
     required TResult Function(String message) error,
   }) =>
       throw _privateConstructorUsedError;
@@ -178,7 +294,9 @@ mixin _$ClubsState {
   TResult? whenOrNull<TResult extends Object?>({
     TResult? Function()? initial,
     TResult? Function()? loading,
-    TResult? Function(List<ClubModel> clubs)? loaded,
+    TResult? Function(List<ClubModel> clubs, int currentPage,
+            bool hasReachedMax, bool isLoadingMore, String? loadMoreError)?
+        loaded,
     TResult? Function(String message)? error,
   }) =>
       throw _privateConstructorUsedError;
@@ -186,7 +304,9 @@ mixin _$ClubsState {
   TResult maybeWhen<TResult extends Object?>({
     TResult Function()? initial,
     TResult Function()? loading,
-    TResult Function(List<ClubModel> clubs)? loaded,
+    TResult Function(List<ClubModel> clubs, int currentPage, bool hasReachedMax,
+            bool isLoadingMore, String? loadMoreError)?
+        loaded,
     TResult Function(String message)? error,
     required TResult orElse(),
   }) =>
@@ -276,7 +396,9 @@ class _$InitialImpl implements _Initial {
   TResult when<TResult extends Object?>({
     required TResult Function() initial,
     required TResult Function() loading,
-    required TResult Function(List<ClubModel> clubs) loaded,
+    required TResult Function(List<ClubModel> clubs, int currentPage,
+            bool hasReachedMax, bool isLoadingMore, String? loadMoreError)
+        loaded,
     required TResult Function(String message) error,
   }) {
     return initial();
@@ -287,7 +409,9 @@ class _$InitialImpl implements _Initial {
   TResult? whenOrNull<TResult extends Object?>({
     TResult? Function()? initial,
     TResult? Function()? loading,
-    TResult? Function(List<ClubModel> clubs)? loaded,
+    TResult? Function(List<ClubModel> clubs, int currentPage,
+            bool hasReachedMax, bool isLoadingMore, String? loadMoreError)?
+        loaded,
     TResult? Function(String message)? error,
   }) {
     return initial?.call();
@@ -298,7 +422,9 @@ class _$InitialImpl implements _Initial {
   TResult maybeWhen<TResult extends Object?>({
     TResult Function()? initial,
     TResult Function()? loading,
-    TResult Function(List<ClubModel> clubs)? loaded,
+    TResult Function(List<ClubModel> clubs, int currentPage, bool hasReachedMax,
+            bool isLoadingMore, String? loadMoreError)?
+        loaded,
     TResult Function(String message)? error,
     required TResult orElse(),
   }) {
@@ -390,7 +516,9 @@ class _$LoadingImpl implements _Loading {
   TResult when<TResult extends Object?>({
     required TResult Function() initial,
     required TResult Function() loading,
-    required TResult Function(List<ClubModel> clubs) loaded,
+    required TResult Function(List<ClubModel> clubs, int currentPage,
+            bool hasReachedMax, bool isLoadingMore, String? loadMoreError)
+        loaded,
     required TResult Function(String message) error,
   }) {
     return loading();
@@ -401,7 +529,9 @@ class _$LoadingImpl implements _Loading {
   TResult? whenOrNull<TResult extends Object?>({
     TResult? Function()? initial,
     TResult? Function()? loading,
-    TResult? Function(List<ClubModel> clubs)? loaded,
+    TResult? Function(List<ClubModel> clubs, int currentPage,
+            bool hasReachedMax, bool isLoadingMore, String? loadMoreError)?
+        loaded,
     TResult? Function(String message)? error,
   }) {
     return loading?.call();
@@ -412,7 +542,9 @@ class _$LoadingImpl implements _Loading {
   TResult maybeWhen<TResult extends Object?>({
     TResult Function()? initial,
     TResult Function()? loading,
-    TResult Function(List<ClubModel> clubs)? loaded,
+    TResult Function(List<ClubModel> clubs, int currentPage, bool hasReachedMax,
+            bool isLoadingMore, String? loadMoreError)?
+        loaded,
     TResult Function(String message)? error,
     required TResult orElse(),
   }) {
@@ -470,7 +602,12 @@ abstract class _$$LoadedImplCopyWith<$Res> {
           _$LoadedImpl value, $Res Function(_$LoadedImpl) then) =
       __$$LoadedImplCopyWithImpl<$Res>;
   @useResult
-  $Res call({List<ClubModel> clubs});
+  $Res call(
+      {List<ClubModel> clubs,
+      int currentPage,
+      bool hasReachedMax,
+      bool isLoadingMore,
+      String? loadMoreError});
 }
 
 /// @nodoc
@@ -485,12 +622,32 @@ class __$$LoadedImplCopyWithImpl<$Res>
   @override
   $Res call({
     Object? clubs = null,
+    Object? currentPage = null,
+    Object? hasReachedMax = null,
+    Object? isLoadingMore = null,
+    Object? loadMoreError = freezed,
   }) {
     return _then(_$LoadedImpl(
-      null == clubs
+      clubs: null == clubs
           ? _value._clubs
           : clubs // ignore: cast_nullable_to_non_nullable
               as List<ClubModel>,
+      currentPage: null == currentPage
+          ? _value.currentPage
+          : currentPage // ignore: cast_nullable_to_non_nullable
+              as int,
+      hasReachedMax: null == hasReachedMax
+          ? _value.hasReachedMax
+          : hasReachedMax // ignore: cast_nullable_to_non_nullable
+              as bool,
+      isLoadingMore: null == isLoadingMore
+          ? _value.isLoadingMore
+          : isLoadingMore // ignore: cast_nullable_to_non_nullable
+              as bool,
+      loadMoreError: freezed == loadMoreError
+          ? _value.loadMoreError
+          : loadMoreError // ignore: cast_nullable_to_non_nullable
+              as String?,
     ));
   }
 }
@@ -498,7 +655,13 @@ class __$$LoadedImplCopyWithImpl<$Res>
 /// @nodoc
 
 class _$LoadedImpl implements _Loaded {
-  const _$LoadedImpl(final List<ClubModel> clubs) : _clubs = clubs;
+  const _$LoadedImpl(
+      {required final List<ClubModel> clubs,
+      required this.currentPage,
+      this.hasReachedMax = false,
+      this.isLoadingMore = false,
+      this.loadMoreError})
+      : _clubs = clubs;
 
   final List<ClubModel> _clubs;
   @override
@@ -509,8 +672,20 @@ class _$LoadedImpl implements _Loaded {
   }
 
   @override
+  final int currentPage;
+  @override
+  @JsonKey()
+  final bool hasReachedMax;
+  @override
+  @JsonKey()
+  final bool isLoadingMore;
+// Transient error field for snackbar signals
+  @override
+  final String? loadMoreError;
+
+  @override
   String toString() {
-    return 'ClubsState.loaded(clubs: $clubs)';
+    return 'ClubsState.loaded(clubs: $clubs, currentPage: $currentPage, hasReachedMax: $hasReachedMax, isLoadingMore: $isLoadingMore, loadMoreError: $loadMoreError)';
   }
 
   @override
@@ -518,12 +693,25 @@ class _$LoadedImpl implements _Loaded {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
             other is _$LoadedImpl &&
-            const DeepCollectionEquality().equals(other._clubs, _clubs));
+            const DeepCollectionEquality().equals(other._clubs, _clubs) &&
+            (identical(other.currentPage, currentPage) ||
+                other.currentPage == currentPage) &&
+            (identical(other.hasReachedMax, hasReachedMax) ||
+                other.hasReachedMax == hasReachedMax) &&
+            (identical(other.isLoadingMore, isLoadingMore) ||
+                other.isLoadingMore == isLoadingMore) &&
+            (identical(other.loadMoreError, loadMoreError) ||
+                other.loadMoreError == loadMoreError));
   }
 
   @override
-  int get hashCode =>
-      Object.hash(runtimeType, const DeepCollectionEquality().hash(_clubs));
+  int get hashCode => Object.hash(
+      runtimeType,
+      const DeepCollectionEquality().hash(_clubs),
+      currentPage,
+      hasReachedMax,
+      isLoadingMore,
+      loadMoreError);
 
   @JsonKey(ignore: true)
   @override
@@ -536,10 +724,13 @@ class _$LoadedImpl implements _Loaded {
   TResult when<TResult extends Object?>({
     required TResult Function() initial,
     required TResult Function() loading,
-    required TResult Function(List<ClubModel> clubs) loaded,
+    required TResult Function(List<ClubModel> clubs, int currentPage,
+            bool hasReachedMax, bool isLoadingMore, String? loadMoreError)
+        loaded,
     required TResult Function(String message) error,
   }) {
-    return loaded(clubs);
+    return loaded(
+        clubs, currentPage, hasReachedMax, isLoadingMore, loadMoreError);
   }
 
   @override
@@ -547,10 +738,13 @@ class _$LoadedImpl implements _Loaded {
   TResult? whenOrNull<TResult extends Object?>({
     TResult? Function()? initial,
     TResult? Function()? loading,
-    TResult? Function(List<ClubModel> clubs)? loaded,
+    TResult? Function(List<ClubModel> clubs, int currentPage,
+            bool hasReachedMax, bool isLoadingMore, String? loadMoreError)?
+        loaded,
     TResult? Function(String message)? error,
   }) {
-    return loaded?.call(clubs);
+    return loaded?.call(
+        clubs, currentPage, hasReachedMax, isLoadingMore, loadMoreError);
   }
 
   @override
@@ -558,12 +752,15 @@ class _$LoadedImpl implements _Loaded {
   TResult maybeWhen<TResult extends Object?>({
     TResult Function()? initial,
     TResult Function()? loading,
-    TResult Function(List<ClubModel> clubs)? loaded,
+    TResult Function(List<ClubModel> clubs, int currentPage, bool hasReachedMax,
+            bool isLoadingMore, String? loadMoreError)?
+        loaded,
     TResult Function(String message)? error,
     required TResult orElse(),
   }) {
     if (loaded != null) {
-      return loaded(clubs);
+      return loaded(
+          clubs, currentPage, hasReachedMax, isLoadingMore, loadMoreError);
     }
     return orElse();
   }
@@ -607,9 +804,18 @@ class _$LoadedImpl implements _Loaded {
 }
 
 abstract class _Loaded implements ClubsState {
-  const factory _Loaded(final List<ClubModel> clubs) = _$LoadedImpl;
+  const factory _Loaded(
+      {required final List<ClubModel> clubs,
+      required final int currentPage,
+      final bool hasReachedMax,
+      final bool isLoadingMore,
+      final String? loadMoreError}) = _$LoadedImpl;
 
   List<ClubModel> get clubs;
+  int get currentPage;
+  bool get hasReachedMax;
+  bool get isLoadingMore; // Transient error field for snackbar signals
+  String? get loadMoreError;
   @JsonKey(ignore: true)
   _$$LoadedImplCopyWith<_$LoadedImpl> get copyWith =>
       throw _privateConstructorUsedError;
@@ -681,7 +887,9 @@ class _$ErrorImpl implements _Error {
   TResult when<TResult extends Object?>({
     required TResult Function() initial,
     required TResult Function() loading,
-    required TResult Function(List<ClubModel> clubs) loaded,
+    required TResult Function(List<ClubModel> clubs, int currentPage,
+            bool hasReachedMax, bool isLoadingMore, String? loadMoreError)
+        loaded,
     required TResult Function(String message) error,
   }) {
     return error(message);
@@ -692,7 +900,9 @@ class _$ErrorImpl implements _Error {
   TResult? whenOrNull<TResult extends Object?>({
     TResult? Function()? initial,
     TResult? Function()? loading,
-    TResult? Function(List<ClubModel> clubs)? loaded,
+    TResult? Function(List<ClubModel> clubs, int currentPage,
+            bool hasReachedMax, bool isLoadingMore, String? loadMoreError)?
+        loaded,
     TResult? Function(String message)? error,
   }) {
     return error?.call(message);
@@ -703,7 +913,9 @@ class _$ErrorImpl implements _Error {
   TResult maybeWhen<TResult extends Object?>({
     TResult Function()? initial,
     TResult Function()? loading,
-    TResult Function(List<ClubModel> clubs)? loaded,
+    TResult Function(List<ClubModel> clubs, int currentPage, bool hasReachedMax,
+            bool isLoadingMore, String? loadMoreError)?
+        loaded,
     TResult Function(String message)? error,
     required TResult orElse(),
   }) {

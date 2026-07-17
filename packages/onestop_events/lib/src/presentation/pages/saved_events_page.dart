@@ -28,7 +28,7 @@ class SavedEventsPage extends StatelessWidget {
             initial: () => const Center(child: CircularProgressIndicator()),
             loading: () => const Center(child: CircularProgressIndicator()),
             error: (message) => Center(child: OText(text: message)),
-            loaded: (events) {
+            loaded: (events, currentPage, hasReachedMax, isLoadingMore, loadMoreError) {
               final savedEvents = events.where((e) => e.isBookmarked).toList();
 
               if (savedEvents.isEmpty) {

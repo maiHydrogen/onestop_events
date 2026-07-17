@@ -8,7 +8,7 @@ Widget buildHorizontalList(BuildContext context, List<EventModel> events) {
     height: 310, // Increased height to prevent medium event card vertical overflows
     child: ListView.separated(
       scrollDirection: Axis.horizontal,
-      padding: EdgeInsets.symmetric(
+      padding: const EdgeInsets.symmetric(
         horizontal: OSpacing.l,
         vertical: OSpacing.xs,
       ),

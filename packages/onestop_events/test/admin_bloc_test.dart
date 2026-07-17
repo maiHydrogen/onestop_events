@@ -30,7 +30,7 @@ void main() {
   blocTest<AdminBloc, AdminState>(
     'updates form fields when updateForm is added',
     build: () => bloc,
-    act: (bloc) => bloc.add(AdminEvent.updateForm(
+    act: (bloc) => bloc.add(const AdminEvent.updateForm(
       title: 'New Title',
       venue: 'New Venue',
     )),

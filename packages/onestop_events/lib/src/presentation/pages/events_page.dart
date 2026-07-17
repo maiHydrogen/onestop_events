@@ -2,14 +2,13 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_tabler_icons/flutter_tabler_icons.dart';
 import 'package:go_router/go_router.dart';
-import 'package:onestop_events/src/domain/models/event_model.dart';
-
 import 'package:onestop_events/src/widgets/event_buttons.dart';
 import 'package:onestop_events/src/widgets/events_header.dart';
 import 'package:onestop_ui/index.dart';
 
 import '../../widgets/horizontal_lists_builder.dart';
 import '../../widgets/event_details_sheet.dart';
+import '../../widgets/paginated_list_view.dart';
 import '../blocs/events/events_bloc.dart';
 import '../../core/di/injection_container.dart';
 import '../../core/models/admin_flag.dart';
@@ -45,32 +44,81 @@ class _EventsFeedPageState extends State<EventsFeedPage> {
     super.dispose();
   }
 
+  void _showErrorSnackbar(BuildContext context, String message) {
+    ScaffoldMessenger.of(context)
+      ..hideCurrentSnackBar()
+      ..showSnackBar(
+        SnackBar(
+          backgroundColor: Colors.transparent,
+          elevation: 0,
+          content: OSnackbar(
+            type: SnackbarType.negative,
+            message: message,
+          ),
+        ),
+      );
+  }
+
   @override
   Widget build(BuildContext context) {
     return SafeArea(
       child: Scaffold(
         backgroundColor: OColor.gray100,
-        body: BlocBuilder<EventsBloc, EventsState>(
+        body: BlocConsumer<EventsBloc, EventsState>(
+          listener: (context, state) {
+            state.whenOrNull(
+              error: (message) => _showErrorSnackbar(context, message),
+              loaded: (events, page, hasReachedMax, isLoadingMore, loadMoreError) {
+                if (loadMoreError != null) {
+                  _showErrorSnackbar(context, loadMoreError);
+                }
+              },
+            );
+          },
           builder: (context, state) {
             return state.when(
-              initial: () => const Center(child: CircularProgressIndicator()),
-              loading: () => const Center(child: CircularProgressIndicator()),
+              initial: () => const Center(
+                child: CircularProgressIndicator(),
+              ),
+              loading: () => const Center(
+                child: CircularProgressIndicator(),
+              ),
               error: (message) => Center(
-                child: OText(
-                  text: message,
-                  style: OTextStyle.bodyLarge.copyWith(color: OColor.blue200),
+                child: Column(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    Icon(TablerIcons.wifi_off, color: OColor.gray400, size: 48),
+                    const SizedBox(height: 16),
+                    OText(
+                      text: message,
+                      style: OTextStyle.bodyLarge.copyWith(color: OColor.gray600),
+                    ),
+                    const SizedBox(height: 16),
+                    GestureDetector(
+                      onTap: () => context
+                          .read<EventsBloc>()
+                          .add(const EventsEvent.fetchEvents()),
+                      child: Container(
+                        padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 12),
+                        decoration: BoxDecoration(
+                          color: OColor.green600,
+                          borderRadius: BorderRadius.circular(OCornerRadius.m),
+                        ),
+                        child: OText(
+                          text: 'Retry',
+                          style: OTextStyle.labelMedium.copyWith(color: OColor.white),
+                        ),
+                      ),
+                    ),
+                  ],
                 ),
               ),
-              loaded: (events) {
-                final List<EventModel> filteredEvents = events.where((event) {
-                  final matchesSearch = event.title.toLowerCase().contains(_searchQuery.toLowerCase()) ||
-                      event.description.toLowerCase().contains(_searchQuery.toLowerCase());
-                  return matchesSearch;
-                }).toList();
-
+              loaded: (events, currentPage, hasReachedMax, isLoadingMore, loadMoreError) {
                 final now = DateTime.now();
-                final futureEvents = events.where((e) => e.endTime.isAfter(now)).toList();
-                final pastEvents = events.where((e) => e.endTime.isBefore(now)).toList();
+                final futureEvents =
+                    events.where((e) => e.endTime.isAfter(now)).toList();
+                final pastEvents =
+                    events.where((e) => e.endTime.isBefore(now)).toList();
 
                 final todayEvents = futureEvents.where((e) {
                   return e.startTime.year == now.year &&
@@ -78,11 +126,23 @@ class _EventsFeedPageState extends State<EventsFeedPage> {
                       e.startTime.day == now.day;
                 }).toList();
 
-                final todaySectionEvents = todayEvents.isNotEmpty ? todayEvents : futureEvents;
-                final trendingSectionEvents = futureEvents.where((e) => e.isBookmarked).toList().isNotEmpty
-                    ? futureEvents.where((e) => e.isBookmarked).toList()
-                    : futureEvents;
+                final todaySectionEvents =
+                    todayEvents.isNotEmpty ? todayEvents : futureEvents;
+                final trendingSectionEvents =
+                    futureEvents.where((e) => e.isBookmarked).toList().isNotEmpty
+                        ? futureEvents.where((e) => e.isBookmarked).toList()
+                        : futureEvents;
                 final attendedEvents = pastEvents;
+
+                // Filter for search
+                final filteredEvents = events.where((event) {
+                  return event.title
+                          .toLowerCase()
+                          .contains(_searchQuery.toLowerCase()) ||
+                      event.description
+                          .toLowerCase()
+                          .contains(_searchQuery.toLowerCase());
+                }).toList();
 
                 return CustomScrollView(
                   slivers: [
@@ -94,12 +154,12 @@ class _EventsFeedPageState extends State<EventsFeedPage> {
                             date: "Monday, 16th January",
                             header: 'Events',
                           ),
-                          SizedBox(height: OSpacing.xs),
+                          const SizedBox(height: OSpacing.xs),
                           OSearchBar(controller: _searchController),
-                          SizedBox(height: OSpacing.xs),
+                          const SizedBox(height: OSpacing.xs),
                           SingleChildScrollView(
                             scrollDirection: Axis.horizontal,
-                            padding: EdgeInsets.symmetric(
+                            padding: const EdgeInsets.symmetric(
                               horizontal: OSpacing.xs,
                             ),
                             child: ListenableBuilder(
@@ -114,17 +174,18 @@ class _EventsFeedPageState extends State<EventsFeedPage> {
                                       },
                                       eventNumber: events.length.toString(),
                                     ),
-                                    SizedBox(width: OSpacing.s),
+                                    const SizedBox(width: OSpacing.s),
                                     SavedEventsButton(
                                       onPressed: () {
                                         context.push('/saved-events');
                                       },
                                     ),
                                     if (isAdmin) ...[
-                                      SizedBox(width: OSpacing.s),
+                                      const SizedBox(width: OSpacing.s),
                                       TertiaryButton(
                                         label: "Upload",
-                                        onPressed: () => context.push('/admin-upload'),
+                                        onPressed: () =>
+                                            context.push('/admin-upload'),
                                         leadingIcon: TablerIcons.plus,
                                         iconColor: OColor.green600,
                                       ),
@@ -134,14 +195,14 @@ class _EventsFeedPageState extends State<EventsFeedPage> {
                               },
                             ),
                           ),
-                          SizedBox(height: OSpacing.m),
+                          const SizedBox(height: OSpacing.m),
                         ],
                       ),
                     ),
 
                     if (_searchQuery.isEmpty) ...[
                       // --- HAPPENING TODAY ---
-                      SliverToBoxAdapter(
+                      const SliverToBoxAdapter(
                         child: EventsHeaderSmall(
                           heading: 'Happening Today',
                           icon: TablerIcons.calendar,
@@ -161,28 +222,31 @@ class _EventsFeedPageState extends State<EventsFeedPage> {
                         ),
                       ),
                       SliverToBoxAdapter(
-                        // Simulate trending by using a different subset, e.g. top saved
-                        child: buildHorizontalList(context, trendingSectionEvents),
+                        child: buildHorizontalList(
+                            context, trendingSectionEvents),
                       ),
 
-                      // --- RECENTLY ATTENDED (Mock) ---
-                      SliverToBoxAdapter(
+                      // --- RECENTLY ATTENDED ---
+                      const SliverToBoxAdapter(
                         child: EventsHeaderSmall(
                           heading: 'Recently Attended',
                           icon: TablerIcons.history,
                         ),
                       ),
                       SliverToBoxAdapter(
-                        // In reality, this would map the static JSON. For now, reusing horizontal list for simplicity
                         child: buildHorizontalList(context, attendedEvents),
                       ),
                     ],
 
-                    // --- EXPLORE / LIST VIEW ---
+                    // --- EXPLORE / PAGINATED LIST ---
                     SliverToBoxAdapter(
                       child: EventsHeaderSmall(
-                        heading: _searchQuery.isEmpty ? 'Explore' : 'Search Results',
-                        icon: _searchQuery.isEmpty ? TablerIcons.compass : TablerIcons.search,
+                        heading: _searchQuery.isEmpty
+                            ? 'Explore'
+                            : 'Search Results',
+                        icon: _searchQuery.isEmpty
+                            ? TablerIcons.compass
+                            : TablerIcons.search,
                       ),
                     ),
 
@@ -190,28 +254,36 @@ class _EventsFeedPageState extends State<EventsFeedPage> {
                       const SliverToBoxAdapter(
                         child: Padding(
                           padding: EdgeInsets.all(16.0),
-                          child: Center(
-                            child: Text('No events found.'),
-                          ),
+                          child: Center(child: Text('No events found.')),
                         ),
                       )
                     else
-                      SliverPadding(
-                        padding: EdgeInsets.all(OSpacing.l),
-                        sliver: SliverList(
-                          delegate: SliverChildBuilderDelegate(
-                            (context, index) {
+                      SliverToBoxAdapter(
+                        child: SizedBox(
+                          // Constrain height so CustomScrollView doesn't conflict
+                          height: MediaQuery.of(context).size.height * 0.6,
+                          child: PaginatedListView(
+                            itemCount: filteredEvents.length,
+                            isLoadingMore: isLoadingMore,
+                            hasReachedMax: hasReachedMax,
+                            padding: const EdgeInsets.all(OSpacing.l),
+                            onLoadMore: () => context
+                                .read<EventsBloc>()
+                                .add(const EventsEvent.loadMoreEvents()),
+                            itemBuilder: (context, index) {
                               final event = filteredEvents[index];
-                              final String formattedTime = "${event.startTime.hour.toString().padLeft(2, '0')}:${event.startTime.minute.toString().padLeft(2, '0')}";
-                              final String formattedDate = "${event.startTime.day.toString().padLeft(2, '0')}/${event.startTime.month.toString().padLeft(2, '0')}/${event.startTime.year}";
-                              final String formattedEnd = "${event.endTime.hour.toString().padLeft(2, '0')}:${event.endTime.minute.toString().padLeft(2, '0')}";
+                              final String formattedTime =
+                                  "${event.startTime.hour.toString().padLeft(2, '0')}:${event.startTime.minute.toString().padLeft(2, '0')}";
+                              final String formattedDate =
+                                  "${event.startTime.day.toString().padLeft(2, '0')}/${event.startTime.month.toString().padLeft(2, '0')}/${event.startTime.year}";
+                              final String formattedEnd =
+                                  "${event.endTime.hour.toString().padLeft(2, '0')}:${event.endTime.minute.toString().padLeft(2, '0')}";
 
                               return Padding(
-                                padding: EdgeInsets.only(
-                                  bottom: OSpacing.xs,
-                                ),
+                                padding: const EdgeInsets.only(bottom: OSpacing.xs),
                                 child: OEventListingCard.large(
-                                  hostImageUrl: "https://dummyimage.com/100x100/000/fff&text=SWC",
+                                  hostImageUrl:
+                                      "https://dummyimage.com/100x100/000/fff&text=SWC",
                                   hostName: "Students Web Committee (SWC)",
                                   views: 142,
                                   attendance: 84,
@@ -225,7 +297,8 @@ class _EventsFeedPageState extends State<EventsFeedPage> {
                                   type: EventCardType.user,
                                   startTime: formattedTime,
                                   endtime: formattedEnd,
-                                  eventImageUrl: event.imageUrl ?? 'https://dummyimage.com/400x200/000/fff&text=Event',
+                                  eventImageUrl: event.imageUrl ??
+                                      'https://dummyimage.com/400x200/000/fff&text=Event',
                                   isSaved: event.isBookmarked,
                                   onTap: () {
                                     EventDetailsSheet.show(context, event);
@@ -233,7 +306,6 @@ class _EventsFeedPageState extends State<EventsFeedPage> {
                                 ),
                               );
                             },
-                            childCount: filteredEvents.length,
                           ),
                         ),
                       ),

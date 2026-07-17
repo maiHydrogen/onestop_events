@@ -36,23 +36,29 @@ void main() {
   blocTest<ClubsBloc, ClubsState>(
     'emits [Loading, Loaded] when fetchClubs is added and successful',
     build: () {
-      when(() => repository.getClubs()).thenAnswer((_) async => tClubs);
+      when(() => repository.getClubs(page: 1, limit: 20))
+          .thenAnswer((_) async => tClubs);
       return bloc;
     },
     act: (bloc) => bloc.add(const ClubsEvent.fetchClubs()),
     expect: () => [
       const ClubsState.loading(),
-      ClubsState.loaded(tClubs),
+      ClubsState.loaded(
+        clubs: tClubs,
+        currentPage: 1,
+        hasReachedMax: true, // tClubs.length (1) < pageSize (20)
+      ),
     ],
     verify: (_) {
-      verify(() => repository.getClubs()).called(1);
+      verify(() => repository.getClubs(page: 1, limit: 20)).called(1);
     },
   );
 
   blocTest<ClubsBloc, ClubsState>(
     'emits [Loading, Error] when fetchClubs fails',
     build: () {
-      when(() => repository.getClubs()).thenThrow(Exception('clubs error'));
+      when(() => repository.getClubs(page: 1, limit: 20))
+          .thenThrow(Exception('clubs error'));
       return bloc;
     },
     act: (bloc) => bloc.add(const ClubsEvent.fetchClubs()),

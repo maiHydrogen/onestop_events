@@ -39,23 +39,29 @@ void main() {
   blocTest<EventsBloc, EventsState>(
     'emits [Loading, Loaded] when fetchEvents is added and successful',
     build: () {
-      when(() => repository.getEvents()).thenAnswer((_) async => tEvents);
+      when(() => repository.getEvents(page: 1, limit: 10))
+          .thenAnswer((_) async => tEvents);
       return bloc;
     },
     act: (bloc) => bloc.add(const EventsEvent.fetchEvents()),
     expect: () => [
       const EventsState.loading(),
-      EventsState.loaded(tEvents),
+      EventsState.loaded(
+        events: tEvents,
+        currentPage: 1,
+        hasReachedMax: true, // tEvents.length (1) < pageSize (10)
+      ),
     ],
     verify: (_) {
-      verify(() => repository.getEvents()).called(1);
+      verify(() => repository.getEvents(page: 1, limit: 10)).called(1);
     },
   );
 
   blocTest<EventsBloc, EventsState>(
     'emits [Loading, Error] when fetchEvents fails',
     build: () {
-      when(() => repository.getEvents()).thenThrow(Exception('test error'));
+      when(() => repository.getEvents(page: 1, limit: 10))
+          .thenThrow(Exception('test error'));
       return bloc;
     },
     act: (bloc) => bloc.add(const EventsEvent.fetchEvents()),
