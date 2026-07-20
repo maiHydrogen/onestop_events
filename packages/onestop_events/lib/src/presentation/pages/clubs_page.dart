@@ -74,6 +74,19 @@ class _ClubsPageState extends State<ClubsPage> {
       child: Scaffold(
         backgroundColor: OColor.gray100,
         body: BlocConsumer<ClubsBloc, ClubsState>(
+          listenWhen: (previous, current) {
+            final prevError = previous.maybeWhen(
+              loaded: (_, __, ___, ____, err) => err,
+              error: (err) => err,
+              orElse: () => null,
+            );
+            final currError = current.maybeWhen(
+              loaded: (_, __, ___, ____, err) => err,
+              error: (err) => err,
+              orElse: () => null,
+            );
+            return currError != null && currError != prevError;
+          },
           listener: (context, state) {
             state.whenOrNull(
               error: (message) => _showErrorSnackbar(context, message),
@@ -127,16 +140,24 @@ class _ClubsPageState extends State<ClubsPage> {
                           .toLowerCase()
                           .contains(_searchQuery.toLowerCase());
 
-                  bool matchesCategory = true;
+                   bool matchesCategory = true;
                   if (_selectedBoard != "All") {
                     if (_selectedBoard == "Technical") {
-                      matchesCategory =
-                          club.category == ClubCategory.technical;
+                      matchesCategory = club.category == ClubCategory.technical;
                     } else if (_selectedBoard == "Cultural") {
-                      matchesCategory =
-                          club.category == ClubCategory.cultural;
+                      matchesCategory = club.category == ClubCategory.cultural;
                     } else if (_selectedBoard == "Sports") {
                       matchesCategory = club.category == ClubCategory.sports;
+                    } else if (_selectedBoard == "Welfare") {
+                      matchesCategory = club.category == ClubCategory.welfare;
+                    } else if (_selectedBoard == "Hostel Affairs") {
+                      matchesCategory = club.category == ClubCategory.hostelAffairs;
+                    } else if (_selectedBoard == "SAIL") {
+                      matchesCategory = club.category == ClubCategory.sail;
+                    } else if (_selectedBoard == "SWC") {
+                      matchesCategory = club.category == ClubCategory.swc;
+                    } else if (_selectedBoard == "Academic") {
+                      matchesCategory = club.category == ClubCategory.academic;
                     } else {
                       matchesCategory = false;
                     }

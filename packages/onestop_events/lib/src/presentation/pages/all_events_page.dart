@@ -76,6 +76,19 @@ class _AllEventsPageState extends State<AllEventsPage> {
         ],
       ),
       body: BlocConsumer<EventsBloc, EventsState>(
+        listenWhen: (previous, current) {
+          final prevError = previous.maybeWhen(
+            loaded: (_, __, ___, ____, err) => err,
+            error: (err) => err,
+            orElse: () => null,
+          );
+          final currError = current.maybeWhen(
+            loaded: (_, __, ___, ____, err) => err,
+            error: (err) => err,
+            orElse: () => null,
+          );
+          return currError != null && currError != prevError;
+        },
         listener: (context, state) {
           state.whenOrNull(
             error: (message) => _showErrorSnackbar(context, message),

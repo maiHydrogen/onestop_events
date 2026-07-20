@@ -45,7 +45,7 @@ class ClubsBloc extends Bloc<ClubsEvent, ClubsState> {
     final currentState = state as _Loaded;
     if (currentState.hasReachedMax) return;
 
-    emit(currentState.copyWith(isLoadingMore: true));
+    emit(currentState.copyWith(isLoadingMore: true, loadMoreError: null));
     try {
       final nextPage = currentState.currentPage + 1;
       final newClubs =
@@ -56,6 +56,7 @@ class ClubsBloc extends Bloc<ClubsEvent, ClubsState> {
         currentPage: nextPage,
         hasReachedMax: hasReachedMax,
         isLoadingMore: false,
+        loadMoreError: null,
       ));
     } catch (e) {
       emit(currentState.copyWith(

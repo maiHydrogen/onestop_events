@@ -50,19 +50,25 @@ class MockAdminRepository implements IAdminRepository {
 
   @override
   Future<List<EventModel>> getDrafts({int page = 1, int limit = 10}) async {
+    final sanitizedPage = page < 1 ? 1 : page;
+    final sanitizedLimit = limit < 1 ? 10 : limit;
+
     await Future.delayed(const Duration(milliseconds: 800));
-    final start = (page - 1) * limit;
+    final start = (sanitizedPage - 1) * sanitizedLimit;
     if (start >= _drafts.length) return [];
-    final end = (start + limit).clamp(0, _drafts.length);
+    final end = (start + sanitizedLimit).clamp(0, _drafts.length);
     return List.unmodifiable(_drafts.sublist(start, end));
   }
 
   @override
   Future<List<EventModel>> getPastEvents({int page = 1, int limit = 10}) async {
+    final sanitizedPage = page < 1 ? 1 : page;
+    final sanitizedLimit = limit < 1 ? 10 : limit;
+
     await Future.delayed(const Duration(milliseconds: 800));
-    final start = (page - 1) * limit;
+    final start = (sanitizedPage - 1) * sanitizedLimit;
     if (start >= _pastEvents.length) return [];
-    final end = (start + limit).clamp(0, _pastEvents.length);
+    final end = (start + sanitizedLimit).clamp(0, _pastEvents.length);
     return List.unmodifiable(_pastEvents.sublist(start, end));
   }
 }

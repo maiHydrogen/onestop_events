@@ -74,17 +74,56 @@ class MockClubsRepository implements IClubsRepository {
       category: ClubCategory.technical,
       logoUrl: 'https://dummyimage.com/100x100/000/fff&text=AI+ML',
     ),
+    const ClubModel(
+      id: 'c11',
+      name: 'Youth Red Cross Welfare',
+      description: 'Welfare activities, blood donation drives, and disaster relief management.',
+      category: ClubCategory.welfare,
+      logoUrl: 'https://dummyimage.com/100x100/000/fff&text=Welfare',
+    ),
+    const ClubModel(
+      id: 'c12',
+      name: 'Hostel Affairs Board',
+      description: 'Coordinating student accommodation, mess facilities, and inter-hostel events.',
+      category: ClubCategory.hostelAffairs,
+      logoUrl: 'https://dummyimage.com/100x100/000/fff&text=HAB',
+    ),
+    const ClubModel(
+      id: 'c13',
+      name: 'Student Alumni Interaction Linkage (SAIL)',
+      description: 'Promoting interaction between alumni and students of IITG.',
+      category: ClubCategory.sail,
+      logoUrl: 'https://dummyimage.com/100x100/000/fff&text=SAIL',
+    ),
+    const ClubModel(
+      id: 'c14',
+      name: 'Students Web Committee (SWC)',
+      description: 'Developing and maintaining web applications for the campus community.',
+      category: ClubCategory.swc,
+      logoUrl: 'https://dummyimage.com/100x100/000/fff&text=SWC',
+    ),
+    const ClubModel(
+      id: 'c15',
+      name: 'Academic Affairs Board',
+      description: 'Handling academic representation, curriculum feedback, and peer tutoring programs.',
+      category: ClubCategory.academic,
+      logoUrl: 'https://dummyimage.com/100x100/000/fff&text=AAB',
+    ),
   ];
 
   @override
   Future<List<ClubModel>> getClubs({int page = 1, int limit = 20}) async {
+    // Validate pagination parameters to prevent RangeError/Index bounds crashes
+    final sanitizedPage = page < 1 ? 1 : page;
+    final sanitizedLimit = limit < 1 ? 20 : limit;
+
     // Simulate a network delay
     await Future.delayed(const Duration(milliseconds: 1200));
 
-    final start = (page - 1) * limit;
+    final start = (sanitizedPage - 1) * sanitizedLimit;
     if (start >= _allClubs.length) return [];
 
-    final end = (start + limit).clamp(0, _allClubs.length);
+    final end = (start + sanitizedLimit).clamp(0, _allClubs.length);
     return List.unmodifiable(_allClubs.sublist(start, end));
   }
 

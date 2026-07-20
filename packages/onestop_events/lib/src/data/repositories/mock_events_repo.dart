@@ -141,13 +141,17 @@ class MockEventsRepository implements IEventsRepository {
 
   @override
   Future<List<EventModel>> getEvents({int page = 1, int limit = 10}) async {
+    // Validate pagination parameters to prevent RangeError/Index bounds crashes
+    final sanitizedPage = page < 1 ? 1 : page;
+    final sanitizedLimit = limit < 1 ? 10 : limit;
+
     // Simulate a realistic network delay
     await Future.delayed(const Duration(seconds: 1));
 
-    final start = (page - 1) * limit;
+    final start = (sanitizedPage - 1) * sanitizedLimit;
     if (start >= _allEvents.length) return [];
 
-    final end = (start + limit).clamp(0, _allEvents.length);
+    final end = (start + sanitizedLimit).clamp(0, _allEvents.length);
     return List.unmodifiable(_allEvents.sublist(start, end));
   }
 
@@ -174,6 +178,12 @@ class MockEventsRepository implements IEventsRepository {
 
   @override
   Future<EventModel> createEvent(EventModel event) async {
+    // Check for duplicate ID
+    final duplicateExists = _allEvents.any((e) => e.id == event.id);
+    if (duplicateExists) {
+      throw Exception('Duplicate ID: Event with ID ${event.id} already exists.');
+    }
+
     await Future.delayed(const Duration(seconds: 1));
     _allEvents.add(event);
     return event;
@@ -194,7 +204,11 @@ class MockEventsRepository implements IEventsRepository {
   @override
   Future<void> deleteEvent(String eventId) async {
     await Future.delayed(const Duration(milliseconds: 600));
+    final initialLength = _allEvents.length;
     _allEvents.removeWhere((e) => e.id == eventId);
+    if (_allEvents.length == initialLength) {
+      throw Exception('Event not found: $eventId');
+    }
   }
 
   @override

@@ -25,7 +25,12 @@ Map<String, dynamic> _$$ClubModelImplToJson(_$ClubModelImpl instance) =>
     };
 
 const _$ClubCategoryEnumMap = {
+  ClubCategory.welfare: 'welfare',
   ClubCategory.technical: 'technical',
   ClubCategory.cultural: 'cultural',
   ClubCategory.sports: 'sports',
+  ClubCategory.hostelAffairs: 'hostelAffairs',
+  ClubCategory.sail: 'sail',
+  ClubCategory.swc: 'swc',
+  ClubCategory.academic: 'academic',
 };

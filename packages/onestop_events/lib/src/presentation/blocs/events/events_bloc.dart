@@ -46,8 +46,8 @@ class EventsBloc extends Bloc<EventsEvent, EventsState> {
     final currentState = state as _Loaded;
     if (currentState.hasReachedMax) return;
 
-    // Emit same state but signal we are loading more
-    emit(currentState.copyWith(isLoadingMore: true));
+    // Emit same state but signal we are loading more, clearing any previous error
+    emit(currentState.copyWith(isLoadingMore: true, loadMoreError: null));
     try {
       final nextPage = currentState.currentPage + 1;
       final newEvents =
@@ -58,6 +58,7 @@ class EventsBloc extends Bloc<EventsEvent, EventsState> {
         currentPage: nextPage,
         hasReachedMax: hasReachedMax,
         isLoadingMore: false,
+        loadMoreError: null,
       ));
     } catch (e) {
       // On error, reset isLoadingMore and emit an error message signal
@@ -88,9 +89,24 @@ class EventsBloc extends Bloc<EventsEvent, EventsState> {
       // Perform the actual repository task
       await _repository.toggleBookmark(event.eventId);
     } catch (e) {
-      // Revert to old state and signal error
-      emit(currentState.copyWith(loadMoreError: 'Failed to update bookmark.'));
-      emit(currentState.copyWith(loadMoreError: null)); // clear signal
+      // Revert based on the LATEST state to avoid discarding pages loaded in the meantime
+      if (state is _Loaded) {
+        final latestState = state as _Loaded;
+        final revertedEvents = latestState.events.map((e) {
+          if (e.id == event.eventId) {
+            return e.copyWith(isBookmarked: !e.isBookmarked);
+          }
+          return e;
+        }).toList();
+        emit(latestState.copyWith(
+          events: revertedEvents,
+          loadMoreError: 'Failed to update bookmark.',
+        ));
+        emit(latestState.copyWith(
+          events: revertedEvents,
+          loadMoreError: null,
+        ));
+      }
     }
   }
 }
