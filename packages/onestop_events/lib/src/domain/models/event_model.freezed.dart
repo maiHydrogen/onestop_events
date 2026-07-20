@@ -30,6 +30,13 @@ mixin _$EventModel {
   String? get imageUrl =>
       throw _privateConstructorUsedError; // Default values are great for flags like this
   bool get isBookmarked => throw _privateConstructorUsedError;
+  bool get isRegistered => throw _privateConstructorUsedError;
+  bool get isDraft => throw _privateConstructorUsedError;
+  String? get boardName => throw _privateConstructorUsedError;
+  List<String> get guestNames => throw _privateConstructorUsedError;
+  List<String> get guestRoles => throw _privateConstructorUsedError;
+  List<String> get pocNames => throw _privateConstructorUsedError;
+  List<String> get pocRoles => throw _privateConstructorUsedError;
 
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
   @JsonKey(ignore: true)
@@ -51,7 +58,14 @@ abstract class $EventModelCopyWith<$Res> {
       DateTime endTime,
       String venue,
       String? imageUrl,
-      bool isBookmarked});
+      bool isBookmarked,
+      bool isRegistered,
+      bool isDraft,
+      String? boardName,
+      List<String> guestNames,
+      List<String> guestRoles,
+      List<String> pocNames,
+      List<String> pocRoles});
 }
 
 /// @nodoc
@@ -75,6 +89,13 @@ class _$EventModelCopyWithImpl<$Res, $Val extends EventModel>
     Object? venue = null,
     Object? imageUrl = freezed,
     Object? isBookmarked = null,
+    Object? isRegistered = null,
+    Object? isDraft = null,
+    Object? boardName = freezed,
+    Object? guestNames = null,
+    Object? guestRoles = null,
+    Object? pocNames = null,
+    Object? pocRoles = null,
   }) {
     return _then(_value.copyWith(
       id: null == id
@@ -109,6 +130,34 @@ class _$EventModelCopyWithImpl<$Res, $Val extends EventModel>
           ? _value.isBookmarked
           : isBookmarked // ignore: cast_nullable_to_non_nullable
               as bool,
+      isRegistered: null == isRegistered
+          ? _value.isRegistered
+          : isRegistered // ignore: cast_nullable_to_non_nullable
+              as bool,
+      isDraft: null == isDraft
+          ? _value.isDraft
+          : isDraft // ignore: cast_nullable_to_non_nullable
+              as bool,
+      boardName: freezed == boardName
+          ? _value.boardName
+          : boardName // ignore: cast_nullable_to_non_nullable
+              as String?,
+      guestNames: null == guestNames
+          ? _value.guestNames
+          : guestNames // ignore: cast_nullable_to_non_nullable
+              as List<String>,
+      guestRoles: null == guestRoles
+          ? _value.guestRoles
+          : guestRoles // ignore: cast_nullable_to_non_nullable
+              as List<String>,
+      pocNames: null == pocNames
+          ? _value.pocNames
+          : pocNames // ignore: cast_nullable_to_non_nullable
+              as List<String>,
+      pocRoles: null == pocRoles
+          ? _value.pocRoles
+          : pocRoles // ignore: cast_nullable_to_non_nullable
+              as List<String>,
     ) as $Val);
   }
 }
@@ -129,7 +178,14 @@ abstract class _$$EventModelImplCopyWith<$Res>
       DateTime endTime,
       String venue,
       String? imageUrl,
-      bool isBookmarked});
+      bool isBookmarked,
+      bool isRegistered,
+      bool isDraft,
+      String? boardName,
+      List<String> guestNames,
+      List<String> guestRoles,
+      List<String> pocNames,
+      List<String> pocRoles});
 }
 
 /// @nodoc
@@ -151,6 +207,13 @@ class __$$EventModelImplCopyWithImpl<$Res>
     Object? venue = null,
     Object? imageUrl = freezed,
     Object? isBookmarked = null,
+    Object? isRegistered = null,
+    Object? isDraft = null,
+    Object? boardName = freezed,
+    Object? guestNames = null,
+    Object? guestRoles = null,
+    Object? pocNames = null,
+    Object? pocRoles = null,
   }) {
     return _then(_$EventModelImpl(
       id: null == id
@@ -185,6 +248,34 @@ class __$$EventModelImplCopyWithImpl<$Res>
           ? _value.isBookmarked
           : isBookmarked // ignore: cast_nullable_to_non_nullable
               as bool,
+      isRegistered: null == isRegistered
+          ? _value.isRegistered
+          : isRegistered // ignore: cast_nullable_to_non_nullable
+              as bool,
+      isDraft: null == isDraft
+          ? _value.isDraft
+          : isDraft // ignore: cast_nullable_to_non_nullable
+              as bool,
+      boardName: freezed == boardName
+          ? _value.boardName
+          : boardName // ignore: cast_nullable_to_non_nullable
+              as String?,
+      guestNames: null == guestNames
+          ? _value._guestNames
+          : guestNames // ignore: cast_nullable_to_non_nullable
+              as List<String>,
+      guestRoles: null == guestRoles
+          ? _value._guestRoles
+          : guestRoles // ignore: cast_nullable_to_non_nullable
+              as List<String>,
+      pocNames: null == pocNames
+          ? _value._pocNames
+          : pocNames // ignore: cast_nullable_to_non_nullable
+              as List<String>,
+      pocRoles: null == pocRoles
+          ? _value._pocRoles
+          : pocRoles // ignore: cast_nullable_to_non_nullable
+              as List<String>,
     ));
   }
 }
@@ -200,7 +291,18 @@ class _$EventModelImpl implements _EventModel {
       required this.endTime,
       required this.venue,
       this.imageUrl,
-      this.isBookmarked = false});
+      this.isBookmarked = false,
+      this.isRegistered = false,
+      this.isDraft = false,
+      this.boardName,
+      final List<String> guestNames = const [],
+      final List<String> guestRoles = const [],
+      final List<String> pocNames = const [],
+      final List<String> pocRoles = const []})
+      : _guestNames = guestNames,
+        _guestRoles = guestRoles,
+        _pocNames = pocNames,
+        _pocRoles = pocRoles;
 
   factory _$EventModelImpl.fromJson(Map<String, dynamic> json) =>
       _$$EventModelImplFromJson(json);
@@ -224,10 +326,53 @@ class _$EventModelImpl implements _EventModel {
   @override
   @JsonKey()
   final bool isBookmarked;
+  @override
+  @JsonKey()
+  final bool isRegistered;
+  @override
+  @JsonKey()
+  final bool isDraft;
+  @override
+  final String? boardName;
+  final List<String> _guestNames;
+  @override
+  @JsonKey()
+  List<String> get guestNames {
+    if (_guestNames is EqualUnmodifiableListView) return _guestNames;
+    // ignore: implicit_dynamic_type
+    return EqualUnmodifiableListView(_guestNames);
+  }
+
+  final List<String> _guestRoles;
+  @override
+  @JsonKey()
+  List<String> get guestRoles {
+    if (_guestRoles is EqualUnmodifiableListView) return _guestRoles;
+    // ignore: implicit_dynamic_type
+    return EqualUnmodifiableListView(_guestRoles);
+  }
+
+  final List<String> _pocNames;
+  @override
+  @JsonKey()
+  List<String> get pocNames {
+    if (_pocNames is EqualUnmodifiableListView) return _pocNames;
+    // ignore: implicit_dynamic_type
+    return EqualUnmodifiableListView(_pocNames);
+  }
+
+  final List<String> _pocRoles;
+  @override
+  @JsonKey()
+  List<String> get pocRoles {
+    if (_pocRoles is EqualUnmodifiableListView) return _pocRoles;
+    // ignore: implicit_dynamic_type
+    return EqualUnmodifiableListView(_pocRoles);
+  }
 
   @override
   String toString() {
-    return 'EventModel(id: $id, title: $title, description: $description, startTime: $startTime, endTime: $endTime, venue: $venue, imageUrl: $imageUrl, isBookmarked: $isBookmarked)';
+    return 'EventModel(id: $id, title: $title, description: $description, startTime: $startTime, endTime: $endTime, venue: $venue, imageUrl: $imageUrl, isBookmarked: $isBookmarked, isRegistered: $isRegistered, isDraft: $isDraft, boardName: $boardName, guestNames: $guestNames, guestRoles: $guestRoles, pocNames: $pocNames, pocRoles: $pocRoles)';
   }
 
   @override
@@ -246,13 +391,39 @@ class _$EventModelImpl implements _EventModel {
             (identical(other.imageUrl, imageUrl) ||
                 other.imageUrl == imageUrl) &&
             (identical(other.isBookmarked, isBookmarked) ||
-                other.isBookmarked == isBookmarked));
+                other.isBookmarked == isBookmarked) &&
+            (identical(other.isRegistered, isRegistered) ||
+                other.isRegistered == isRegistered) &&
+            (identical(other.isDraft, isDraft) || other.isDraft == isDraft) &&
+            (identical(other.boardName, boardName) ||
+                other.boardName == boardName) &&
+            const DeepCollectionEquality()
+                .equals(other._guestNames, _guestNames) &&
+            const DeepCollectionEquality()
+                .equals(other._guestRoles, _guestRoles) &&
+            const DeepCollectionEquality().equals(other._pocNames, _pocNames) &&
+            const DeepCollectionEquality().equals(other._pocRoles, _pocRoles));
   }
 
   @JsonKey(ignore: true)
   @override
-  int get hashCode => Object.hash(runtimeType, id, title, description,
-      startTime, endTime, venue, imageUrl, isBookmarked);
+  int get hashCode => Object.hash(
+      runtimeType,
+      id,
+      title,
+      description,
+      startTime,
+      endTime,
+      venue,
+      imageUrl,
+      isBookmarked,
+      isRegistered,
+      isDraft,
+      boardName,
+      const DeepCollectionEquality().hash(_guestNames),
+      const DeepCollectionEquality().hash(_guestRoles),
+      const DeepCollectionEquality().hash(_pocNames),
+      const DeepCollectionEquality().hash(_pocRoles));
 
   @JsonKey(ignore: true)
   @override
@@ -277,7 +448,14 @@ abstract class _EventModel implements EventModel {
       required final DateTime endTime,
       required final String venue,
       final String? imageUrl,
-      final bool isBookmarked}) = _$EventModelImpl;
+      final bool isBookmarked,
+      final bool isRegistered,
+      final bool isDraft,
+      final String? boardName,
+      final List<String> guestNames,
+      final List<String> guestRoles,
+      final List<String> pocNames,
+      final List<String> pocRoles}) = _$EventModelImpl;
 
   factory _EventModel.fromJson(Map<String, dynamic> json) =
       _$EventModelImpl.fromJson;
@@ -298,6 +476,20 @@ abstract class _EventModel implements EventModel {
   String? get imageUrl;
   @override // Default values are great for flags like this
   bool get isBookmarked;
+  @override
+  bool get isRegistered;
+  @override
+  bool get isDraft;
+  @override
+  String? get boardName;
+  @override
+  List<String> get guestNames;
+  @override
+  List<String> get guestRoles;
+  @override
+  List<String> get pocNames;
+  @override
+  List<String> get pocRoles;
   @override
   @JsonKey(ignore: true)
   _$$EventModelImplCopyWith<_$EventModelImpl> get copyWith =>

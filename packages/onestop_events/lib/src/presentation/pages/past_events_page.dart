@@ -94,7 +94,7 @@ class PastEventsPage extends StatelessWidget {
                 style: OutlinedButton.styleFrom(
                   foregroundColor: OColor.green600,
                   side: BorderSide(color: OColor.green600),
-                  shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
+                  shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
                 ),
                 child: const Text("Submit a Feedback"),
               ),

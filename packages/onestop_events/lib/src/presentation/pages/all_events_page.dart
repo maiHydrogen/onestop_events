@@ -19,6 +19,7 @@ class _AllEventsPageState extends State<AllEventsPage> {
   late TextEditingController _searchController;
   String _searchQuery = "";
   DateTime _selectedCalendarDate = DateTime.now();
+  String _selectedFilter = "All";
 
   @override
   void initState() {
@@ -141,12 +142,27 @@ class _AllEventsPageState extends State<AllEventsPage> {
                          e.startTime.month == _selectedCalendarDate.month &&
                          e.startTime.day == _selectedCalendarDate.day;
                 }
-                return e.title
-                        .toLowerCase()
-                        .contains(_searchQuery.toLowerCase()) ||
-                    e.description
-                        .toLowerCase()
-                        .contains(_searchQuery.toLowerCase());
+                
+                // Text search
+                final matchesSearch = e.title.toLowerCase().contains(_searchQuery.toLowerCase()) ||
+                                      e.description.toLowerCase().contains(_searchQuery.toLowerCase());
+                if (!matchesSearch) return false;
+                
+                // Chip filter
+                if (_selectedFilter == "Today") {
+                  final now = DateTime.now();
+                  return e.startTime.year == now.year && e.startTime.month == now.month && e.startTime.day == now.day;
+                } else if (_selectedFilter == "This Week") {
+                  final now = DateTime.now();
+                  final endOfWeek = now.add(Duration(days: 7 - now.weekday));
+                  return e.startTime.isAfter(now.subtract(const Duration(days: 1))) && e.startTime.isBefore(endOfWeek);
+                } else if (_selectedFilter == "Tech") {
+                  return e.title.toLowerCase().contains("tech") || e.description.toLowerCase().contains("tech");
+                } else if (_selectedFilter == "Cultural") {
+                  return e.title.toLowerCase().contains("cultural") || e.description.toLowerCase().contains("cultural");
+                }
+                
+                return true;
               }).toList();
 
               return Column(
@@ -162,11 +178,15 @@ class _AllEventsPageState extends State<AllEventsPage> {
                           scrollDirection: Axis.horizontal,
                           child: Row(
                             children: [
-                              _buildFilterChip("Type", true),
+                              _buildFilterChip("All"),
                               const SizedBox(width: 8),
-                              _buildFilterChip("Organiser", true),
+                              _buildFilterChip("Today"),
                               const SizedBox(width: 8),
-                              _buildFilterChip("Tech", false, onClose: () {}),
+                              _buildFilterChip("This Week"),
+                              const SizedBox(width: 8),
+                              _buildFilterChip("Tech"),
+                              const SizedBox(width: 8),
+                              _buildFilterChip("Cultural"),
                             ],
                           ),
                         ),
@@ -291,20 +311,37 @@ class _AllEventsPageState extends State<AllEventsPage> {
     );
   }
 
-  Widget _buildFilterChip(String label, bool isDropdown, {VoidCallback? onClose}) {
-    return Container(
-      padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
-      decoration: BoxDecoration(
-        color: OColor.gray200,
-        borderRadius: BorderRadius.circular(16),
-      ),
-      child: Row(
-        mainAxisSize: MainAxisSize.min,
-        children: [
-          OText(text: label, style: OTextStyle.labelMedium.copyWith(color: OColor.gray800)),
-          const SizedBox(width: 4),
-          Icon(isDropdown ? TablerIcons.chevron_down : TablerIcons.x, size: 16, color: OColor.gray800),
-        ],
+  Widget _buildFilterChip(String label) {
+    final isActive = _selectedFilter == label;
+    return GestureDetector(
+      onTap: () {
+        setState(() {
+          _selectedFilter = label;
+        });
+      },
+      child: Container(
+        padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 8),
+        decoration: BoxDecoration(
+          color: isActive ? OColor.green600 : OColor.white,
+          borderRadius: BorderRadius.circular(16),
+          border: isActive ? null : Border.all(color: OColor.gray300),
+        ),
+        child: Row(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            OText(
+              text: label,
+              style: OTextStyle.labelMedium.copyWith(color: isActive ? OColor.white : OColor.gray600),
+            ),
+            if (!isActive) ...[
+              const SizedBox(width: 4),
+              Icon(TablerIcons.chevron_down, size: 16, color: OColor.gray600),
+            ] else ...[
+              const SizedBox(width: 4),
+              Icon(TablerIcons.x, size: 16, color: OColor.white),
+            ],
+          ],
+        ),
       ),
     );
   }

@@ -10,17 +10,7 @@ class AdminUploadPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: OColor.gray100,
-      appBar: AppBar(
-        title: OText(
-          text: "Upload Event",
-          style: OTextStyle.headingSmall.copyWith(color: OColor.gray800),
-        ),
-        backgroundColor: OColor.white,
-        iconTheme: IconThemeData(color: OColor.gray800),
-        elevation: 0,
-      ),
-      body: const AddEventWizard(),
+      body: SafeArea(child: const AddEventWizard()),
     );
   }
 }
-

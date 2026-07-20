@@ -10,8 +10,7 @@ import '../../widgets/horizontal_lists_builder.dart';
 import '../../widgets/event_details_sheet.dart';
 import '../../widgets/paginated_list_view.dart';
 import '../blocs/events/events_bloc.dart';
-import '../../core/di/injection_container.dart';
-import '../../core/models/admin_flag.dart';
+
 
 class EventsFeedPage extends StatefulWidget {
   const EventsFeedPage({super.key});
@@ -178,48 +177,35 @@ class _EventsFeedPageState extends State<EventsFeedPage> {
                             date: _formatHeaderDate(now),
                             header: 'Events',
                           ),
-                          const SizedBox(height: OSpacing.xs),
+                          const SizedBox(height: 36),
                           OSearchBar(controller: _searchController),
-                          const SizedBox(height: OSpacing.xs),
-                          SingleChildScrollView(
-                            scrollDirection: Axis.horizontal,
+                          const SizedBox(height: OSpacing.s),
+                          Padding(
                             padding: const EdgeInsets.symmetric(
                               horizontal: OSpacing.xs,
                             ),
-                            child: ListenableBuilder(
-                              listenable: sl<AdminFlag>(),
-                              builder: (context, _) {
-                                final isAdmin = sl<AdminFlag>().isAdmin;
-                                return Row(
-                                  children: [
-                                    AllEventsButton(
-                                      onPressed: () {
-                                        context.push('/all-events');
-                                      },
-                                      eventNumber: events.length.toString(),
-                                    ),
-                                    const SizedBox(width: OSpacing.s),
-                                    SavedEventsButton(
-                                      onPressed: () {
-                                        context.push('/saved-events');
-                                      },
-                                    ),
-                                    if (isAdmin) ...[
-                                      const SizedBox(width: OSpacing.s),
-                                      TertiaryButton(
-                                        label: "Upload",
-                                        onPressed: () =>
-                                            context.push('/admin-upload'),
-                                        leadingIcon: TablerIcons.plus,
-                                        iconColor: OColor.green600,
-                                      ),
-                                    ],
-                                  ],
-                                );
-                              },
+                            child: Row(
+                              children: [
+                                Expanded(
+                                  child: AllEventsButton(
+                                    onPressed: () {
+                                      context.push('/all-events');
+                                    },
+                                    eventNumber: events.length.toString(),
+                                  ),
+                                ),
+                                const SizedBox(width: OSpacing.s),
+                                Expanded(
+                                  child: SavedEventsButton(
+                                    onPressed: () {
+                                      context.push('/saved-events');
+                                    },
+                                  ),
+                                ),
+                              ],
                             ),
                           ),
-                          const SizedBox(height: OSpacing.m),
+                          const SizedBox(height: 32),
                         ],
                       ),
                     ),
@@ -233,7 +219,7 @@ class _EventsFeedPageState extends State<EventsFeedPage> {
                         ),
                       ),
                       SliverToBoxAdapter(
-                        child: buildHorizontalList(context, todaySectionEvents),
+                        child: buildVerticalSmallList(context, todaySectionEvents),
                       ),
 
                       // --- TRENDING EVENTS ---
@@ -258,7 +244,10 @@ class _EventsFeedPageState extends State<EventsFeedPage> {
                         ),
                       ),
                       SliverToBoxAdapter(
-                        child: buildHorizontalList(context, attendedEvents),
+                        child: buildHorizontalCompactList(context, attendedEvents),
+                      ),
+                      const SliverToBoxAdapter(
+                        child: SizedBox(height: 32),
                       ),
                     ],
 

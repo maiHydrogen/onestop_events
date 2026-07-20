@@ -18,6 +18,13 @@ class EventModel with _$EventModel {
     String? imageUrl,
     // Default values are great for flags like this
     @Default(false) bool isBookmarked,
+    @Default(false) bool isRegistered,
+    @Default(false) bool isDraft,
+    String? boardName,
+    @Default([]) List<String> guestNames,
+    @Default([]) List<String> guestRoles,
+    @Default([]) List<String> pocNames,
+    @Default([]) List<String> pocRoles,
   }) = _EventModel;
 
   // This single line tells Freezed to wire up the JSON serialization.

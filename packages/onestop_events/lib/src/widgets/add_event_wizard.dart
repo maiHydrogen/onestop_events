@@ -309,85 +309,96 @@ class _AddEventWizardState extends State<AddEventWizard> {
   }
 
   Widget _buildStepIndicator() {
-    return Container(
-      color: Colors.white,
-      padding: const EdgeInsets.symmetric(vertical: 16, horizontal: 8),
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-        children: List.generate(_totalSteps, (index) {
-          final isCompleted = index < _currentStep;
-          final isActive = index == _currentStep;
+    final stepLabels = ["BASIC", "SCHEDULE", "DETAILS", "GUESTS", "POCS", "PREVIEW"];
 
-          return Row(
-            children: [
-              Column(
-                mainAxisSize: MainAxisSize.min,
-                children: [
-                  CircleAvatar(
-                    radius: 16,
-                    backgroundColor: isCompleted
-                        ? OColor.green600
-                        : isActive
-                            ? OColor.green600
-                            : OColor.gray200,
-                    child: isCompleted
-                        ? const Icon(TablerIcons.check, size: 16, color: Colors.white)
-                        : Text(
-                            "${index + 1}",
-                            style: TextStyle(
-                              color: isActive || isCompleted ? Colors.white : OColor.gray600,
-                              fontWeight: FontWeight.bold,
-                              fontSize: 12,
-                            ),
-                          ),
-                  ),
-                  const SizedBox(height: 4),
-                  Text(
-                    _getStepTitle(index),
-                    style: TextStyle(
-                      fontSize: 10,
-                      fontWeight: isActive ? FontWeight.bold : FontWeight.normal,
-                      color: isActive
-                          ? OColor.green600
-                          : isCompleted
-                              ? OColor.green700
-                              : OColor.gray500,
-                    ),
-                  ),
-                ],
-              ),
-              if (index < _totalSteps - 1)
-                Container(
-                  width: MediaQuery.of(context).size.width * 0.04,
-                  height: 2,
-                  color: isCompleted ? OColor.green600 : OColor.gray200,
-                  margin: const EdgeInsets.only(bottom: 12, left: 4, right: 4),
+    return Container(
+      color: OColor.white,
+      child: Column(
+        children: [
+          // Back button row + title
+          Padding(
+            padding: const EdgeInsets.fromLTRB(4, 8, 16, 8),
+            child: Row(
+              children: [
+                IconButton(
+                  onPressed: () => Navigator.pop(context),
+                  icon: Icon(TablerIcons.x, size: 24, color: OColor.green600),
                 ),
-            ],
-          );
-        }),
+                const Spacer(),
+                OText(
+                  text: "Upload Event",
+                  style: OTextStyle.labelLarge.copyWith(color: OColor.gray800),
+                ),
+                const Spacer(),
+                const SizedBox(width: 48),
+              ],
+            ),
+          ),
+          // Progress step nodes
+          Padding(
+            padding: const EdgeInsets.fromLTRB(16, 0, 16, 16),
+            child: Row(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: List.generate(_totalSteps * 2 - 1, (i) {
+                final isLine = i.isOdd;
+                if (isLine) {
+                  final stepIndex = i ~/ 2;
+                  final completed = stepIndex < _currentStep;
+                  return Expanded(
+                    child: Padding(
+                      padding: const EdgeInsets.only(top: 12),
+                      child: Container(
+                        height: 2,
+                        color: completed ? OColor.green600 : OColor.gray200,
+                      ),
+                    ),
+                  );
+                }
+                final stepIndex = i ~/ 2;
+                final isCompleted = stepIndex < _currentStep;
+                final isActive = stepIndex == _currentStep;
+                return Column(
+                  children: [
+                    Container(
+                      width: 24,
+                      height: 24,
+                      decoration: BoxDecoration(
+                        shape: BoxShape.circle,
+                        color: (isActive || isCompleted) ? OColor.green600 : OColor.gray200,
+                      ),
+                      child: Center(
+                        child: isCompleted
+                            ? const Icon(TablerIcons.check, size: 14, color: Colors.white)
+                            : Text(
+                                "${stepIndex + 1}",
+                                style: TextStyle(
+                                  fontSize: 12,
+                                  fontWeight: FontWeight.w600,
+                                  color: isActive ? OColor.white : OColor.gray800,
+                                ),
+                              ),
+                      ),
+                    ),
+                    const SizedBox(height: 4),
+                    Text(
+                      stepLabels[stepIndex],
+                      style: TextStyle(
+                        fontSize: 9,
+                        fontWeight: FontWeight.w600,
+                        color: (isActive || isCompleted) ? OColor.gray800 : OColor.gray500,
+                        letterSpacing: 0.4,
+                      ),
+                    ),
+                  ],
+                );
+              }),
+            ),
+          ),
+        ],
       ),
     );
   }
 
-  String _getStepTitle(int index) {
-    switch (index) {
-      case 0:
-        return "Basic";
-      case 1:
-        return "Schedule";
-      case 2:
-        return "Details";
-      case 3:
-        return "Guests";
-      case 4:
-        return "POCs";
-      case 5:
-        return "Preview";
-      default:
-        return "";
-    }
-  }
 
   Widget _buildCurrentStepContent() {
     switch (_currentStep) {
@@ -955,42 +966,82 @@ class _AddEventWizardState extends State<AddEventWizard> {
     final isLastStep = _currentStep == _totalSteps - 1;
 
     return Container(
-      padding: const EdgeInsets.all(20),
+      color: OColor.white,
+      padding: const EdgeInsets.fromLTRB(16, 16, 16, 32),
       decoration: BoxDecoration(
-        color: Colors.white,
+        color: OColor.white,
         boxShadow: [
           BoxShadow(
-            color: Colors.black.withValues(alpha: 0.05),
+            color: Colors.black.withValues(alpha: 0.12),
             offset: const Offset(0, -4),
-            blurRadius: 10,
+            blurRadius: 16,
           ),
         ],
       ),
       child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
-          if (_currentStep > 0)
-            OutlinedButton(
-              onPressed: _prevStep,
-              style: OutlinedButton.styleFrom(
-                padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 14),
-                shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
-                side: BorderSide(color: OColor.green600),
-                foregroundColor: OColor.green600,
+          // Back / Cancel
+          Expanded(
+            child: GestureDetector(
+              onTap: _currentStep > 0 ? _prevStep : () => Navigator.pop(context),
+              child: Container(
+                height: 56,
+                decoration: BoxDecoration(
+                  border: Border.all(color: OColor.gray300),
+                  borderRadius: BorderRadius.circular(16),
+                ),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Icon(
+                      _currentStep > 0 ? TablerIcons.arrow_left : TablerIcons.x,
+                      size: 24,
+                      color: OColor.green600,
+                    ),
+                    const SizedBox(width: 8),
+                    OText(
+                      text: _currentStep > 0 ? "Back" : "Cancel",
+                      style: OTextStyle.labelMedium.copyWith(color: OColor.green600),
+                    ),
+                  ],
+                ),
               ),
-              child: const Text("Back"),
-            )
-          else
-            const SizedBox(),
-          ElevatedButton(
-            onPressed: isLastStep ? () => Navigator.pop(context) : _nextStep,
-            style: ElevatedButton.styleFrom(
-              backgroundColor: OColor.green600,
-              foregroundColor: Colors.white,
-              padding: const EdgeInsets.symmetric(horizontal: 28, vertical: 14),
-              shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
             ),
-            child: Text(isLastStep ? "Publish Event" : "Next"),
+          ),
+          const SizedBox(width: 8),
+          // Next / Publish
+          Expanded(
+            child: GestureDetector(
+              onTap: isLastStep ? () => Navigator.pop(context) : _nextStep,
+              child: Container(
+                height: 56,
+                decoration: BoxDecoration(
+                  color: isLastStep ? OColor.green600 : OColor.green200,
+                  borderRadius: BorderRadius.circular(16),
+                  boxShadow: [
+                    BoxShadow(
+                      color: Colors.black.withValues(alpha: 0.04),
+                      blurRadius: 10,
+                    ),
+                  ],
+                ),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    OText(
+                      text: isLastStep ? "Publish" : "Next",
+                      style: OTextStyle.labelMedium.copyWith(color: OColor.white),
+                    ),
+                    const SizedBox(width: 8),
+                    Icon(
+                      isLastStep ? TablerIcons.check : TablerIcons.arrow_right,
+                      size: 24,
+                      color: OColor.white,
+                    ),
+                  ],
+                ),
+              ),
+            ),
           ),
         ],
       ),

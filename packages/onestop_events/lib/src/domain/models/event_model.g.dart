@@ -16,6 +16,25 @@ _$EventModelImpl _$$EventModelImplFromJson(Map<String, dynamic> json) =>
       venue: json['venue'] as String,
       imageUrl: json['imageUrl'] as String?,
       isBookmarked: json['isBookmarked'] as bool? ?? false,
+      isRegistered: json['isRegistered'] as bool? ?? false,
+      isDraft: json['isDraft'] as bool? ?? false,
+      boardName: json['boardName'] as String?,
+      guestNames: (json['guestNames'] as List<dynamic>?)
+              ?.map((e) => e as String)
+              .toList() ??
+          const [],
+      guestRoles: (json['guestRoles'] as List<dynamic>?)
+              ?.map((e) => e as String)
+              .toList() ??
+          const [],
+      pocNames: (json['pocNames'] as List<dynamic>?)
+              ?.map((e) => e as String)
+              .toList() ??
+          const [],
+      pocRoles: (json['pocRoles'] as List<dynamic>?)
+              ?.map((e) => e as String)
+              .toList() ??
+          const [],
     );
 
 Map<String, dynamic> _$$EventModelImplToJson(_$EventModelImpl instance) =>
@@ -28,4 +47,11 @@ Map<String, dynamic> _$$EventModelImplToJson(_$EventModelImpl instance) =>
       'venue': instance.venue,
       'imageUrl': instance.imageUrl,
       'isBookmarked': instance.isBookmarked,
+      'isRegistered': instance.isRegistered,
+      'isDraft': instance.isDraft,
+      'boardName': instance.boardName,
+      'guestNames': instance.guestNames,
+      'guestRoles': instance.guestRoles,
+      'pocNames': instance.pocNames,
+      'pocRoles': instance.pocRoles,
     };

@@ -111,6 +111,28 @@ class ApiEventsRepository implements IEventsRepository {
 
 Implement `IClubsRepository` and `IAdminRepository` similarly.
 
+#### 2.1 JSON Mapping / EventModel Details
+
+Make sure your backend API sends appropriate fields to match the updated `EventModel` properties:
+
+| JSON Key | Type | Description |
+|---|---|---|
+| `id` | String | Unique ID |
+| `title` | String | Event Title |
+| `description` | String | Event Description |
+| `startTime` | String (ISO) | Event Start Time |
+| `endTime` | String (ISO) | Event End Time |
+| `venue` | String | Event Venue |
+| `imageUrl` | String? | Cover Image URL |
+| `isBookmarked` | Bool | Active bookmark/interest status |
+| `isRegistered` | Bool | Active registration status for the user |
+| `isDraft` | Bool | Draft state flag (for drafts feed) |
+| `boardName` | String? | The IITG Board associated with the poster club |
+| `guestNames` | List<String> | Names of Special Guests |
+| `guestRoles` | List<String> | Roles of Special Guests |
+| `pocNames` | List<String> | Point of Contact Names |
+| `pocRoles` | List<String> | Point of Contact Roles |
+
 ---
 
 ### 3. Initialize the Package in `main.dart`

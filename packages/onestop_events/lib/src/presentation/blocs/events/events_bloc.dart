@@ -18,6 +18,9 @@ class EventsBloc extends Bloc<EventsEvent, EventsState> {
     on<_FetchEvents>(_onFetchEvents);
     on<_LoadMoreEvents>(_onLoadMoreEvents);
     on<_ToggleBookmark>(_onToggleBookmark);
+    on<_ToggleRegister>(_onToggleRegister);
+    on<_MarkAsDraft>(_onMarkAsDraft);
+    on<_PublishDraft>(_onPublishDraft);
   }
 
   Future<void> _onFetchEvents(
@@ -108,5 +111,59 @@ class EventsBloc extends Bloc<EventsEvent, EventsState> {
         ));
       }
     }
+  }
+
+  Future<void> _onToggleRegister(
+    _ToggleRegister event,
+    Emitter<EventsState> emit,
+  ) async {
+    if (state is! _Loaded) return;
+    final currentState = state as _Loaded;
+
+    final updatedEvents = currentState.events.map((e) {
+      if (e.id == event.eventId) {
+        return e.copyWith(isRegistered: !e.isRegistered);
+      }
+      return e;
+    }).toList();
+    
+    emit(currentState.copyWith(events: updatedEvents));
+    // In a real app, call _repository.toggleRegister(event.eventId);
+  }
+
+  Future<void> _onMarkAsDraft(
+    _MarkAsDraft event,
+    Emitter<EventsState> emit,
+  ) async {
+    if (state is! _Loaded) return;
+    final currentState = state as _Loaded;
+
+    final updatedEvents = currentState.events.map((e) {
+      if (e.id == event.eventId) {
+        return e.copyWith(isDraft: true);
+      }
+      return e;
+    }).toList();
+    
+    emit(currentState.copyWith(events: updatedEvents));
+    // In a real app, call _repository.markAsDraft(event.eventId);
+  }
+
+  Future<void> _onPublishDraft(
+    _PublishDraft event,
+    Emitter<EventsState> emit,
+  ) async {
+    if (state is! _Loaded) return;
+    final currentState = state as _Loaded;
+
+    final updatedEvents = currentState.events.map((e) {
+      if (e.id == event.eventId) {
+        return e.copyWith(isDraft: false);
+      }
+      return e;
+    }).toList();
+    
+    emit(currentState.copyWith(events: updatedEvents));
+    // In a real app, call _repository.publishDraft(event.eventId);
   }
 }

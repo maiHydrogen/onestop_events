@@ -33,7 +33,7 @@ class EventDetailsSheet extends StatelessWidget {
       height: size.height * 0.9,
       decoration: BoxDecoration(
         color: OColor.white,
-        borderRadius: const BorderRadius.vertical(top: Radius.circular(24)),
+        borderRadius: const BorderRadius.vertical(top: Radius.circular(32)),
       ),
       child: Column(
         children: [
@@ -63,39 +63,62 @@ class EventDetailsSheet extends StatelessWidget {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  // Stats row
-                  Row(
-                    children: [
-                      Icon(TablerIcons.heart, size: 16, color: OColor.green600),
-                      const SizedBox(width: 4),
-                      OText(text: "350 INTERESTED", style: OTextStyle.labelMedium.copyWith(color: OColor.gray500)),
-                      const SizedBox(width: 8),
-                      OText(text: "·", style: OTextStyle.labelMedium.copyWith(color: OColor.gray500)),
-                      const SizedBox(width: 8),
-                      Icon(TablerIcons.eye, size: 16, color: OColor.blue600),
-                      const SizedBox(width: 4),
-                      OText(text: "800 VIEWS", style: OTextStyle.labelMedium.copyWith(color: OColor.gray500)),
-                      const SizedBox(width: 8),
-                      OText(text: "·", style: OTextStyle.labelMedium.copyWith(color: OColor.gray500)),
-                      const SizedBox(width: 8),
-                      Icon(TablerIcons.message, size: 16, color: OColor.gray500),
-                      const SizedBox(width: 4),
-                      OText(text: "37 FEEDBACK", style: OTextStyle.labelMedium.copyWith(color: OColor.gray500)),
-                    ],
-                  ),
-                  const SizedBox(height: 16),
-                  
-                  // Image
+                  // Image and CTAs
                   ClipRRect(
-                    borderRadius: BorderRadius.circular(16),
-                    child: Image.network(
-                      event.imageUrl ?? 'https://dummyimage.com/400x200/000/fff&text=Event',
-                      width: double.infinity,
-                      height: 200,
-                      fit: BoxFit.cover,
+                    borderRadius: BorderRadius.circular(8),
+                    child: AspectRatio(
+                      aspectRatio: 358 / 201,
+                      child: Image.network(
+                        event.imageUrl ?? 'https://dummyimage.com/400x200/000/fff&text=Event',
+                        width: double.infinity,
+                        fit: BoxFit.cover,
+                      ),
                     ),
                   ),
                   const SizedBox(height: 16),
+                  
+                  if (!isAdmin)
+                    Row(
+                      children: [
+                        Expanded(
+                          child: ElevatedButton.icon(
+                            onPressed: () {
+                              context.read<EventsBloc>().add(EventsEvent.toggleRegister(event.id));
+                            },
+                            icon: const Icon(TablerIcons.edit, size: 16),
+                            label: Text(event.isRegistered ? "Registered" : "Register"),
+                            style: ElevatedButton.styleFrom(
+                              backgroundColor: event.isRegistered ? OColor.white : OColor.green600,
+                              foregroundColor: event.isRegistered ? OColor.green600 : OColor.white,
+                              side: event.isRegistered ? BorderSide(color: OColor.green600) : BorderSide.none,
+                              padding: const EdgeInsets.symmetric(vertical: 14),
+                              shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(16),
+                              ),
+                            ),
+                          ),
+                        ),
+                        const SizedBox(width: 12),
+                        Expanded(
+                          child: OutlinedButton.icon(
+                            onPressed: () {
+                              context.read<EventsBloc>().add(EventsEvent.toggleBookmark(event.id));
+                            },
+                            icon: const Icon(TablerIcons.heart_plus, size: 16),
+                            label: Text(event.isBookmarked ? "Interested" : "I'm Interested"),
+                            style: OutlinedButton.styleFrom(
+                              foregroundColor: OColor.green600,
+                              side: BorderSide(color: OColor.gray300),
+                              padding: const EdgeInsets.symmetric(vertical: 14),
+                              shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(16),
+                              ),
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
+                  if (!isAdmin) const SizedBox(height: 16),
                   
                   // Feedback row
                   if (event.endTime.isBefore(DateTime.now())) ...[
@@ -151,9 +174,9 @@ class EventDetailsSheet extends StatelessWidget {
                   // Tags
                   Row(
                     children: [
-                      _buildTag("TAG 1"),
+                      _buildTag("TAG 1", OColor.blue600),
                       const SizedBox(width: 8),
-                      _buildTag("TAG 2"),
+                      _buildTag("TAG 2", OColor.green600),
                     ],
                   ),
                   const SizedBox(height: 16),
@@ -181,42 +204,44 @@ class EventDetailsSheet extends StatelessWidget {
                   const SizedBox(height: 24),
                   
                   // Special Guest (Conditional)
-                  OText(text: "Special Guests", style: OTextStyle.headingSmall.copyWith(fontWeight: FontWeight.bold)),
+                  OText(text: "Special Guest", style: OTextStyle.bodySmall.copyWith(fontWeight: FontWeight.w500, color: OColor.gray600)),
                   const SizedBox(height: 12),
                   SizedBox(
-                    height: 120,
+                    height: 90,
                     child: ListView(
                       scrollDirection: Axis.horizontal,
                       children: [
-                        _buildPersonCard("Elon Musk", "CEO of SpaceX"),
-                        _buildPersonCard("John Doe", "Guest Speaker"),
+                        _buildPersonCard("Nikhil Kamat", "Co Founder, Zerodha"),
+                        _buildPersonCard("Nikhil Kamat", "Co Founder, Zerodha"),
                       ],
                     ),
                   ),
                   const SizedBox(height: 24),
 
                   // Description
-                  OText(text: "Event Description", style: OTextStyle.headingSmall.copyWith(fontWeight: FontWeight.bold)),
-                  const SizedBox(height: 8),
-                  OText(text: event.description, style: OTextStyle.bodyMedium.copyWith(color: OColor.gray600)),
+                  OText(text: "Description", style: OTextStyle.bodySmall.copyWith(fontWeight: FontWeight.w500, color: OColor.gray600)),
+                  const SizedBox(height: 4),
+                  OText(text: event.description, style: OTextStyle.bodyMedium.copyWith(color: OColor.gray800)),
                   const SizedBox(height: 24),
                   
                   // Posted By
                   const Divider(),
-                  const SizedBox(height: 16),
+                  const SizedBox(height: 12),
+                  OText(text: "Posted By", style: OTextStyle.bodySmall.copyWith(fontWeight: FontWeight.w500, color: OColor.gray600)),
+                  const SizedBox(height: 12),
                   Row(
                     children: [
                       CircleAvatar(
-                        radius: 20,
+                        radius: 24,
                         backgroundColor: OColor.gray300,
                         child: Icon(TablerIcons.users, color: OColor.white),
                       ),
-                      const SizedBox(width: 12),
+                      const SizedBox(width: 8),
                       Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          OText(text: "Students' Web Committee", style: OTextStyle.bodyMedium.copyWith(fontWeight: FontWeight.bold)),
-                          OText(text: "Club, Technical Board", style: OTextStyle.bodySmall.copyWith(color: OColor.gray500)),
+                          OText(text: "Students' Web Committee", style: OTextStyle.bodySmall.copyWith(fontWeight: FontWeight.w500, color: OColor.gray800)),
+                          OText(text: "Club, Technical Board", style: OTextStyle.bodySmall.copyWith(fontSize: 12, color: OColor.gray600)),
                         ],
                       ),
                     ],
@@ -224,15 +249,15 @@ class EventDetailsSheet extends StatelessWidget {
                   const SizedBox(height: 24),
                   
                   // POCs
-                  OText(text: "POCs", style: OTextStyle.headingSmall.copyWith(fontWeight: FontWeight.bold)),
+                  OText(text: "POCs", style: OTextStyle.bodySmall.copyWith(fontWeight: FontWeight.w500, color: OColor.gray600)),
                   const SizedBox(height: 12),
                   SizedBox(
-                    height: 120,
+                    height: 90,
                     child: ListView(
                       scrollDirection: Axis.horizontal,
                       children: [
-                        _buildPersonCard("Alice Smith", "Organizer"),
-                        _buildPersonCard("Bob Jones", "Coordinator"),
+                        _buildPersonCard("Ayush Bahuguna", "Events Head"),
+                        _buildPersonCard("Ayush Bahuguna", "Events Head"),
                       ],
                     ),
                   ),
@@ -241,72 +266,40 @@ class EventDetailsSheet extends StatelessWidget {
               ),
             ),
           ),
-          
-          // Bottom CTA
-          Container(
-            padding: const EdgeInsets.all(24),
-            decoration: BoxDecoration(
-              color: OColor.white,
-              boxShadow: [
-                BoxShadow(
-                  color: Colors.black.withValues(alpha: 0.05),
-                  offset: const Offset(0, -4),
-                  blurRadius: 10,
-                ),
-              ],
-            ),
-            child: SizedBox(
-              width: double.infinity,
-              child: ElevatedButton(
-                onPressed: () {
-                  context.read<EventsBloc>().add(EventsEvent.toggleBookmark(event.id));
-                },
-                style: ElevatedButton.styleFrom(
-                  backgroundColor: event.isBookmarked ? OColor.white : OColor.green600,
-                  foregroundColor: event.isBookmarked ? OColor.green600 : OColor.white,
-                  side: BorderSide(color: OColor.green600),
-                  padding: const EdgeInsets.symmetric(vertical: 16),
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(12),
-                  ),
-                ),
-                child: Text(event.isBookmarked ? "Saved" : "I'm Going"),
-              ),
-            ),
-          ),
         ],
       ),
     );
   }
 
-  Widget _buildTag(String text) {
+  Widget _buildTag(String text, Color color) {
     return Container(
-      padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
+      padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
       decoration: BoxDecoration(
-        color: OColor.blue100,
-        borderRadius: BorderRadius.circular(16),
+        color: OColor.gray100,
+        borderRadius: BorderRadius.circular(9999),
       ),
       child: Text(
         text,
-        style: OTextStyle.labelMedium.copyWith(color: OColor.blue600),
+        style: OTextStyle.bodySmall.copyWith(fontSize: 12, fontWeight: FontWeight.w500, color: color),
       ),
     );
   }
 
   Widget _buildPersonCard(String name, String role) {
     return Container(
-      width: 100,
-      margin: const EdgeInsets.only(right: 16),
+      width: 70,
+      margin: const EdgeInsets.only(right: 24),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
-          const CircleAvatar(
-            radius: 30,
-            backgroundImage: NetworkImage('https://dummyimage.com/100x100/000/fff&text=Avatar'),
+          CircleAvatar(
+            radius: 24,
+            backgroundColor: OColor.blue100,
+            child: Icon(TablerIcons.user, color: OColor.blue600),
           ),
           const SizedBox(height: 8),
-          Text(name, style: OTextStyle.bodyMedium.copyWith(fontWeight: FontWeight.bold), maxLines: 1, overflow: TextOverflow.ellipsis, textAlign: TextAlign.center),
-          Text(role, style: OTextStyle.bodySmall.copyWith(color: OColor.gray500), maxLines: 1, overflow: TextOverflow.ellipsis, textAlign: TextAlign.center),
+          Text(name, style: OTextStyle.bodySmall.copyWith(fontWeight: FontWeight.w500, color: OColor.gray800), maxLines: 1, overflow: TextOverflow.ellipsis, textAlign: TextAlign.center),
+          Text(role, style: OTextStyle.bodySmall.copyWith(fontSize: 12, color: OColor.gray600), maxLines: 1, overflow: TextOverflow.ellipsis, textAlign: TextAlign.center),
         ],
       ),
     );

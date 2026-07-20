@@ -716,6 +716,9 @@ mixin _$EventsEvent {
     required TResult Function() fetchEvents,
     required TResult Function() loadMoreEvents,
     required TResult Function(String eventId) toggleBookmark,
+    required TResult Function(String eventId) toggleRegister,
+    required TResult Function(String eventId) markAsDraft,
+    required TResult Function(String eventId) publishDraft,
   }) =>
       throw _privateConstructorUsedError;
   @optionalTypeArgs
@@ -723,6 +726,9 @@ mixin _$EventsEvent {
     TResult? Function()? fetchEvents,
     TResult? Function()? loadMoreEvents,
     TResult? Function(String eventId)? toggleBookmark,
+    TResult? Function(String eventId)? toggleRegister,
+    TResult? Function(String eventId)? markAsDraft,
+    TResult? Function(String eventId)? publishDraft,
   }) =>
       throw _privateConstructorUsedError;
   @optionalTypeArgs
@@ -730,6 +736,9 @@ mixin _$EventsEvent {
     TResult Function()? fetchEvents,
     TResult Function()? loadMoreEvents,
     TResult Function(String eventId)? toggleBookmark,
+    TResult Function(String eventId)? toggleRegister,
+    TResult Function(String eventId)? markAsDraft,
+    TResult Function(String eventId)? publishDraft,
     required TResult orElse(),
   }) =>
       throw _privateConstructorUsedError;
@@ -738,6 +747,9 @@ mixin _$EventsEvent {
     required TResult Function(_FetchEvents value) fetchEvents,
     required TResult Function(_LoadMoreEvents value) loadMoreEvents,
     required TResult Function(_ToggleBookmark value) toggleBookmark,
+    required TResult Function(_ToggleRegister value) toggleRegister,
+    required TResult Function(_MarkAsDraft value) markAsDraft,
+    required TResult Function(_PublishDraft value) publishDraft,
   }) =>
       throw _privateConstructorUsedError;
   @optionalTypeArgs
@@ -745,6 +757,9 @@ mixin _$EventsEvent {
     TResult? Function(_FetchEvents value)? fetchEvents,
     TResult? Function(_LoadMoreEvents value)? loadMoreEvents,
     TResult? Function(_ToggleBookmark value)? toggleBookmark,
+    TResult? Function(_ToggleRegister value)? toggleRegister,
+    TResult? Function(_MarkAsDraft value)? markAsDraft,
+    TResult? Function(_PublishDraft value)? publishDraft,
   }) =>
       throw _privateConstructorUsedError;
   @optionalTypeArgs
@@ -752,6 +767,9 @@ mixin _$EventsEvent {
     TResult Function(_FetchEvents value)? fetchEvents,
     TResult Function(_LoadMoreEvents value)? loadMoreEvents,
     TResult Function(_ToggleBookmark value)? toggleBookmark,
+    TResult Function(_ToggleRegister value)? toggleRegister,
+    TResult Function(_MarkAsDraft value)? markAsDraft,
+    TResult Function(_PublishDraft value)? publishDraft,
     required TResult orElse(),
   }) =>
       throw _privateConstructorUsedError;
@@ -816,6 +834,9 @@ class _$FetchEventsImpl implements _FetchEvents {
     required TResult Function() fetchEvents,
     required TResult Function() loadMoreEvents,
     required TResult Function(String eventId) toggleBookmark,
+    required TResult Function(String eventId) toggleRegister,
+    required TResult Function(String eventId) markAsDraft,
+    required TResult Function(String eventId) publishDraft,
   }) {
     return fetchEvents();
   }
@@ -826,6 +847,9 @@ class _$FetchEventsImpl implements _FetchEvents {
     TResult? Function()? fetchEvents,
     TResult? Function()? loadMoreEvents,
     TResult? Function(String eventId)? toggleBookmark,
+    TResult? Function(String eventId)? toggleRegister,
+    TResult? Function(String eventId)? markAsDraft,
+    TResult? Function(String eventId)? publishDraft,
   }) {
     return fetchEvents?.call();
   }
@@ -836,6 +860,9 @@ class _$FetchEventsImpl implements _FetchEvents {
     TResult Function()? fetchEvents,
     TResult Function()? loadMoreEvents,
     TResult Function(String eventId)? toggleBookmark,
+    TResult Function(String eventId)? toggleRegister,
+    TResult Function(String eventId)? markAsDraft,
+    TResult Function(String eventId)? publishDraft,
     required TResult orElse(),
   }) {
     if (fetchEvents != null) {
@@ -850,6 +877,9 @@ class _$FetchEventsImpl implements _FetchEvents {
     required TResult Function(_FetchEvents value) fetchEvents,
     required TResult Function(_LoadMoreEvents value) loadMoreEvents,
     required TResult Function(_ToggleBookmark value) toggleBookmark,
+    required TResult Function(_ToggleRegister value) toggleRegister,
+    required TResult Function(_MarkAsDraft value) markAsDraft,
+    required TResult Function(_PublishDraft value) publishDraft,
   }) {
     return fetchEvents(this);
   }
@@ -860,6 +890,9 @@ class _$FetchEventsImpl implements _FetchEvents {
     TResult? Function(_FetchEvents value)? fetchEvents,
     TResult? Function(_LoadMoreEvents value)? loadMoreEvents,
     TResult? Function(_ToggleBookmark value)? toggleBookmark,
+    TResult? Function(_ToggleRegister value)? toggleRegister,
+    TResult? Function(_MarkAsDraft value)? markAsDraft,
+    TResult? Function(_PublishDraft value)? publishDraft,
   }) {
     return fetchEvents?.call(this);
   }
@@ -870,6 +903,9 @@ class _$FetchEventsImpl implements _FetchEvents {
     TResult Function(_FetchEvents value)? fetchEvents,
     TResult Function(_LoadMoreEvents value)? loadMoreEvents,
     TResult Function(_ToggleBookmark value)? toggleBookmark,
+    TResult Function(_ToggleRegister value)? toggleRegister,
+    TResult Function(_MarkAsDraft value)? markAsDraft,
+    TResult Function(_PublishDraft value)? publishDraft,
     required TResult orElse(),
   }) {
     if (fetchEvents != null) {
@@ -924,6 +960,9 @@ class _$LoadMoreEventsImpl implements _LoadMoreEvents {
     required TResult Function() fetchEvents,
     required TResult Function() loadMoreEvents,
     required TResult Function(String eventId) toggleBookmark,
+    required TResult Function(String eventId) toggleRegister,
+    required TResult Function(String eventId) markAsDraft,
+    required TResult Function(String eventId) publishDraft,
   }) {
     return loadMoreEvents();
   }
@@ -934,6 +973,9 @@ class _$LoadMoreEventsImpl implements _LoadMoreEvents {
     TResult? Function()? fetchEvents,
     TResult? Function()? loadMoreEvents,
     TResult? Function(String eventId)? toggleBookmark,
+    TResult? Function(String eventId)? toggleRegister,
+    TResult? Function(String eventId)? markAsDraft,
+    TResult? Function(String eventId)? publishDraft,
   }) {
     return loadMoreEvents?.call();
   }
@@ -944,6 +986,9 @@ class _$LoadMoreEventsImpl implements _LoadMoreEvents {
     TResult Function()? fetchEvents,
     TResult Function()? loadMoreEvents,
     TResult Function(String eventId)? toggleBookmark,
+    TResult Function(String eventId)? toggleRegister,
+    TResult Function(String eventId)? markAsDraft,
+    TResult Function(String eventId)? publishDraft,
     required TResult orElse(),
   }) {
     if (loadMoreEvents != null) {
@@ -958,6 +1003,9 @@ class _$LoadMoreEventsImpl implements _LoadMoreEvents {
     required TResult Function(_FetchEvents value) fetchEvents,
     required TResult Function(_LoadMoreEvents value) loadMoreEvents,
     required TResult Function(_ToggleBookmark value) toggleBookmark,
+    required TResult Function(_ToggleRegister value) toggleRegister,
+    required TResult Function(_MarkAsDraft value) markAsDraft,
+    required TResult Function(_PublishDraft value) publishDraft,
   }) {
     return loadMoreEvents(this);
   }
@@ -968,6 +1016,9 @@ class _$LoadMoreEventsImpl implements _LoadMoreEvents {
     TResult? Function(_FetchEvents value)? fetchEvents,
     TResult? Function(_LoadMoreEvents value)? loadMoreEvents,
     TResult? Function(_ToggleBookmark value)? toggleBookmark,
+    TResult? Function(_ToggleRegister value)? toggleRegister,
+    TResult? Function(_MarkAsDraft value)? markAsDraft,
+    TResult? Function(_PublishDraft value)? publishDraft,
   }) {
     return loadMoreEvents?.call(this);
   }
@@ -978,6 +1029,9 @@ class _$LoadMoreEventsImpl implements _LoadMoreEvents {
     TResult Function(_FetchEvents value)? fetchEvents,
     TResult Function(_LoadMoreEvents value)? loadMoreEvents,
     TResult Function(_ToggleBookmark value)? toggleBookmark,
+    TResult Function(_ToggleRegister value)? toggleRegister,
+    TResult Function(_MarkAsDraft value)? markAsDraft,
+    TResult Function(_PublishDraft value)? publishDraft,
     required TResult orElse(),
   }) {
     if (loadMoreEvents != null) {
@@ -1059,6 +1113,9 @@ class _$ToggleBookmarkImpl implements _ToggleBookmark {
     required TResult Function() fetchEvents,
     required TResult Function() loadMoreEvents,
     required TResult Function(String eventId) toggleBookmark,
+    required TResult Function(String eventId) toggleRegister,
+    required TResult Function(String eventId) markAsDraft,
+    required TResult Function(String eventId) publishDraft,
   }) {
     return toggleBookmark(eventId);
   }
@@ -1069,6 +1126,9 @@ class _$ToggleBookmarkImpl implements _ToggleBookmark {
     TResult? Function()? fetchEvents,
     TResult? Function()? loadMoreEvents,
     TResult? Function(String eventId)? toggleBookmark,
+    TResult? Function(String eventId)? toggleRegister,
+    TResult? Function(String eventId)? markAsDraft,
+    TResult? Function(String eventId)? publishDraft,
   }) {
     return toggleBookmark?.call(eventId);
   }
@@ -1079,6 +1139,9 @@ class _$ToggleBookmarkImpl implements _ToggleBookmark {
     TResult Function()? fetchEvents,
     TResult Function()? loadMoreEvents,
     TResult Function(String eventId)? toggleBookmark,
+    TResult Function(String eventId)? toggleRegister,
+    TResult Function(String eventId)? markAsDraft,
+    TResult Function(String eventId)? publishDraft,
     required TResult orElse(),
   }) {
     if (toggleBookmark != null) {
@@ -1093,6 +1156,9 @@ class _$ToggleBookmarkImpl implements _ToggleBookmark {
     required TResult Function(_FetchEvents value) fetchEvents,
     required TResult Function(_LoadMoreEvents value) loadMoreEvents,
     required TResult Function(_ToggleBookmark value) toggleBookmark,
+    required TResult Function(_ToggleRegister value) toggleRegister,
+    required TResult Function(_MarkAsDraft value) markAsDraft,
+    required TResult Function(_PublishDraft value) publishDraft,
   }) {
     return toggleBookmark(this);
   }
@@ -1103,6 +1169,9 @@ class _$ToggleBookmarkImpl implements _ToggleBookmark {
     TResult? Function(_FetchEvents value)? fetchEvents,
     TResult? Function(_LoadMoreEvents value)? loadMoreEvents,
     TResult? Function(_ToggleBookmark value)? toggleBookmark,
+    TResult? Function(_ToggleRegister value)? toggleRegister,
+    TResult? Function(_MarkAsDraft value)? markAsDraft,
+    TResult? Function(_PublishDraft value)? publishDraft,
   }) {
     return toggleBookmark?.call(this);
   }
@@ -1113,6 +1182,9 @@ class _$ToggleBookmarkImpl implements _ToggleBookmark {
     TResult Function(_FetchEvents value)? fetchEvents,
     TResult Function(_LoadMoreEvents value)? loadMoreEvents,
     TResult Function(_ToggleBookmark value)? toggleBookmark,
+    TResult Function(_ToggleRegister value)? toggleRegister,
+    TResult Function(_MarkAsDraft value)? markAsDraft,
+    TResult Function(_PublishDraft value)? publishDraft,
     required TResult orElse(),
   }) {
     if (toggleBookmark != null) {
@@ -1128,5 +1200,477 @@ abstract class _ToggleBookmark implements EventsEvent {
   String get eventId;
   @JsonKey(ignore: true)
   _$$ToggleBookmarkImplCopyWith<_$ToggleBookmarkImpl> get copyWith =>
+      throw _privateConstructorUsedError;
+}
+
+/// @nodoc
+abstract class _$$ToggleRegisterImplCopyWith<$Res> {
+  factory _$$ToggleRegisterImplCopyWith(_$ToggleRegisterImpl value,
+          $Res Function(_$ToggleRegisterImpl) then) =
+      __$$ToggleRegisterImplCopyWithImpl<$Res>;
+  @useResult
+  $Res call({String eventId});
+}
+
+/// @nodoc
+class __$$ToggleRegisterImplCopyWithImpl<$Res>
+    extends _$EventsEventCopyWithImpl<$Res, _$ToggleRegisterImpl>
+    implements _$$ToggleRegisterImplCopyWith<$Res> {
+  __$$ToggleRegisterImplCopyWithImpl(
+      _$ToggleRegisterImpl _value, $Res Function(_$ToggleRegisterImpl) _then)
+      : super(_value, _then);
+
+  @pragma('vm:prefer-inline')
+  @override
+  $Res call({
+    Object? eventId = null,
+  }) {
+    return _then(_$ToggleRegisterImpl(
+      null == eventId
+          ? _value.eventId
+          : eventId // ignore: cast_nullable_to_non_nullable
+              as String,
+    ));
+  }
+}
+
+/// @nodoc
+
+class _$ToggleRegisterImpl implements _ToggleRegister {
+  const _$ToggleRegisterImpl(this.eventId);
+
+  @override
+  final String eventId;
+
+  @override
+  String toString() {
+    return 'EventsEvent.toggleRegister(eventId: $eventId)';
+  }
+
+  @override
+  bool operator ==(Object other) {
+    return identical(this, other) ||
+        (other.runtimeType == runtimeType &&
+            other is _$ToggleRegisterImpl &&
+            (identical(other.eventId, eventId) || other.eventId == eventId));
+  }
+
+  @override
+  int get hashCode => Object.hash(runtimeType, eventId);
+
+  @JsonKey(ignore: true)
+  @override
+  @pragma('vm:prefer-inline')
+  _$$ToggleRegisterImplCopyWith<_$ToggleRegisterImpl> get copyWith =>
+      __$$ToggleRegisterImplCopyWithImpl<_$ToggleRegisterImpl>(
+          this, _$identity);
+
+  @override
+  @optionalTypeArgs
+  TResult when<TResult extends Object?>({
+    required TResult Function() fetchEvents,
+    required TResult Function() loadMoreEvents,
+    required TResult Function(String eventId) toggleBookmark,
+    required TResult Function(String eventId) toggleRegister,
+    required TResult Function(String eventId) markAsDraft,
+    required TResult Function(String eventId) publishDraft,
+  }) {
+    return toggleRegister(eventId);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult? whenOrNull<TResult extends Object?>({
+    TResult? Function()? fetchEvents,
+    TResult? Function()? loadMoreEvents,
+    TResult? Function(String eventId)? toggleBookmark,
+    TResult? Function(String eventId)? toggleRegister,
+    TResult? Function(String eventId)? markAsDraft,
+    TResult? Function(String eventId)? publishDraft,
+  }) {
+    return toggleRegister?.call(eventId);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult maybeWhen<TResult extends Object?>({
+    TResult Function()? fetchEvents,
+    TResult Function()? loadMoreEvents,
+    TResult Function(String eventId)? toggleBookmark,
+    TResult Function(String eventId)? toggleRegister,
+    TResult Function(String eventId)? markAsDraft,
+    TResult Function(String eventId)? publishDraft,
+    required TResult orElse(),
+  }) {
+    if (toggleRegister != null) {
+      return toggleRegister(eventId);
+    }
+    return orElse();
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult map<TResult extends Object?>({
+    required TResult Function(_FetchEvents value) fetchEvents,
+    required TResult Function(_LoadMoreEvents value) loadMoreEvents,
+    required TResult Function(_ToggleBookmark value) toggleBookmark,
+    required TResult Function(_ToggleRegister value) toggleRegister,
+    required TResult Function(_MarkAsDraft value) markAsDraft,
+    required TResult Function(_PublishDraft value) publishDraft,
+  }) {
+    return toggleRegister(this);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult? mapOrNull<TResult extends Object?>({
+    TResult? Function(_FetchEvents value)? fetchEvents,
+    TResult? Function(_LoadMoreEvents value)? loadMoreEvents,
+    TResult? Function(_ToggleBookmark value)? toggleBookmark,
+    TResult? Function(_ToggleRegister value)? toggleRegister,
+    TResult? Function(_MarkAsDraft value)? markAsDraft,
+    TResult? Function(_PublishDraft value)? publishDraft,
+  }) {
+    return toggleRegister?.call(this);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult maybeMap<TResult extends Object?>({
+    TResult Function(_FetchEvents value)? fetchEvents,
+    TResult Function(_LoadMoreEvents value)? loadMoreEvents,
+    TResult Function(_ToggleBookmark value)? toggleBookmark,
+    TResult Function(_ToggleRegister value)? toggleRegister,
+    TResult Function(_MarkAsDraft value)? markAsDraft,
+    TResult Function(_PublishDraft value)? publishDraft,
+    required TResult orElse(),
+  }) {
+    if (toggleRegister != null) {
+      return toggleRegister(this);
+    }
+    return orElse();
+  }
+}
+
+abstract class _ToggleRegister implements EventsEvent {
+  const factory _ToggleRegister(final String eventId) = _$ToggleRegisterImpl;
+
+  String get eventId;
+  @JsonKey(ignore: true)
+  _$$ToggleRegisterImplCopyWith<_$ToggleRegisterImpl> get copyWith =>
+      throw _privateConstructorUsedError;
+}
+
+/// @nodoc
+abstract class _$$MarkAsDraftImplCopyWith<$Res> {
+  factory _$$MarkAsDraftImplCopyWith(
+          _$MarkAsDraftImpl value, $Res Function(_$MarkAsDraftImpl) then) =
+      __$$MarkAsDraftImplCopyWithImpl<$Res>;
+  @useResult
+  $Res call({String eventId});
+}
+
+/// @nodoc
+class __$$MarkAsDraftImplCopyWithImpl<$Res>
+    extends _$EventsEventCopyWithImpl<$Res, _$MarkAsDraftImpl>
+    implements _$$MarkAsDraftImplCopyWith<$Res> {
+  __$$MarkAsDraftImplCopyWithImpl(
+      _$MarkAsDraftImpl _value, $Res Function(_$MarkAsDraftImpl) _then)
+      : super(_value, _then);
+
+  @pragma('vm:prefer-inline')
+  @override
+  $Res call({
+    Object? eventId = null,
+  }) {
+    return _then(_$MarkAsDraftImpl(
+      null == eventId
+          ? _value.eventId
+          : eventId // ignore: cast_nullable_to_non_nullable
+              as String,
+    ));
+  }
+}
+
+/// @nodoc
+
+class _$MarkAsDraftImpl implements _MarkAsDraft {
+  const _$MarkAsDraftImpl(this.eventId);
+
+  @override
+  final String eventId;
+
+  @override
+  String toString() {
+    return 'EventsEvent.markAsDraft(eventId: $eventId)';
+  }
+
+  @override
+  bool operator ==(Object other) {
+    return identical(this, other) ||
+        (other.runtimeType == runtimeType &&
+            other is _$MarkAsDraftImpl &&
+            (identical(other.eventId, eventId) || other.eventId == eventId));
+  }
+
+  @override
+  int get hashCode => Object.hash(runtimeType, eventId);
+
+  @JsonKey(ignore: true)
+  @override
+  @pragma('vm:prefer-inline')
+  _$$MarkAsDraftImplCopyWith<_$MarkAsDraftImpl> get copyWith =>
+      __$$MarkAsDraftImplCopyWithImpl<_$MarkAsDraftImpl>(this, _$identity);
+
+  @override
+  @optionalTypeArgs
+  TResult when<TResult extends Object?>({
+    required TResult Function() fetchEvents,
+    required TResult Function() loadMoreEvents,
+    required TResult Function(String eventId) toggleBookmark,
+    required TResult Function(String eventId) toggleRegister,
+    required TResult Function(String eventId) markAsDraft,
+    required TResult Function(String eventId) publishDraft,
+  }) {
+    return markAsDraft(eventId);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult? whenOrNull<TResult extends Object?>({
+    TResult? Function()? fetchEvents,
+    TResult? Function()? loadMoreEvents,
+    TResult? Function(String eventId)? toggleBookmark,
+    TResult? Function(String eventId)? toggleRegister,
+    TResult? Function(String eventId)? markAsDraft,
+    TResult? Function(String eventId)? publishDraft,
+  }) {
+    return markAsDraft?.call(eventId);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult maybeWhen<TResult extends Object?>({
+    TResult Function()? fetchEvents,
+    TResult Function()? loadMoreEvents,
+    TResult Function(String eventId)? toggleBookmark,
+    TResult Function(String eventId)? toggleRegister,
+    TResult Function(String eventId)? markAsDraft,
+    TResult Function(String eventId)? publishDraft,
+    required TResult orElse(),
+  }) {
+    if (markAsDraft != null) {
+      return markAsDraft(eventId);
+    }
+    return orElse();
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult map<TResult extends Object?>({
+    required TResult Function(_FetchEvents value) fetchEvents,
+    required TResult Function(_LoadMoreEvents value) loadMoreEvents,
+    required TResult Function(_ToggleBookmark value) toggleBookmark,
+    required TResult Function(_ToggleRegister value) toggleRegister,
+    required TResult Function(_MarkAsDraft value) markAsDraft,
+    required TResult Function(_PublishDraft value) publishDraft,
+  }) {
+    return markAsDraft(this);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult? mapOrNull<TResult extends Object?>({
+    TResult? Function(_FetchEvents value)? fetchEvents,
+    TResult? Function(_LoadMoreEvents value)? loadMoreEvents,
+    TResult? Function(_ToggleBookmark value)? toggleBookmark,
+    TResult? Function(_ToggleRegister value)? toggleRegister,
+    TResult? Function(_MarkAsDraft value)? markAsDraft,
+    TResult? Function(_PublishDraft value)? publishDraft,
+  }) {
+    return markAsDraft?.call(this);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult maybeMap<TResult extends Object?>({
+    TResult Function(_FetchEvents value)? fetchEvents,
+    TResult Function(_LoadMoreEvents value)? loadMoreEvents,
+    TResult Function(_ToggleBookmark value)? toggleBookmark,
+    TResult Function(_ToggleRegister value)? toggleRegister,
+    TResult Function(_MarkAsDraft value)? markAsDraft,
+    TResult Function(_PublishDraft value)? publishDraft,
+    required TResult orElse(),
+  }) {
+    if (markAsDraft != null) {
+      return markAsDraft(this);
+    }
+    return orElse();
+  }
+}
+
+abstract class _MarkAsDraft implements EventsEvent {
+  const factory _MarkAsDraft(final String eventId) = _$MarkAsDraftImpl;
+
+  String get eventId;
+  @JsonKey(ignore: true)
+  _$$MarkAsDraftImplCopyWith<_$MarkAsDraftImpl> get copyWith =>
+      throw _privateConstructorUsedError;
+}
+
+/// @nodoc
+abstract class _$$PublishDraftImplCopyWith<$Res> {
+  factory _$$PublishDraftImplCopyWith(
+          _$PublishDraftImpl value, $Res Function(_$PublishDraftImpl) then) =
+      __$$PublishDraftImplCopyWithImpl<$Res>;
+  @useResult
+  $Res call({String eventId});
+}
+
+/// @nodoc
+class __$$PublishDraftImplCopyWithImpl<$Res>
+    extends _$EventsEventCopyWithImpl<$Res, _$PublishDraftImpl>
+    implements _$$PublishDraftImplCopyWith<$Res> {
+  __$$PublishDraftImplCopyWithImpl(
+      _$PublishDraftImpl _value, $Res Function(_$PublishDraftImpl) _then)
+      : super(_value, _then);
+
+  @pragma('vm:prefer-inline')
+  @override
+  $Res call({
+    Object? eventId = null,
+  }) {
+    return _then(_$PublishDraftImpl(
+      null == eventId
+          ? _value.eventId
+          : eventId // ignore: cast_nullable_to_non_nullable
+              as String,
+    ));
+  }
+}
+
+/// @nodoc
+
+class _$PublishDraftImpl implements _PublishDraft {
+  const _$PublishDraftImpl(this.eventId);
+
+  @override
+  final String eventId;
+
+  @override
+  String toString() {
+    return 'EventsEvent.publishDraft(eventId: $eventId)';
+  }
+
+  @override
+  bool operator ==(Object other) {
+    return identical(this, other) ||
+        (other.runtimeType == runtimeType &&
+            other is _$PublishDraftImpl &&
+            (identical(other.eventId, eventId) || other.eventId == eventId));
+  }
+
+  @override
+  int get hashCode => Object.hash(runtimeType, eventId);
+
+  @JsonKey(ignore: true)
+  @override
+  @pragma('vm:prefer-inline')
+  _$$PublishDraftImplCopyWith<_$PublishDraftImpl> get copyWith =>
+      __$$PublishDraftImplCopyWithImpl<_$PublishDraftImpl>(this, _$identity);
+
+  @override
+  @optionalTypeArgs
+  TResult when<TResult extends Object?>({
+    required TResult Function() fetchEvents,
+    required TResult Function() loadMoreEvents,
+    required TResult Function(String eventId) toggleBookmark,
+    required TResult Function(String eventId) toggleRegister,
+    required TResult Function(String eventId) markAsDraft,
+    required TResult Function(String eventId) publishDraft,
+  }) {
+    return publishDraft(eventId);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult? whenOrNull<TResult extends Object?>({
+    TResult? Function()? fetchEvents,
+    TResult? Function()? loadMoreEvents,
+    TResult? Function(String eventId)? toggleBookmark,
+    TResult? Function(String eventId)? toggleRegister,
+    TResult? Function(String eventId)? markAsDraft,
+    TResult? Function(String eventId)? publishDraft,
+  }) {
+    return publishDraft?.call(eventId);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult maybeWhen<TResult extends Object?>({
+    TResult Function()? fetchEvents,
+    TResult Function()? loadMoreEvents,
+    TResult Function(String eventId)? toggleBookmark,
+    TResult Function(String eventId)? toggleRegister,
+    TResult Function(String eventId)? markAsDraft,
+    TResult Function(String eventId)? publishDraft,
+    required TResult orElse(),
+  }) {
+    if (publishDraft != null) {
+      return publishDraft(eventId);
+    }
+    return orElse();
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult map<TResult extends Object?>({
+    required TResult Function(_FetchEvents value) fetchEvents,
+    required TResult Function(_LoadMoreEvents value) loadMoreEvents,
+    required TResult Function(_ToggleBookmark value) toggleBookmark,
+    required TResult Function(_ToggleRegister value) toggleRegister,
+    required TResult Function(_MarkAsDraft value) markAsDraft,
+    required TResult Function(_PublishDraft value) publishDraft,
+  }) {
+    return publishDraft(this);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult? mapOrNull<TResult extends Object?>({
+    TResult? Function(_FetchEvents value)? fetchEvents,
+    TResult? Function(_LoadMoreEvents value)? loadMoreEvents,
+    TResult? Function(_ToggleBookmark value)? toggleBookmark,
+    TResult? Function(_ToggleRegister value)? toggleRegister,
+    TResult? Function(_MarkAsDraft value)? markAsDraft,
+    TResult? Function(_PublishDraft value)? publishDraft,
+  }) {
+    return publishDraft?.call(this);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult maybeMap<TResult extends Object?>({
+    TResult Function(_FetchEvents value)? fetchEvents,
+    TResult Function(_LoadMoreEvents value)? loadMoreEvents,
+    TResult Function(_ToggleBookmark value)? toggleBookmark,
+    TResult Function(_ToggleRegister value)? toggleRegister,
+    TResult Function(_MarkAsDraft value)? markAsDraft,
+    TResult Function(_PublishDraft value)? publishDraft,
+    required TResult orElse(),
+  }) {
+    if (publishDraft != null) {
+      return publishDraft(this);
+    }
+    return orElse();
+  }
+}
+
+abstract class _PublishDraft implements EventsEvent {
+  const factory _PublishDraft(final String eventId) = _$PublishDraftImpl;
+
+  String get eventId;
+  @JsonKey(ignore: true)
+  _$$PublishDraftImplCopyWith<_$PublishDraftImpl> get copyWith =>
       throw _privateConstructorUsedError;
 }
