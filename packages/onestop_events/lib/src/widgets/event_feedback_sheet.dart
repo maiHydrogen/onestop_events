@@ -68,7 +68,7 @@ class EventFeedbackSheet extends StatelessWidget {
                               CircleAvatar(
                                 radius: 16,
                                 backgroundColor: OColor.gray300,
-                                child: Icon(TablerIcons.user, size: 16),
+                                child: const Icon(TablerIcons.user, size: 16),
                               ),
                               const SizedBox(width: 8),
                               OText(

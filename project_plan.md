@@ -79,30 +79,30 @@ This phase transitions the package from mock data to real network requests, hand
 
 1. Backend API Development (Parallel or Sequential)
 
-- [ ] Design and build database schema for Events, Clubs, Users, and Feedback.
-- [ ] Develop REST/GraphQL endpoints for fetching Events and Clubs.
-- [ ] Develop endpoints for Bookmarking and submitting Feedback.
-- [ ] Develop Admin endpoints for uploading Event data and handling image storage (e.g., AWS S3 or Firebase Storage).
+- [X] Design and build database schema for Events, Clubs, Users, and Feedback.
+- [X] Develop REST/GraphQL endpoints for fetching Events and Clubs.
+- [X] Develop endpoints for Bookmarking and submitting Feedback.
+- [X] Develop Admin endpoints for uploading Event data and handling image storage (e.g., AWS S3 or Firebase Storage).
 
 2. Data Layer (Remote Repositories)
 
-- [ ] Add network package (e.g., dio or http).
-- [ ] Set up network interceptors for error handling and injecting authentication tokens.
-- [ ] Implement RemoteEventsRepository parsing real JSON responses into EventModels.
-- [ ] Implement RemoteClubsRepository parsing real JSON responses into ClubModels.
+- [X] Add network package (e.g., dio or http).
+- [X] Set up network interceptors for error handling and injecting authentication tokens.
+- [X] Implement RemoteEventsRepository parsing real JSON responses into EventModels.
+- [X] Implement RemoteClubsRepository parsing real JSON responses into ClubModels.
 
 3. Integration & Refinement
 
-- [ ] Update Dependency Injection to provide Remote repositories instead of Mock repositories.
-- [ ] Implement robust error handling in UI (e.g., using SnackBar components from onestop_ui on EventsError state).
-- [ ] Handle empty states (e.g., "No events happening right now") and pagination (infinite scrolling) if needed.
+- [X] Update Dependency Injection to provide Remote repositories instead of Mock repositories.
+- [X] Implement robust error handling in UI (e.g., using SnackBar components from onestop_ui on EventsError state).
+- [X] Handle empty states (e.g., "No events happening right now") and pagination (infinite scrolling) if needed.
 
 4. Package Export & App Integration
 
-- [ ] Create a clean barrel file (onestop_events.dart) exporting only the BaseScaffold wrapper and essential configuration methods.
-- [ ] Import onestop_events into the parent Onestop app.
-- [ ] Connect the parent app's authentication state/token to the onestop_events dependency injection container.
-- [ ] Wire the parent app's router to trigger the package's BaseScaffold.
+- [] Create a clean barrel file (onestop_events.dart) exporting only the BaseScaffold wrapper and essential configuration methods.
+- [] Import onestop_events into the parent Onestop app.
+- [] Connect the parent app's authentication state/token to the onestop_events dependency injection container.
+- [] Wire the parent app's router to trigger the package's BaseScaffold.
 
 5. Final QA & Testing
 

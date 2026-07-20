@@ -336,7 +336,7 @@ packages:
     source: path
     version: "0.0.1"
   onestop_ui:
-    dependency: transitive
+    dependency: "direct main"
     description:
       path: "packages/onestop_ui"
       ref: dev

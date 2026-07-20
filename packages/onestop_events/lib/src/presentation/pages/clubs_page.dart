@@ -6,6 +6,7 @@ import 'package:onestop_events/src/widgets/events_header.dart';
 import 'package:onestop_ui/index.dart';
 import '../../widgets/club_chip_filter.dart';
 import '../../widgets/club_details_sheet.dart';
+import '../../widgets/paginated_list_view.dart';
 import '../blocs/clubs/clubs_bloc.dart';
 
 class ClubsPage extends StatefulWidget {
@@ -18,9 +19,17 @@ class ClubsPage extends StatefulWidget {
 class _ClubsPageState extends State<ClubsPage> {
   late TextEditingController _searchController;
   String _searchQuery = "";
-  
+
   final List<String> _boards = [
-    "All", "Welfare", "Technical", "Cultural", "Sports", "Hostel Affairs", "SAIL", "SWC", "Academic"
+    "All",
+    "Welfare",
+    "Technical",
+    "Cultural",
+    "Sports",
+    "Hostel Affairs",
+    "SAIL",
+    "SWC",
+    "Academic"
   ];
   String _selectedBoard = "All";
 
@@ -44,23 +53,119 @@ class _ClubsPageState extends State<ClubsPage> {
     super.dispose();
   }
 
+  void _showErrorSnackbar(BuildContext context, String message) {
+    ScaffoldMessenger.of(context)
+      ..hideCurrentSnackBar()
+      ..showSnackBar(
+        SnackBar(
+          backgroundColor: Colors.transparent,
+          elevation: 0,
+          content: OSnackbar(
+            type: SnackbarType.negative,
+            message: message,
+          ),
+        ),
+      );
+  }
+
   @override
   Widget build(BuildContext context) {
     return SafeArea(
       child: Scaffold(
         backgroundColor: OColor.gray100,
-        body: BlocBuilder<ClubsBloc, ClubsState>(
+        body: BlocConsumer<ClubsBloc, ClubsState>(
+          listenWhen: (previous, current) {
+            final prevError = previous.maybeWhen(
+              loaded: (_, __, ___, ____, err) => err,
+              error: (err) => err,
+              orElse: () => null,
+            );
+            final currError = current.maybeWhen(
+              loaded: (_, __, ___, ____, err) => err,
+              error: (err) => err,
+              orElse: () => null,
+            );
+            return currError != null && currError != prevError;
+          },
+          listener: (context, state) {
+            state.whenOrNull(
+              error: (message) => _showErrorSnackbar(context, message),
+              loaded: (clubs, page, hasReachedMax, isLoadingMore, loadMoreError) {
+                if (loadMoreError != null) {
+                  _showErrorSnackbar(context, loadMoreError);
+                }
+              },
+            );
+          },
           builder: (context, state) {
             return state.when(
               initial: () => const Center(child: CircularProgressIndicator()),
               loading: () => const Center(child: CircularProgressIndicator()),
               error: (message) => Center(
-                child: OText(
-                  text: message,
-                  style: OTextStyle.bodyLarge.copyWith(color: OColor.blue200),
+                child: Column(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    Icon(TablerIcons.wifi_off, color: OColor.gray400, size: 48),
+                    const SizedBox(height: 16),
+                    OText(
+                      text: message,
+                      style: OTextStyle.bodyLarge.copyWith(color: OColor.gray600),
+                    ),
+                    const SizedBox(height: 16),
+                    GestureDetector(
+                      onTap: () => context
+                          .read<ClubsBloc>()
+                          .add(const ClubsEvent.fetchClubs()),
+                      child: Container(
+                        padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 12),
+                        decoration: BoxDecoration(
+                          color: OColor.green600,
+                          borderRadius: BorderRadius.circular(OCornerRadius.m),
+                        ),
+                        child: OText(
+                          text: 'Retry',
+                          style: OTextStyle.labelMedium.copyWith(color: OColor.white),
+                        ),
+                      ),
+                    ),
+                  ],
                 ),
               ),
-              loaded: (clubs) {
+              loaded: (clubs, currentPage, hasReachedMax, isLoadingMore, loadMoreError) {
+                final filtered = clubs.where((club) {
+                  final matchesSearch = club.name
+                          .toLowerCase()
+                          .contains(_searchQuery.toLowerCase()) ||
+                      club.description
+                          .toLowerCase()
+                          .contains(_searchQuery.toLowerCase());
+
+                   bool matchesCategory = true;
+                  if (_selectedBoard != "All") {
+                    if (_selectedBoard == "Technical") {
+                      matchesCategory = club.category == ClubCategory.technical;
+                    } else if (_selectedBoard == "Cultural") {
+                      matchesCategory = club.category == ClubCategory.cultural;
+                    } else if (_selectedBoard == "Sports") {
+                      matchesCategory = club.category == ClubCategory.sports;
+                    } else if (_selectedBoard == "Welfare") {
+                      matchesCategory = club.category == ClubCategory.welfare;
+                    } else if (_selectedBoard == "Hostel Affairs") {
+                      matchesCategory = club.category == ClubCategory.hostelAffairs;
+                    } else if (_selectedBoard == "SAIL") {
+                      matchesCategory = club.category == ClubCategory.sail;
+                    } else if (_selectedBoard == "SWC") {
+                      matchesCategory = club.category == ClubCategory.swc;
+                    } else if (_selectedBoard == "Academic") {
+                      matchesCategory = club.category == ClubCategory.academic;
+                    } else {
+                      matchesCategory = false;
+                    }
+                  }
+
+                  return matchesCategory && matchesSearch;
+                }).toList();
+
                 return Column(
                   children: [
                     const EventsHeader(header: 'Clubs/Fests'),
@@ -78,7 +183,91 @@ class _ClubsPageState extends State<ClubsPage> {
                     ),
                     const SizedBox(height: OSpacing.s),
                     Expanded(
-                      child: _buildClubsList(clubs),
+                      child: filtered.isEmpty
+                          ? const Center(
+                              child: Text('No clubs found in this category.'),
+                            )
+                          : PaginatedListView(
+                              itemCount: filtered.length,
+                              isLoadingMore: isLoadingMore,
+                              hasReachedMax: hasReachedMax,
+                              padding: const EdgeInsets.symmetric(
+                                  vertical: OSpacing.xs),
+                              onLoadMore: () => context
+                                  .read<ClubsBloc>()
+                                  .add(const ClubsEvent.loadMoreClubs()),
+                              itemBuilder: (context, index) {
+                                final club = filtered[index];
+                                return GestureDetector(
+                                  onTap: () =>
+                                      ClubDetailsSheet.show(context, club),
+                                  child: Card(
+                                    color: OColor.white,
+                                    elevation: 0,
+                                    margin: const EdgeInsets.symmetric(
+                                      horizontal: OSpacing.m,
+                                      vertical: OSpacing.xs,
+                                    ),
+                                    shape: RoundedRectangleBorder(
+                                      borderRadius: BorderRadius.circular(
+                                          OCornerRadius.m),
+                                      side: BorderSide(
+                                          color: OColor.gray200, width: 1),
+                                    ),
+                                    child: Padding(
+                                      padding:
+                                          const EdgeInsets.all(OSpacing.m),
+                                      child: Row(
+                                        children: [
+                                          CircleAvatar(
+                                            radius: 28,
+                                            backgroundImage: club.logoUrl !=
+                                                    null
+                                                ? NetworkImage(club.logoUrl!)
+                                                : null,
+                                            backgroundColor: OColor.gray300,
+                                            child: club.logoUrl == null
+                                                ? Icon(TablerIcons.users,
+                                                    color: OColor.gray600)
+                                                : null,
+                                          ),
+                                          const SizedBox(width: OSpacing.m),
+                                          Expanded(
+                                            child: Column(
+                                              crossAxisAlignment:
+                                                  CrossAxisAlignment.start,
+                                              children: [
+                                                OText(
+                                                  text: club.name,
+                                                  style: OTextStyle.bodyLarge
+                                                      .copyWith(
+                                                    color: OColor.gray800,
+                                                    fontWeight: FontWeight.bold,
+                                                  ),
+                                                ),
+                                                const SizedBox(
+                                                    height: OSpacing.xxs),
+                                                OText(
+                                                  text: club.description,
+                                                  maxLines: 2,
+                                                  style:
+                                                      OTextStyle.bodySmall
+                                                          .copyWith(
+                                                              color: OColor
+                                                                  .gray600),
+                                                ),
+                                              ],
+                                            ),
+                                          ),
+                                          Icon(TablerIcons.chevron_right,
+                                              color: OColor.gray400),
+                                        ],
+                                      ),
+                                    ),
+                                  ),
+                                );
+                              },
+                            ),
                     ),
                   ],
                 );
@@ -87,91 +276,6 @@ class _ClubsPageState extends State<ClubsPage> {
           },
         ),
       ),
-    );
-  }
-
-  Widget _buildClubsList(List<ClubModel> clubs) {
-    final filtered = clubs.where((club) {
-      final matchesSearch = club.name.toLowerCase().contains(_searchQuery.toLowerCase()) ||
-          club.description.toLowerCase().contains(_searchQuery.toLowerCase());
-          
-      // For now, ClubModel's category is Technical/Cultural/Sports.
-      // We will match string names or fallback to All.
-      bool matchesCategory = true;
-      if (_selectedBoard != "All") {
-        if (_selectedBoard == "Technical") matchesCategory = club.category == ClubCategory.technical;
-        else if (_selectedBoard == "Cultural") matchesCategory = club.category == ClubCategory.cultural;
-        else if (_selectedBoard == "Sports") matchesCategory = club.category == ClubCategory.sports;
-        else matchesCategory = false; // Add logic for other boards when API is ready
-      }
-
-      return matchesCategory && matchesSearch;
-    }).toList();
-
-    if (filtered.isEmpty) {
-      return const Center(
-        child: Text('No clubs found in this category.'),
-      );
-    }
-
-    return ListView.builder(
-      itemCount: filtered.length,
-      padding: const EdgeInsets.symmetric(vertical: OSpacing.xs),
-      itemBuilder: (context, index) {
-        final club = filtered[index];
-        return GestureDetector(
-          onTap: () => ClubDetailsSheet.show(context, club),
-          child: Card(
-            color: OColor.white,
-            elevation: 0,
-            margin: const EdgeInsets.symmetric(
-              horizontal: OSpacing.m,
-              vertical: OSpacing.xs,
-            ),
-            shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(OCornerRadius.m),
-              side: BorderSide(color: OColor.gray200, width: 1),
-            ),
-          child: Padding(
-            padding: const EdgeInsets.all(OSpacing.m),
-            child: Row(
-              children: [
-                CircleAvatar(
-                  radius: 28,
-                  backgroundImage: club.logoUrl != null ? NetworkImage(club.logoUrl!) : null,
-                  backgroundColor: OColor.gray300,
-                  child: club.logoUrl == null
-                      ? Icon(TablerIcons.users, color: OColor.gray600)
-                      : null,
-                ),
-                const SizedBox(width: OSpacing.m),
-                Expanded(
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      OText(
-                        text: club.name,
-                        style: OTextStyle.bodyLarge.copyWith(
-                          color: OColor.gray800,
-                          fontWeight: FontWeight.bold,
-                        ),
-                      ),
-                      const SizedBox(height: OSpacing.xxs),
-                      OText(
-                        text: club.description,
-                        maxLines: 2,
-                        style: OTextStyle.bodySmall.copyWith(color: OColor.gray600),
-                      ),
-                    ],
-                  ),
-                ),
-                Icon(TablerIcons.chevron_right, color: OColor.gray400),
-              ],
-            ),
-          ),
-          ),
-        );
-      },
     );
   }
 }

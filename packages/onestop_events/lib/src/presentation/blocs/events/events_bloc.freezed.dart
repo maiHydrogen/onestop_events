@@ -20,7 +20,9 @@ mixin _$EventsState {
   TResult when<TResult extends Object?>({
     required TResult Function() initial,
     required TResult Function() loading,
-    required TResult Function(List<EventModel> events) loaded,
+    required TResult Function(List<EventModel> events, int currentPage,
+            bool hasReachedMax, bool isLoadingMore, String? loadMoreError)
+        loaded,
     required TResult Function(String message) error,
   }) =>
       throw _privateConstructorUsedError;
@@ -28,7 +30,9 @@ mixin _$EventsState {
   TResult? whenOrNull<TResult extends Object?>({
     TResult? Function()? initial,
     TResult? Function()? loading,
-    TResult? Function(List<EventModel> events)? loaded,
+    TResult? Function(List<EventModel> events, int currentPage,
+            bool hasReachedMax, bool isLoadingMore, String? loadMoreError)?
+        loaded,
     TResult? Function(String message)? error,
   }) =>
       throw _privateConstructorUsedError;
@@ -36,7 +40,9 @@ mixin _$EventsState {
   TResult maybeWhen<TResult extends Object?>({
     TResult Function()? initial,
     TResult Function()? loading,
-    TResult Function(List<EventModel> events)? loaded,
+    TResult Function(List<EventModel> events, int currentPage,
+            bool hasReachedMax, bool isLoadingMore, String? loadMoreError)?
+        loaded,
     TResult Function(String message)? error,
     required TResult orElse(),
   }) =>
@@ -126,7 +132,9 @@ class _$InitialImpl implements _Initial {
   TResult when<TResult extends Object?>({
     required TResult Function() initial,
     required TResult Function() loading,
-    required TResult Function(List<EventModel> events) loaded,
+    required TResult Function(List<EventModel> events, int currentPage,
+            bool hasReachedMax, bool isLoadingMore, String? loadMoreError)
+        loaded,
     required TResult Function(String message) error,
   }) {
     return initial();
@@ -137,7 +145,9 @@ class _$InitialImpl implements _Initial {
   TResult? whenOrNull<TResult extends Object?>({
     TResult? Function()? initial,
     TResult? Function()? loading,
-    TResult? Function(List<EventModel> events)? loaded,
+    TResult? Function(List<EventModel> events, int currentPage,
+            bool hasReachedMax, bool isLoadingMore, String? loadMoreError)?
+        loaded,
     TResult? Function(String message)? error,
   }) {
     return initial?.call();
@@ -148,7 +158,9 @@ class _$InitialImpl implements _Initial {
   TResult maybeWhen<TResult extends Object?>({
     TResult Function()? initial,
     TResult Function()? loading,
-    TResult Function(List<EventModel> events)? loaded,
+    TResult Function(List<EventModel> events, int currentPage,
+            bool hasReachedMax, bool isLoadingMore, String? loadMoreError)?
+        loaded,
     TResult Function(String message)? error,
     required TResult orElse(),
   }) {
@@ -240,7 +252,9 @@ class _$LoadingImpl implements _Loading {
   TResult when<TResult extends Object?>({
     required TResult Function() initial,
     required TResult Function() loading,
-    required TResult Function(List<EventModel> events) loaded,
+    required TResult Function(List<EventModel> events, int currentPage,
+            bool hasReachedMax, bool isLoadingMore, String? loadMoreError)
+        loaded,
     required TResult Function(String message) error,
   }) {
     return loading();
@@ -251,7 +265,9 @@ class _$LoadingImpl implements _Loading {
   TResult? whenOrNull<TResult extends Object?>({
     TResult? Function()? initial,
     TResult? Function()? loading,
-    TResult? Function(List<EventModel> events)? loaded,
+    TResult? Function(List<EventModel> events, int currentPage,
+            bool hasReachedMax, bool isLoadingMore, String? loadMoreError)?
+        loaded,
     TResult? Function(String message)? error,
   }) {
     return loading?.call();
@@ -262,7 +278,9 @@ class _$LoadingImpl implements _Loading {
   TResult maybeWhen<TResult extends Object?>({
     TResult Function()? initial,
     TResult Function()? loading,
-    TResult Function(List<EventModel> events)? loaded,
+    TResult Function(List<EventModel> events, int currentPage,
+            bool hasReachedMax, bool isLoadingMore, String? loadMoreError)?
+        loaded,
     TResult Function(String message)? error,
     required TResult orElse(),
   }) {
@@ -320,7 +338,12 @@ abstract class _$$LoadedImplCopyWith<$Res> {
           _$LoadedImpl value, $Res Function(_$LoadedImpl) then) =
       __$$LoadedImplCopyWithImpl<$Res>;
   @useResult
-  $Res call({List<EventModel> events});
+  $Res call(
+      {List<EventModel> events,
+      int currentPage,
+      bool hasReachedMax,
+      bool isLoadingMore,
+      String? loadMoreError});
 }
 
 /// @nodoc
@@ -335,12 +358,32 @@ class __$$LoadedImplCopyWithImpl<$Res>
   @override
   $Res call({
     Object? events = null,
+    Object? currentPage = null,
+    Object? hasReachedMax = null,
+    Object? isLoadingMore = null,
+    Object? loadMoreError = freezed,
   }) {
     return _then(_$LoadedImpl(
-      null == events
+      events: null == events
           ? _value._events
           : events // ignore: cast_nullable_to_non_nullable
               as List<EventModel>,
+      currentPage: null == currentPage
+          ? _value.currentPage
+          : currentPage // ignore: cast_nullable_to_non_nullable
+              as int,
+      hasReachedMax: null == hasReachedMax
+          ? _value.hasReachedMax
+          : hasReachedMax // ignore: cast_nullable_to_non_nullable
+              as bool,
+      isLoadingMore: null == isLoadingMore
+          ? _value.isLoadingMore
+          : isLoadingMore // ignore: cast_nullable_to_non_nullable
+              as bool,
+      loadMoreError: freezed == loadMoreError
+          ? _value.loadMoreError
+          : loadMoreError // ignore: cast_nullable_to_non_nullable
+              as String?,
     ));
   }
 }
@@ -348,7 +391,13 @@ class __$$LoadedImplCopyWithImpl<$Res>
 /// @nodoc
 
 class _$LoadedImpl implements _Loaded {
-  const _$LoadedImpl(final List<EventModel> events) : _events = events;
+  const _$LoadedImpl(
+      {required final List<EventModel> events,
+      required this.currentPage,
+      this.hasReachedMax = false,
+      this.isLoadingMore = false,
+      this.loadMoreError})
+      : _events = events;
 
   final List<EventModel> _events;
   @override
@@ -359,8 +408,20 @@ class _$LoadedImpl implements _Loaded {
   }
 
   @override
+  final int currentPage;
+  @override
+  @JsonKey()
+  final bool hasReachedMax;
+  @override
+  @JsonKey()
+  final bool isLoadingMore;
+// Transient error field for snackbar signals (null = no error)
+  @override
+  final String? loadMoreError;
+
+  @override
   String toString() {
-    return 'EventsState.loaded(events: $events)';
+    return 'EventsState.loaded(events: $events, currentPage: $currentPage, hasReachedMax: $hasReachedMax, isLoadingMore: $isLoadingMore, loadMoreError: $loadMoreError)';
   }
 
   @override
@@ -368,12 +429,25 @@ class _$LoadedImpl implements _Loaded {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
             other is _$LoadedImpl &&
-            const DeepCollectionEquality().equals(other._events, _events));
+            const DeepCollectionEquality().equals(other._events, _events) &&
+            (identical(other.currentPage, currentPage) ||
+                other.currentPage == currentPage) &&
+            (identical(other.hasReachedMax, hasReachedMax) ||
+                other.hasReachedMax == hasReachedMax) &&
+            (identical(other.isLoadingMore, isLoadingMore) ||
+                other.isLoadingMore == isLoadingMore) &&
+            (identical(other.loadMoreError, loadMoreError) ||
+                other.loadMoreError == loadMoreError));
   }
 
   @override
-  int get hashCode =>
-      Object.hash(runtimeType, const DeepCollectionEquality().hash(_events));
+  int get hashCode => Object.hash(
+      runtimeType,
+      const DeepCollectionEquality().hash(_events),
+      currentPage,
+      hasReachedMax,
+      isLoadingMore,
+      loadMoreError);
 
   @JsonKey(ignore: true)
   @override
@@ -386,10 +460,13 @@ class _$LoadedImpl implements _Loaded {
   TResult when<TResult extends Object?>({
     required TResult Function() initial,
     required TResult Function() loading,
-    required TResult Function(List<EventModel> events) loaded,
+    required TResult Function(List<EventModel> events, int currentPage,
+            bool hasReachedMax, bool isLoadingMore, String? loadMoreError)
+        loaded,
     required TResult Function(String message) error,
   }) {
-    return loaded(events);
+    return loaded(
+        events, currentPage, hasReachedMax, isLoadingMore, loadMoreError);
   }
 
   @override
@@ -397,10 +474,13 @@ class _$LoadedImpl implements _Loaded {
   TResult? whenOrNull<TResult extends Object?>({
     TResult? Function()? initial,
     TResult? Function()? loading,
-    TResult? Function(List<EventModel> events)? loaded,
+    TResult? Function(List<EventModel> events, int currentPage,
+            bool hasReachedMax, bool isLoadingMore, String? loadMoreError)?
+        loaded,
     TResult? Function(String message)? error,
   }) {
-    return loaded?.call(events);
+    return loaded?.call(
+        events, currentPage, hasReachedMax, isLoadingMore, loadMoreError);
   }
 
   @override
@@ -408,12 +488,15 @@ class _$LoadedImpl implements _Loaded {
   TResult maybeWhen<TResult extends Object?>({
     TResult Function()? initial,
     TResult Function()? loading,
-    TResult Function(List<EventModel> events)? loaded,
+    TResult Function(List<EventModel> events, int currentPage,
+            bool hasReachedMax, bool isLoadingMore, String? loadMoreError)?
+        loaded,
     TResult Function(String message)? error,
     required TResult orElse(),
   }) {
     if (loaded != null) {
-      return loaded(events);
+      return loaded(
+          events, currentPage, hasReachedMax, isLoadingMore, loadMoreError);
     }
     return orElse();
   }
@@ -457,9 +540,19 @@ class _$LoadedImpl implements _Loaded {
 }
 
 abstract class _Loaded implements EventsState {
-  const factory _Loaded(final List<EventModel> events) = _$LoadedImpl;
+  const factory _Loaded(
+      {required final List<EventModel> events,
+      required final int currentPage,
+      final bool hasReachedMax,
+      final bool isLoadingMore,
+      final String? loadMoreError}) = _$LoadedImpl;
 
   List<EventModel> get events;
+  int get currentPage;
+  bool get hasReachedMax;
+  bool
+      get isLoadingMore; // Transient error field for snackbar signals (null = no error)
+  String? get loadMoreError;
   @JsonKey(ignore: true)
   _$$LoadedImplCopyWith<_$LoadedImpl> get copyWith =>
       throw _privateConstructorUsedError;
@@ -531,7 +624,9 @@ class _$ErrorImpl implements _Error {
   TResult when<TResult extends Object?>({
     required TResult Function() initial,
     required TResult Function() loading,
-    required TResult Function(List<EventModel> events) loaded,
+    required TResult Function(List<EventModel> events, int currentPage,
+            bool hasReachedMax, bool isLoadingMore, String? loadMoreError)
+        loaded,
     required TResult Function(String message) error,
   }) {
     return error(message);
@@ -542,7 +637,9 @@ class _$ErrorImpl implements _Error {
   TResult? whenOrNull<TResult extends Object?>({
     TResult? Function()? initial,
     TResult? Function()? loading,
-    TResult? Function(List<EventModel> events)? loaded,
+    TResult? Function(List<EventModel> events, int currentPage,
+            bool hasReachedMax, bool isLoadingMore, String? loadMoreError)?
+        loaded,
     TResult? Function(String message)? error,
   }) {
     return error?.call(message);
@@ -553,7 +650,9 @@ class _$ErrorImpl implements _Error {
   TResult maybeWhen<TResult extends Object?>({
     TResult Function()? initial,
     TResult Function()? loading,
-    TResult Function(List<EventModel> events)? loaded,
+    TResult Function(List<EventModel> events, int currentPage,
+            bool hasReachedMax, bool isLoadingMore, String? loadMoreError)?
+        loaded,
     TResult Function(String message)? error,
     required TResult orElse(),
   }) {
@@ -615,18 +714,21 @@ mixin _$EventsEvent {
   @optionalTypeArgs
   TResult when<TResult extends Object?>({
     required TResult Function() fetchEvents,
+    required TResult Function() loadMoreEvents,
     required TResult Function(String eventId) toggleBookmark,
   }) =>
       throw _privateConstructorUsedError;
   @optionalTypeArgs
   TResult? whenOrNull<TResult extends Object?>({
     TResult? Function()? fetchEvents,
+    TResult? Function()? loadMoreEvents,
     TResult? Function(String eventId)? toggleBookmark,
   }) =>
       throw _privateConstructorUsedError;
   @optionalTypeArgs
   TResult maybeWhen<TResult extends Object?>({
     TResult Function()? fetchEvents,
+    TResult Function()? loadMoreEvents,
     TResult Function(String eventId)? toggleBookmark,
     required TResult orElse(),
   }) =>
@@ -634,18 +736,21 @@ mixin _$EventsEvent {
   @optionalTypeArgs
   TResult map<TResult extends Object?>({
     required TResult Function(_FetchEvents value) fetchEvents,
+    required TResult Function(_LoadMoreEvents value) loadMoreEvents,
     required TResult Function(_ToggleBookmark value) toggleBookmark,
   }) =>
       throw _privateConstructorUsedError;
   @optionalTypeArgs
   TResult? mapOrNull<TResult extends Object?>({
     TResult? Function(_FetchEvents value)? fetchEvents,
+    TResult? Function(_LoadMoreEvents value)? loadMoreEvents,
     TResult? Function(_ToggleBookmark value)? toggleBookmark,
   }) =>
       throw _privateConstructorUsedError;
   @optionalTypeArgs
   TResult maybeMap<TResult extends Object?>({
     TResult Function(_FetchEvents value)? fetchEvents,
+    TResult Function(_LoadMoreEvents value)? loadMoreEvents,
     TResult Function(_ToggleBookmark value)? toggleBookmark,
     required TResult orElse(),
   }) =>
@@ -709,6 +814,7 @@ class _$FetchEventsImpl implements _FetchEvents {
   @optionalTypeArgs
   TResult when<TResult extends Object?>({
     required TResult Function() fetchEvents,
+    required TResult Function() loadMoreEvents,
     required TResult Function(String eventId) toggleBookmark,
   }) {
     return fetchEvents();
@@ -718,6 +824,7 @@ class _$FetchEventsImpl implements _FetchEvents {
   @optionalTypeArgs
   TResult? whenOrNull<TResult extends Object?>({
     TResult? Function()? fetchEvents,
+    TResult? Function()? loadMoreEvents,
     TResult? Function(String eventId)? toggleBookmark,
   }) {
     return fetchEvents?.call();
@@ -727,6 +834,7 @@ class _$FetchEventsImpl implements _FetchEvents {
   @optionalTypeArgs
   TResult maybeWhen<TResult extends Object?>({
     TResult Function()? fetchEvents,
+    TResult Function()? loadMoreEvents,
     TResult Function(String eventId)? toggleBookmark,
     required TResult orElse(),
   }) {
@@ -740,6 +848,7 @@ class _$FetchEventsImpl implements _FetchEvents {
   @optionalTypeArgs
   TResult map<TResult extends Object?>({
     required TResult Function(_FetchEvents value) fetchEvents,
+    required TResult Function(_LoadMoreEvents value) loadMoreEvents,
     required TResult Function(_ToggleBookmark value) toggleBookmark,
   }) {
     return fetchEvents(this);
@@ -749,6 +858,7 @@ class _$FetchEventsImpl implements _FetchEvents {
   @optionalTypeArgs
   TResult? mapOrNull<TResult extends Object?>({
     TResult? Function(_FetchEvents value)? fetchEvents,
+    TResult? Function(_LoadMoreEvents value)? loadMoreEvents,
     TResult? Function(_ToggleBookmark value)? toggleBookmark,
   }) {
     return fetchEvents?.call(this);
@@ -758,6 +868,7 @@ class _$FetchEventsImpl implements _FetchEvents {
   @optionalTypeArgs
   TResult maybeMap<TResult extends Object?>({
     TResult Function(_FetchEvents value)? fetchEvents,
+    TResult Function(_LoadMoreEvents value)? loadMoreEvents,
     TResult Function(_ToggleBookmark value)? toggleBookmark,
     required TResult orElse(),
   }) {
@@ -770,6 +881,114 @@ class _$FetchEventsImpl implements _FetchEvents {
 
 abstract class _FetchEvents implements EventsEvent {
   const factory _FetchEvents() = _$FetchEventsImpl;
+}
+
+/// @nodoc
+abstract class _$$LoadMoreEventsImplCopyWith<$Res> {
+  factory _$$LoadMoreEventsImplCopyWith(_$LoadMoreEventsImpl value,
+          $Res Function(_$LoadMoreEventsImpl) then) =
+      __$$LoadMoreEventsImplCopyWithImpl<$Res>;
+}
+
+/// @nodoc
+class __$$LoadMoreEventsImplCopyWithImpl<$Res>
+    extends _$EventsEventCopyWithImpl<$Res, _$LoadMoreEventsImpl>
+    implements _$$LoadMoreEventsImplCopyWith<$Res> {
+  __$$LoadMoreEventsImplCopyWithImpl(
+      _$LoadMoreEventsImpl _value, $Res Function(_$LoadMoreEventsImpl) _then)
+      : super(_value, _then);
+}
+
+/// @nodoc
+
+class _$LoadMoreEventsImpl implements _LoadMoreEvents {
+  const _$LoadMoreEventsImpl();
+
+  @override
+  String toString() {
+    return 'EventsEvent.loadMoreEvents()';
+  }
+
+  @override
+  bool operator ==(Object other) {
+    return identical(this, other) ||
+        (other.runtimeType == runtimeType && other is _$LoadMoreEventsImpl);
+  }
+
+  @override
+  int get hashCode => runtimeType.hashCode;
+
+  @override
+  @optionalTypeArgs
+  TResult when<TResult extends Object?>({
+    required TResult Function() fetchEvents,
+    required TResult Function() loadMoreEvents,
+    required TResult Function(String eventId) toggleBookmark,
+  }) {
+    return loadMoreEvents();
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult? whenOrNull<TResult extends Object?>({
+    TResult? Function()? fetchEvents,
+    TResult? Function()? loadMoreEvents,
+    TResult? Function(String eventId)? toggleBookmark,
+  }) {
+    return loadMoreEvents?.call();
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult maybeWhen<TResult extends Object?>({
+    TResult Function()? fetchEvents,
+    TResult Function()? loadMoreEvents,
+    TResult Function(String eventId)? toggleBookmark,
+    required TResult orElse(),
+  }) {
+    if (loadMoreEvents != null) {
+      return loadMoreEvents();
+    }
+    return orElse();
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult map<TResult extends Object?>({
+    required TResult Function(_FetchEvents value) fetchEvents,
+    required TResult Function(_LoadMoreEvents value) loadMoreEvents,
+    required TResult Function(_ToggleBookmark value) toggleBookmark,
+  }) {
+    return loadMoreEvents(this);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult? mapOrNull<TResult extends Object?>({
+    TResult? Function(_FetchEvents value)? fetchEvents,
+    TResult? Function(_LoadMoreEvents value)? loadMoreEvents,
+    TResult? Function(_ToggleBookmark value)? toggleBookmark,
+  }) {
+    return loadMoreEvents?.call(this);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult maybeMap<TResult extends Object?>({
+    TResult Function(_FetchEvents value)? fetchEvents,
+    TResult Function(_LoadMoreEvents value)? loadMoreEvents,
+    TResult Function(_ToggleBookmark value)? toggleBookmark,
+    required TResult orElse(),
+  }) {
+    if (loadMoreEvents != null) {
+      return loadMoreEvents(this);
+    }
+    return orElse();
+  }
+}
+
+abstract class _LoadMoreEvents implements EventsEvent {
+  const factory _LoadMoreEvents() = _$LoadMoreEventsImpl;
 }
 
 /// @nodoc
@@ -838,6 +1057,7 @@ class _$ToggleBookmarkImpl implements _ToggleBookmark {
   @optionalTypeArgs
   TResult when<TResult extends Object?>({
     required TResult Function() fetchEvents,
+    required TResult Function() loadMoreEvents,
     required TResult Function(String eventId) toggleBookmark,
   }) {
     return toggleBookmark(eventId);
@@ -847,6 +1067,7 @@ class _$ToggleBookmarkImpl implements _ToggleBookmark {
   @optionalTypeArgs
   TResult? whenOrNull<TResult extends Object?>({
     TResult? Function()? fetchEvents,
+    TResult? Function()? loadMoreEvents,
     TResult? Function(String eventId)? toggleBookmark,
   }) {
     return toggleBookmark?.call(eventId);
@@ -856,6 +1077,7 @@ class _$ToggleBookmarkImpl implements _ToggleBookmark {
   @optionalTypeArgs
   TResult maybeWhen<TResult extends Object?>({
     TResult Function()? fetchEvents,
+    TResult Function()? loadMoreEvents,
     TResult Function(String eventId)? toggleBookmark,
     required TResult orElse(),
   }) {
@@ -869,6 +1091,7 @@ class _$ToggleBookmarkImpl implements _ToggleBookmark {
   @optionalTypeArgs
   TResult map<TResult extends Object?>({
     required TResult Function(_FetchEvents value) fetchEvents,
+    required TResult Function(_LoadMoreEvents value) loadMoreEvents,
     required TResult Function(_ToggleBookmark value) toggleBookmark,
   }) {
     return toggleBookmark(this);
@@ -878,6 +1101,7 @@ class _$ToggleBookmarkImpl implements _ToggleBookmark {
   @optionalTypeArgs
   TResult? mapOrNull<TResult extends Object?>({
     TResult? Function(_FetchEvents value)? fetchEvents,
+    TResult? Function(_LoadMoreEvents value)? loadMoreEvents,
     TResult? Function(_ToggleBookmark value)? toggleBookmark,
   }) {
     return toggleBookmark?.call(this);
@@ -887,6 +1111,7 @@ class _$ToggleBookmarkImpl implements _ToggleBookmark {
   @optionalTypeArgs
   TResult maybeMap<TResult extends Object?>({
     TResult Function(_FetchEvents value)? fetchEvents,
+    TResult Function(_LoadMoreEvents value)? loadMoreEvents,
     TResult Function(_ToggleBookmark value)? toggleBookmark,
     required TResult orElse(),
   }) {

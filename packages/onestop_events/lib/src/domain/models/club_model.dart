@@ -4,7 +4,7 @@ part 'club_model.freezed.dart';
 part 'club_model.g.dart';
 
 // We can use an enum to cleanly categorize clubs
-enum ClubCategory { technical, cultural, sports }
+enum ClubCategory { welfare, technical, cultural, sports, hostelAffairs, sail, swc, academic }
 
 @freezed
 class ClubModel with _$ClubModel {
