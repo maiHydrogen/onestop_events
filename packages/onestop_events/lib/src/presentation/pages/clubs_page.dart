@@ -99,8 +99,8 @@ class _ClubsPageState extends State<ClubsPage> {
           },
           builder: (context, state) {
             return state.when(
-              initial: () => const Center(child: CircularProgressIndicator()),
-              loading: () => const Center(child: CircularProgressIndicator()),
+              initial: () => Center(child: CircularProgressIndicator(color: OColor.green600)),
+              loading: () => Center(child: CircularProgressIndicator(color: OColor.green600)),
               error: (message) => Center(
                 child: Column(
                   mainAxisSize: MainAxisSize.min,

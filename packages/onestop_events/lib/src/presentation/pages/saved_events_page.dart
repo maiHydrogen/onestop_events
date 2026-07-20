@@ -25,8 +25,8 @@ class SavedEventsPage extends StatelessWidget {
       body: BlocBuilder<EventsBloc, EventsState>(
         builder: (context, state) {
           return state.when(
-            initial: () => const Center(child: CircularProgressIndicator()),
-            loading: () => const Center(child: CircularProgressIndicator()),
+            initial: () => Center(child: CircularProgressIndicator(color: OColor.green600)),
+            loading: () => Center(child: CircularProgressIndicator(color: OColor.green600)),
             error: (message) => Center(child: OText(text: message)),
             loaded: (events, currentPage, hasReachedMax, isLoadingMore, loadMoreError) {
               final savedEvents = events.where((e) => e.isBookmarked).toList();

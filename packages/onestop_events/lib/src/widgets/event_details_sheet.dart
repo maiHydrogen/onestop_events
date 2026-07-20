@@ -64,9 +64,24 @@ class EventDetailsSheet extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   // Stats row
-                  OText(
-                    text: "350 INTERESTED · 800 VIEWS · 37 FEEDBACK",
-                    style: OTextStyle.labelMedium.copyWith(color: OColor.gray500),
+                  Row(
+                    children: [
+                      Icon(TablerIcons.heart, size: 16, color: OColor.green600),
+                      const SizedBox(width: 4),
+                      OText(text: "350 INTERESTED", style: OTextStyle.labelMedium.copyWith(color: OColor.gray500)),
+                      const SizedBox(width: 8),
+                      OText(text: "·", style: OTextStyle.labelMedium.copyWith(color: OColor.gray500)),
+                      const SizedBox(width: 8),
+                      Icon(TablerIcons.eye, size: 16, color: OColor.blue600),
+                      const SizedBox(width: 4),
+                      OText(text: "800 VIEWS", style: OTextStyle.labelMedium.copyWith(color: OColor.gray500)),
+                      const SizedBox(width: 8),
+                      OText(text: "·", style: OTextStyle.labelMedium.copyWith(color: OColor.gray500)),
+                      const SizedBox(width: 8),
+                      Icon(TablerIcons.message, size: 16, color: OColor.gray500),
+                      const SizedBox(width: 4),
+                      OText(text: "37 FEEDBACK", style: OTextStyle.labelMedium.copyWith(color: OColor.gray500)),
+                    ],
                   ),
                   const SizedBox(height: 16),
                   
@@ -156,7 +171,7 @@ class EventDetailsSheet extends StatelessWidget {
                   const SizedBox(height: 8),
                   Row(
                     children: [
-                      Icon(TablerIcons.calendar, size: 20, color: OColor.gray500),
+                      Icon(TablerIcons.clock, size: 20, color: OColor.gray500),
                       const SizedBox(width: 8),
                       Expanded(
                         child: OText(text: formattedDate, style: OTextStyle.bodyMedium),
@@ -169,7 +184,7 @@ class EventDetailsSheet extends StatelessWidget {
                   OText(text: "Special Guests", style: OTextStyle.headingSmall.copyWith(fontWeight: FontWeight.bold)),
                   const SizedBox(height: 12),
                   SizedBox(
-                    height: 80,
+                    height: 120,
                     child: ListView(
                       scrollDirection: Axis.horizontal,
                       children: [
@@ -212,7 +227,7 @@ class EventDetailsSheet extends StatelessWidget {
                   OText(text: "POCs", style: OTextStyle.headingSmall.copyWith(fontWeight: FontWeight.bold)),
                   const SizedBox(height: 12),
                   SizedBox(
-                    height: 80,
+                    height: 120,
                     child: ListView(
                       scrollDirection: Axis.horizontal,
                       children: [
@@ -280,30 +295,18 @@ class EventDetailsSheet extends StatelessWidget {
 
   Widget _buildPersonCard(String name, String role) {
     return Container(
-      width: 200,
-      margin: const EdgeInsets.only(right: 12),
-      padding: const EdgeInsets.all(12),
-      decoration: BoxDecoration(
-        border: Border.all(color: OColor.gray200),
-        borderRadius: BorderRadius.circular(12),
-      ),
-      child: Row(
+      width: 100,
+      margin: const EdgeInsets.only(right: 16),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.center,
         children: [
           const CircleAvatar(
-            radius: 20,
+            radius: 30,
             backgroundImage: NetworkImage('https://dummyimage.com/100x100/000/fff&text=Avatar'),
           ),
-          const SizedBox(width: 12),
-          Expanded(
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                Text(name, style: OTextStyle.bodyMedium.copyWith(fontWeight: FontWeight.bold), maxLines: 1, overflow: TextOverflow.ellipsis),
-                Text(role, style: OTextStyle.bodySmall.copyWith(color: OColor.gray500), maxLines: 1, overflow: TextOverflow.ellipsis),
-              ],
-            ),
-          ),
+          const SizedBox(height: 8),
+          Text(name, style: OTextStyle.bodyMedium.copyWith(fontWeight: FontWeight.bold), maxLines: 1, overflow: TextOverflow.ellipsis, textAlign: TextAlign.center),
+          Text(role, style: OTextStyle.bodySmall.copyWith(color: OColor.gray500), maxLines: 1, overflow: TextOverflow.ellipsis, textAlign: TextAlign.center),
         ],
       ),
     );

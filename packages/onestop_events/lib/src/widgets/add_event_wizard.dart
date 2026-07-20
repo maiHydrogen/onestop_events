@@ -24,6 +24,7 @@ class _AddEventWizardState extends State<AddEventWizard> {
   TimeOfDay? _startTime;
   DateTime? _endDate;
   TimeOfDay? _endTime;
+  String _selectedDuration = "1 Hr";
   bool _isCustomDuration = false;
   final _customDurationController = TextEditingController();
 
@@ -489,28 +490,37 @@ class _AddEventWizardState extends State<AddEventWizard> {
         ),
         const SizedBox(height: 20),
 
-        // Custom Duration Section
-        Row(
-          children: [
-            Checkbox(
-              value: _isCustomDuration,
-              onChanged: (val) {
-                setState(() {
-                  _isCustomDuration = val ?? false;
-                });
+        // Event Duration Section
+        OText(text: "Event Duration", style: OTextStyle.labelMedium),
+        const SizedBox(height: 8),
+        Wrap(
+          spacing: 8,
+          children: ["1 Hr", "2 Hrs", "3 Hrs", "Custom"].map((duration) {
+            return ChoiceChip(
+              label: Text(duration),
+              selected: _selectedDuration == duration,
+              onSelected: (selected) {
+                if (selected) {
+                  setState(() {
+                    _selectedDuration = duration;
+                    _isCustomDuration = duration == "Custom";
+                  });
+                }
               },
-              activeColor: OColor.green600,
-            ),
-            const Expanded(
-              child: Text("Define a Custom Duration Label (e.g. 'All Weekend', '3 Days')"),
-            ),
-          ],
+              selectedColor: OColor.green100,
+              checkmarkColor: OColor.green600,
+              labelStyle: TextStyle(
+                color: _selectedDuration == duration ? OColor.green600 : OColor.gray600,
+              ),
+              backgroundColor: OColor.gray100,
+            );
+          }).toList(),
         ),
         if (_isCustomDuration) ...[
-          const SizedBox(height: 8),
+          const SizedBox(height: 12),
           TextFormField(
             controller: _customDurationController,
-            decoration: _buildInputDecoration("Enter custom duration text"),
+            decoration: _buildInputDecoration("Enter custom duration text (e.g. 3 Days)"),
           ),
         ],
       ],

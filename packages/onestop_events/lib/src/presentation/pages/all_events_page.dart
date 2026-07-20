@@ -18,6 +18,7 @@ class _AllEventsPageState extends State<AllEventsPage> {
   bool _isCalendarView = false;
   late TextEditingController _searchController;
   String _searchQuery = "";
+  DateTime _selectedCalendarDate = DateTime.now();
 
   @override
   void initState() {
@@ -101,8 +102,8 @@ class _AllEventsPageState extends State<AllEventsPage> {
         },
         builder: (context, state) {
           return state.when(
-            initial: () => const Center(child: CircularProgressIndicator()),
-            loading: () => const Center(child: CircularProgressIndicator()),
+            initial: () => Center(child: CircularProgressIndicator(color: OColor.green600)),
+            loading: () => Center(child: CircularProgressIndicator(color: OColor.green600)),
             error: (message) => Center(
               child: Column(
                 mainAxisSize: MainAxisSize.min,
@@ -135,6 +136,11 @@ class _AllEventsPageState extends State<AllEventsPage> {
             ),
             loaded: (events, currentPage, hasReachedMax, isLoadingMore, loadMoreError) {
               final filteredEvents = events.where((e) {
+                if (_isCalendarView) {
+                  return e.startTime.year == _selectedCalendarDate.year &&
+                         e.startTime.month == _selectedCalendarDate.month &&
+                         e.startTime.day == _selectedCalendarDate.day;
+                }
                 return e.title
                         .toLowerCase()
                         .contains(_searchQuery.toLowerCase()) ||
@@ -146,28 +152,50 @@ class _AllEventsPageState extends State<AllEventsPage> {
               return Column(
                 children: [
                   Container(
-                    padding: const EdgeInsets.all(16),
+                    padding: const EdgeInsets.fromLTRB(16, 16, 16, 0),
                     color: OColor.white,
-                    child: OSearchBar(controller: _searchController),
+                    child: Column(
+                      children: [
+                        OSearchBar(controller: _searchController),
+                        const SizedBox(height: 12),
+                        SingleChildScrollView(
+                          scrollDirection: Axis.horizontal,
+                          child: Row(
+                            children: [
+                              _buildFilterChip("Type", true),
+                              const SizedBox(width: 8),
+                              _buildFilterChip("Organiser", true),
+                              const SizedBox(width: 8),
+                              _buildFilterChip("Tech", false, onClose: () {}),
+                            ],
+                          ),
+                        ),
+                        const SizedBox(height: 12),
+                      ],
+                    ),
                   ),
+                  if (_isCalendarView)
+                    Container(
+                      padding: const EdgeInsets.all(16),
+                      color: OColor.white,
+                      child: OCalendar(
+                        dateSelected: (date) {
+                          setState(() {
+                            _selectedCalendarDate = date;
+                          });
+                        },
+                      ),
+                    ),
                   Expanded(
-                    child: _isCalendarView
+                    child: filteredEvents.isEmpty
                         ? Center(
                             child: OText(
-                              text: "Calendar View (Coming Soon)",
+                              text: 'No events found.',
                               style: OTextStyle.bodyMedium
                                   .copyWith(color: OColor.gray500),
                             ),
                           )
-                        : filteredEvents.isEmpty
-                            ? Center(
-                                child: OText(
-                                  text: 'No events found.',
-                                  style: OTextStyle.bodyMedium
-                                      .copyWith(color: OColor.gray500),
-                                ),
-                              )
-                            : PaginatedListView(
+                        : PaginatedListView(
                                 itemCount: filteredEvents.length,
                                 isLoadingMore: isLoadingMore,
                                 hasReachedMax: hasReachedMax,
@@ -177,6 +205,33 @@ class _AllEventsPageState extends State<AllEventsPage> {
                                     .add(const EventsEvent.loadMoreEvents()),
                                 itemBuilder: (context, index) {
                                   final event = filteredEvents[index];
+                                  final previousEvent = index > 0 ? filteredEvents[index - 1] : null;
+                                  
+                                  bool showHeader = false;
+                                  String headerText = "";
+                                  
+                                  if (previousEvent == null || previousEvent.startTime.day != event.startTime.day || previousEvent.startTime.month != event.startTime.month) {
+                                    showHeader = true;
+                                    final now = DateTime.now();
+                                    final tomorrow = now.add(const Duration(days: 1));
+                                    
+                                    if (event.startTime.year == now.year && event.startTime.month == now.month && event.startTime.day == now.day) {
+                                      headerText = "Today";
+                                    } else if (event.startTime.year == tomorrow.year && event.startTime.month == tomorrow.month && event.startTime.day == tomorrow.day) {
+                                      headerText = "Tomorrow";
+                                    } else {
+                                      final String suffix;
+                                      final day = event.startTime.day;
+                                      if (day % 10 == 1 && day != 11) suffix = 'st';
+                                      else if (day % 10 == 2 && day != 12) suffix = 'nd';
+                                      else if (day % 10 == 3 && day != 13) suffix = 'rd';
+                                      else suffix = 'th';
+                                      
+                                      const months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
+                                      headerText = "$day$suffix ${months[event.startTime.month - 1]}";
+                                    }
+                                  }
+                                  
                                   final String formattedTime =
                                       "${event.startTime.hour.toString().padLeft(2, '0')}:${event.startTime.minute.toString().padLeft(2, '0')}";
                                   final String formattedDate =
@@ -184,9 +239,20 @@ class _AllEventsPageState extends State<AllEventsPage> {
                                   final String formattedEnd =
                                       "${event.endTime.hour.toString().padLeft(2, '0')}:${event.endTime.minute.toString().padLeft(2, '0')}";
 
-                                  return Padding(
-                                    padding: const EdgeInsets.only(bottom: 16),
-                                    child: OEventListingCard.large(
+                                  return Column(
+                                    crossAxisAlignment: CrossAxisAlignment.start,
+                                    children: [
+                                      if (showHeader)
+                                        Padding(
+                                          padding: const EdgeInsets.only(top: 8, bottom: 12),
+                                          child: OText(
+                                            text: headerText,
+                                            style: OTextStyle.headingSmall.copyWith(color: OColor.gray800),
+                                          ),
+                                        ),
+                                      Padding(
+                                        padding: const EdgeInsets.only(bottom: 16),
+                                        child: OEventListingCard.large(
                                       hostImageUrl:
                                           "https://dummyimage.com/100x100/000/fff&text=SWC",
                                       hostName:
@@ -209,7 +275,9 @@ class _AllEventsPageState extends State<AllEventsPage> {
                                       onTap: () {
                                         EventDetailsSheet.show(context, event);
                                       },
-                                    ),
+                                        ),
+                                      ),
+                                    ],
                                   );
                                 },
                               ),
@@ -219,6 +287,24 @@ class _AllEventsPageState extends State<AllEventsPage> {
             },
           );
         },
+      ),
+    );
+  }
+
+  Widget _buildFilterChip(String label, bool isDropdown, {VoidCallback? onClose}) {
+    return Container(
+      padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
+      decoration: BoxDecoration(
+        color: OColor.gray200,
+        borderRadius: BorderRadius.circular(16),
+      ),
+      child: Row(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          OText(text: label, style: OTextStyle.labelMedium.copyWith(color: OColor.gray800)),
+          const SizedBox(width: 4),
+          Icon(isDropdown ? TablerIcons.chevron_down : TablerIcons.x, size: 16, color: OColor.gray800),
+        ],
       ),
     );
   }

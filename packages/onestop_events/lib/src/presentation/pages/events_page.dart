@@ -59,6 +59,17 @@ class _EventsFeedPageState extends State<EventsFeedPage> {
       );
   }
 
+  String _formatHeaderDate(DateTime date) {
+    const weekdays = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'];
+    const months = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
+    String suffix = 'th';
+    if (date.day % 10 == 1 && date.day != 11) suffix = 'st';
+    else if (date.day % 10 == 2 && date.day != 12) suffix = 'nd';
+    else if (date.day % 10 == 3 && date.day != 13) suffix = 'rd';
+    
+    return "${weekdays[date.weekday - 1]}, ${date.day}$suffix ${months[date.month - 1]}";
+  }
+
   @override
   Widget build(BuildContext context) {
     return SafeArea(
@@ -90,11 +101,11 @@ class _EventsFeedPageState extends State<EventsFeedPage> {
           },
           builder: (context, state) {
             return state.when(
-              initial: () => const Center(
-                child: CircularProgressIndicator(),
+              initial: () => Center(
+                child: CircularProgressIndicator(color: OColor.green600),
               ),
-              loading: () => const Center(
-                child: CircularProgressIndicator(),
+              loading: () => Center(
+                child: CircularProgressIndicator(color: OColor.green600),
               ),
               error: (message) => Center(
                 child: Column(
@@ -163,8 +174,8 @@ class _EventsFeedPageState extends State<EventsFeedPage> {
                     SliverToBoxAdapter(
                       child: Column(
                         children: [
-                          const EventsHeader(
-                            date: "Monday, 16th January",
+                          EventsHeader(
+                            date: _formatHeaderDate(now),
                             header: 'Events',
                           ),
                           const SizedBox(height: OSpacing.xs),
