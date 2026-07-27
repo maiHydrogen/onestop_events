@@ -1,49 +1,81 @@
 import 'package:get_it/get_it.dart';
 
-// Import your BLoCs and Repositories here as you create them
-// import '../../presentation/blocs/events/events_bloc.dart';
-// import '../../domain/repositories/i_events_repository.dart';
-// import '../../data/repositories/mock_events_repository.dart';
+import '../../domain/repositories/i_events_repo.dart';
+import '../../domain/repositories/i_clubs_repo.dart';
+import '../../domain/repositories/i_admin_repo.dart';
+import '../../data/repositories/mock_events_repo.dart';
+import '../../data/repositories/mock_clubs_repo.dart';
+import '../../data/repositories/mock_admin_repo.dart';
+import '../../presentation/blocs/events/events_bloc.dart';
+import '../../presentation/blocs/navigation/navigation_bloc.dart';
+import '../../presentation/blocs/clubs/clubs_bloc.dart';
+import '../../presentation/blocs/admin/admin_bloc.dart';
+import '../models/admin_flag.dart';
 
 final sl = GetIt.instance; // sl stands for Service Locator
 
-Future<void> initEventsPackage() async {
+/// Initializes the onestop_events package.
+///
+/// Call this from your app's `main()` before `runApp()`.
+///
+/// **For integration with the host app:**
+/// Pass your own implementations of [IEventsRepository], [IClubsRepository],
+/// and [IAdminRepository] to replace the built-in mock repositories.
+/// These implementations should use the host app's authenticated HTTP client.
+///
+/// Example:
+/// ```dart
+/// await initEventsPackage(
+///   eventsRepository: MyApiEventsRepository(dio: myAuthenticatedDio),
+///   clubsRepository: MyApiClubsRepository(dio: myAuthenticatedDio),
+///   adminRepository: MyApiAdminRepository(dio: myAuthenticatedDio),
+/// );
+/// ```
+///
+/// If no implementations are provided, the package defaults to mock data
+/// suitable for development and testing.
+Future<void> initEventsPackage({
+  IEventsRepository? eventsRepository,
+  IClubsRepository? clubsRepository,
+  IAdminRepository? adminRepository,
+}) async {
   // ---------------------------------------------------------------------------
-  // 1. Presentation Layer (BLoCs)
+  // 1. Data Layer (Repositories)
   // ---------------------------------------------------------------------------
-  // We register BLoCs as Factories. This means every time we call sl<EventsBloc>(),
-  // get_it provides a fresh instance. This is standard for BLoCs so you don't 
-  // accidentally carry over old state when navigating away and coming back.
-  
-  /* sl.registerFactory(
-    () => EventsBloc(eventsRepository: sl()), 
-  );
-  
-  sl.registerFactory(
-    () => ClubsBloc(clubsRepository: sl()),
-  );
-  */
-
-  // ---------------------------------------------------------------------------
-  // 2. Domain & Data Layer (Repositories)
-  // ---------------------------------------------------------------------------
-  // Repositories are registered as Lazy Singletons. It creates exactly one 
-  // instance of the repository the first time it is requested, and reuses it.
-  // Notice how we bind the Interface (IEventsRepository) to the Implementation (MockEventsRepository).
-  
-  /*
+  // Bind each interface to either the host-app-provided implementation
+  // or the built-in mock as a fallback.
   sl.registerLazySingleton<IEventsRepository>(
-    () => MockEventsRepository(),
+    () => eventsRepository ?? MockEventsRepository(),
   );
 
   sl.registerLazySingleton<IClubsRepository>(
-    () => MockClubsRepository(),
+    () => clubsRepository ?? MockClubsRepository(),
   );
-  */
+
+  sl.registerLazySingleton<IAdminRepository>(
+    () => adminRepository ?? MockAdminRepository(),
+  );
+
+  sl.registerLazySingleton<AdminFlag>(
+    () => AdminFlag(),
+  );
+
+  // ---------------------------------------------------------------------------
+  // 2. Presentation Layer (BLoCs)
+  // ---------------------------------------------------------------------------
+  // Registered as factories so each navigation produces a fresh BLoC instance.
+  sl.registerFactory(() => NavigationBloc());
+  sl.registerFactory(
+    () => EventsBloc(repository: sl<IEventsRepository>()),
+  );
+  sl.registerFactory(
+    () => ClubsBloc(clubsRepository: sl<IClubsRepository>()),
+  );
+  sl.registerFactory(() => AdminBloc());
 
   // ---------------------------------------------------------------------------
   // 3. Core / External (Hive, Dio, etc.)
   // ---------------------------------------------------------------------------
-  // Later in Phase 2, you will register Dio here. 
-  // For now, if you are setting up Hive boxes for caching, you can open them here.
+  // The host app is responsible for initializing and passing its HTTP client
+  // via the repository constructors above. No network setup is done here.
 }

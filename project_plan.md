@@ -43,35 +43,35 @@ This phase focuses on structuring the package, defining the data shapes, wiring 
 
 2. Domain Layer (Entities & Models)
 
-- [ ] Define EventModel (id, title, description, date, location, image URL, etc.).
-- [ ] Define ClubModel (id, name, category, description, logo URL, etc.).
-- [ ] Define FeedbackModel and BookmarkModel.
+- [X] Define EventModel (id, title, description, date, location, image URL, etc.).
+- [X] Define ClubModel (id, name, category, description, logo URL, etc.).
+- [X] Define FeedbackModel and BookmarkModel.
 
 3. Data Layer (Mock Repositories)
 
-- [ ] Create IEventsRepository and IClubsRepository interfaces.
-- [ ] Implement MockEventsRepository returning dummy lists of EventModel and simulating network delays.
-- [ ] Implement MockClubsRepository returning dummy technical, cultural, and sports ClubModels.
+- [X] Create IEventsRepository and IClubsRepository interfaces.
+- [X] Implement MockEventsRepository returning dummy lists of EventModel and simulating network delays.
+- [X] Implement MockClubsRepository returning dummy technical, cultural, and sports ClubModels.
 
 4. State Management (BLoC Implementation)
 
-- [ ] Create NavigationBloc (States: EventsTab, ClubsTab; Events: GoToEvents, GoToClubs, GoBack).
-- [ ] Create EventsBloc (Events: FetchEvents, BookmarkEvent, SubmitFeedback; States: Loading, Loaded, Error).
-- [ ] Create ClubsBloc (Events: FetchClubs; States: Loading, Loaded, Error).
-- [ ] Create AdminBloc (Events: UpdateForm, SubmitEvent; States: Idle, Validating, Success, Failure).
+- [X] Create NavigationBloc (States: EventsTab, ClubsTab; Events: GoToEvents, GoToClubs, GoBack).
+- [X] Create EventsBloc (Events: FetchEvents, BookmarkEvent, SubmitFeedback; States: Loading, Loaded, Error).
+- [X] Create ClubsBloc (Events: FetchClubs; States: Loading, Loaded, Error).
+- [X] Create AdminBloc (Events: UpdateForm, SubmitEvent; States: Idle, Validating, Success, Failure).
 
 5. Presentation Layer (UI & Routing)
 
-- [ ] Build BaseScaffold incorporating the NavigationBloc and the ONavBar from onestop_ui (using IndexedStack to preserve state).
-- [ ] Build EventsFeedPage using BlocBuilder to map EventsLoaded to a list of OEventListingCards.
-- [ ] Build ClubsPage using a TabBar (Technical, Cultural, Sports) populated via ClubsBloc.
-- [ ] Build EventDetailsPage for expanded viewing.
-- [ ] Build AdminUploadPage with form fields for creating new events.
+- [X] Build BaseScaffold incorporating the NavigationBloc and the ONavBar from onestop_ui (using IndexedStack to preserve state).
+- [X] Build EventsFeedPage using BlocBuilder to map EventsLoaded to a list of OEventListingCards.
+- [X] Build ClubsPage using a TabBar (Technical, Cultural, Sports) populated via ClubsBloc.
+- [X] Build EventDetailsPage for expanded viewing.
+- [X] Build AdminUploadPage with form fields for creating new events.
 
 6. Phase 1 Testing
 
-- [ ] Write unit tests for all BLoCs (bloc_test) using mocked repositories.
-- [ ] Write widget tests ensuring EventsFeedPage and ClubsPage render correctly based on BLoC states.
+- [X] Write unit tests for all BLoCs (bloc_test) using mocked repositories.
+- [X] Write widget tests ensuring EventsFeedPage and ClubsPage render correctly based on BLoC states.
 
 ## Phase 2: Backend Development & Real Data Integration
 
@@ -79,30 +79,30 @@ This phase transitions the package from mock data to real network requests, hand
 
 1. Backend API Development (Parallel or Sequential)
 
-- [ ] Design and build database schema for Events, Clubs, Users, and Feedback.
-- [ ] Develop REST/GraphQL endpoints for fetching Events and Clubs.
-- [ ] Develop endpoints for Bookmarking and submitting Feedback.
-- [ ] Develop Admin endpoints for uploading Event data and handling image storage (e.g., AWS S3 or Firebase Storage).
+- [X] Design and build database schema for Events, Clubs, Users, and Feedback.
+- [X] Develop REST/GraphQL endpoints for fetching Events and Clubs.
+- [X] Develop endpoints for Bookmarking and submitting Feedback.
+- [X] Develop Admin endpoints for uploading Event data and handling image storage (e.g., AWS S3 or Firebase Storage).
 
 2. Data Layer (Remote Repositories)
 
-- [ ] Add network package (e.g., dio or http).
-- [ ] Set up network interceptors for error handling and injecting authentication tokens.
-- [ ] Implement RemoteEventsRepository parsing real JSON responses into EventModels.
-- [ ] Implement RemoteClubsRepository parsing real JSON responses into ClubModels.
+- [X] Add network package (e.g., dio or http).
+- [X] Set up network interceptors for error handling and injecting authentication tokens.
+- [X] Implement RemoteEventsRepository parsing real JSON responses into EventModels.
+- [X] Implement RemoteClubsRepository parsing real JSON responses into ClubModels.
 
 3. Integration & Refinement
 
-- [ ] Update Dependency Injection to provide Remote repositories instead of Mock repositories.
-- [ ] Implement robust error handling in UI (e.g., using SnackBar components from onestop_ui on EventsError state).
-- [ ] Handle empty states (e.g., "No events happening right now") and pagination (infinite scrolling) if needed.
+- [X] Update Dependency Injection to provide Remote repositories instead of Mock repositories.
+- [X] Implement robust error handling in UI (e.g., using SnackBar components from onestop_ui on EventsError state).
+- [X] Handle empty states (e.g., "No events happening right now") and pagination (infinite scrolling) if needed.
 
 4. Package Export & App Integration
 
-- [ ] Create a clean barrel file (onestop_events.dart) exporting only the BaseScaffold wrapper and essential configuration methods.
-- [ ] Import onestop_events into the parent Onestop app.
-- [ ] Connect the parent app's authentication state/token to the onestop_events dependency injection container.
-- [ ] Wire the parent app's router to trigger the package's BaseScaffold.
+- [] Create a clean barrel file (onestop_events.dart) exporting only the BaseScaffold wrapper and essential configuration methods.
+- [] Import onestop_events into the parent Onestop app.
+- [] Connect the parent app's authentication state/token to the onestop_events dependency injection container.
+- [] Wire the parent app's router to trigger the package's BaseScaffold.
 
 5. Final QA & Testing
 
